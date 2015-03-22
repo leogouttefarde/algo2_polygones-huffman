@@ -1,0 +1,4 @@
+<svg width="800" height="600">
+<rect width="800" height="600" fill="white"/>
+<polygon points="20,300 96,528 172,376 248,452 400,528 552,300 628,452 780,148 704,72 476,224 324,148 " style="fill:tomato;fill-opacity:0.5"/>
+</svg>

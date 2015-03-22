@@ -1,0 +1,9 @@
+
+ce repertoire contient un ensemble de fichiers de test avec leurs solutions
+
+chaque fichier .in contient un polygone au format ascii suivant :
+
+ - premiere ligne : un entier indiquant le nombre n total de points
+ - n lignes : un flottant qui est la coordonnee x d'un point, un espace, un flottant qui est la
+coordonnee y du point
+
