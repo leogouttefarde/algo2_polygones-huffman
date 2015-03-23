@@ -29,19 +29,22 @@ procedure Main is
 
 
         Points : pPoints;
-        Segments : Arbre_Segments.Noeud;
+        Segments : pSegments;
+        ABR : Arbre_Segments.Noeud;
 begin
 
         -- handle input arg for .in file
 
         -- parse .in
+        -- Points := parse_in();
+        -- Segments := generate_segments(Points);
 
         -- beg svg
-        -- print original polygon
-
+        -- print input as polygon
 
         -- algo + print new segs
-
+        -- for Point in Points:
+        --      algo1(Point, ABR)
 
         -- end svg
 
