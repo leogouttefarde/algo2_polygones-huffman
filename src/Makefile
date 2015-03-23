@@ -1,10 +1,14 @@
 
 
+EXEC=main
 
 all:
-	gnatmake main
+	gnatmake $(EXEC)
 
 clean:
-	gnatclean main
+	gnatclean $(EXEC)
+
+run: all
+	./$(EXEC) tests/1.in
 
 

@@ -3,6 +3,7 @@
 
 generic
         type Type_Clef is private;
+        with function Compare (X, Y: Type_Clef) return Boolean;
 
 package Arbre is
 
