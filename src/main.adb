@@ -57,6 +57,7 @@ procedure Main is
         Segments : Segment_Lists.List;
         ABR : Noeud;
         Point_Pos : Point_Lists.Cursor;
+        cPoint : Point;
 begin
 
         if Argument_Count < 1 then
@@ -69,16 +70,19 @@ begin
 
                 Svg_Header(100, 100);
 
-                -- print input as polygon
                 Svg_Polygon(Points);
 
-                -- algo + print new segs
                 Point_Pos := Point_Lists.First( Points );
 
                 while Point_Lists.Has_Element( Point_Pos ) loop
-                        --Point := Point_Lists.Element( Point_Pos );
-                        -- algo1(Point, ABR)
+
+                        cPoint := Point_Lists.Element( Point_Pos );
+
+                        -- print new segs
+                        --Decomposition(Point, ABR);
+
                         Point_Lists.Next( Point_Pos );
+
                 end loop;
 
                 Svg_Footer;

@@ -1,8 +1,7 @@
 
-with Ada.Text_IO, GNAT.String_Split, SVG;
-use Ada.Text_IO, GNAT.String_Split, SVG;
 with Ada.Containers.Doubly_Linked_Lists;
-with Common; use Common;
+with Ada.Text_IO, GNAT.String_Split, Common;
+use Ada.Text_IO, GNAT.String_Split, Common;
 
 
 package Parseur is
