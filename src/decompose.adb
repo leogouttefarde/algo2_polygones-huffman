@@ -25,8 +25,10 @@ package body Decompose is
 
         -- print new segs
         procedure Decomposition(cPoint : Point ; cAVL : in out Arbre_Segments.Arbre) is
+                R : Boolean := False;
         begin
                 NULL;
+                --if 
         end;
 
 end Decompose;

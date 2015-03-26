@@ -86,17 +86,17 @@ package body AVL is
 
                 cBalance := Balance(Noeud);
 
-                if (cBalance > 1 and Clef < Noeud.Fils(Gauche).C) then
+                if (cBalance > 1 and then Clef < Noeud.Fils(Gauche).C) then
                         return Rotation_Droite(Noeud);
 
-                elsif (cBalance < -1 and Clef > Noeud.Fils(Droite).C) then
+                elsif (cBalance < -1 and then Clef > Noeud.Fils(Droite).C) then
                         return Rotation_Gauche(Noeud);
 
-                elsif (cBalance > 1 and Clef > Noeud.Fils(Gauche).C) then
+                elsif (cBalance > 1 and then Clef > Noeud.Fils(Gauche).C) then
                         Noeud.Fils(Gauche) := Rotation_Gauche(Noeud.Fils(Gauche));
                         return Rotation_Droite(Noeud);
 
-                elsif (cBalance < -1 and Clef < Noeud.Fils(Droite).C) then
+                elsif (cBalance < -1 and then Clef < Noeud.Fils(Droite).C) then
                         Noeud.Fils(Droite) := Rotation_Droite(Noeud.Fils(Droite));
                         return Rotation_Gauche(Noeud);
                 end if;
@@ -163,17 +163,17 @@ package body AVL is
 
                 cBalance := Balance(oRacine);
 
-                if (cBalance > 1 and Balance(oRacine.Fils(Gauche)) >= 0) then
+                if (cBalance > 1 and then Balance(oRacine.Fils(Gauche)) >= 0) then
                         return Rotation_Droite(oRacine);
 
-                elsif (cBalance > 1 and Balance(oRacine.Fils(Gauche)) < 0) then
+                elsif (cBalance > 1 and then Balance(oRacine.Fils(Gauche)) < 0) then
                         oRacine.Fils(Gauche) := Rotation_Gauche(oRacine.Fils(Gauche));
                         return Rotation_Droite(oRacine);
 
-                elsif (cBalance < -1 and Balance(oRacine.Fils(Droite)) <= 0) then
+                elsif (cBalance < -1 and then Balance(oRacine.Fils(Droite)) <= 0) then
                         return Rotation_Gauche(oRacine);
 
-                elsif (cBalance < -1 and Balance(oRacine.Fils(Droite)) > 0) then
+                elsif (cBalance < -1 and then Balance(oRacine.Fils(Droite)) > 0) then
                         oRacine.Fils(Droite) := Rotation_Droite(oRacine.Fils(Droite));
                         return Rotation_Gauche(oRacine);
                 end if;
