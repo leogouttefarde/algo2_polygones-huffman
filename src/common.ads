@@ -1,4 +1,5 @@
 
+with AVL;
 with Ada.Containers.Doubly_Linked_Lists;
 
 
@@ -27,6 +28,10 @@ package Common is
 
         function "<" (S1, S2 : Segment) return Boolean;
         function ">" (S1, S2 : Segment) return Boolean;
+
+        package Arbre_Segments is new AVL(Segment, "<", ">");
+        use Arbre_Segments;
+
 
         function "<" (P1, P2 : Point) return Boolean;
         function ">" (P1, P2 : Point) return Boolean;

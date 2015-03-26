@@ -1,12 +1,18 @@
 
 
 
-package body Arbre is
+package body AVL is
 
         procedure Noeuds_Voisins(Cible : Arbre ; Petit_Voisin, Grand_Voisin : out Arbre) is
         begin
                 NULL;
         end;
+
+        procedure Compte_Position( Cible : Arbre ; Nb_Petits, Nb_Grands : out Natural) is
+        begin
+                NULL;
+        end;
+
 
         function Hauteur(A : Arbre) return Natural is
         begin
@@ -184,6 +190,6 @@ package body Arbre is
 
 
 
-end Arbre;
+end AVL;
 
 

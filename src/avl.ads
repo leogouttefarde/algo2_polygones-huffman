@@ -6,7 +6,7 @@ generic
         with function "<" (X, Y: Type_Clef) return Boolean;
         with function ">" (X, Y: Type_Clef) return Boolean;
 
-package Arbre is
+package AVL is
 
         type Noeud;
         type Arbre is access Noeud;
@@ -25,8 +25,10 @@ package Arbre is
         procedure Noeuds_Voisins(Cible : Arbre ; Petit_Voisin, Grand_Voisin : out Arbre);
 
         -- Coût pire cas = O(h)
-        --procedure Compte_Position( Cible : Arbre ; Nb_Petits, Nb_Grands : out Natural);
+        procedure Compte_Position( Cible : Arbre ; Nb_Petits, Nb_Grands : out Natural);
 
-end Arbre;
+        function Inserer(Noeud : Arbre ; Clef : Type_Clef) return Arbre;
+
+end AVL;
 
 
