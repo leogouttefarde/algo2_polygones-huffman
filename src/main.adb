@@ -2,27 +2,12 @@
 with Arbre;
 with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Text_IO; use Ada.Text_IO;
-with Ada.Containers.Doubly_Linked_Lists;
+with Parseur; use Parseur;
+with SVG; use SVG;
+with Common; use Common;
 
 
 procedure Main is
-
-        type Point;
-
-        type pPoint is access Point;
-
-        type Segment is array (Positive range 1 .. 2) of pPoint;
-
-        package Segment_Lists is new Ada.Containers.Doubly_Linked_Lists ( Segment );
-        --type Segment_List is Segment_Lists.List;
-        --type pSegments is access Segment_Lists.List;
-
-        type Point is record
-                X : Float;
-                Y : Float;
-                InSegs : Segment_Lists.List;
-                OutSegs : Segment_Lists.List;
-        end record;
 
         function Compare (X, Y: Segment) return Boolean is
         begin
@@ -32,36 +17,71 @@ procedure Main is
         package Arbre_Segments is new Arbre(Segment, Compare);
         use Arbre_Segments;
 
-        type ArrayPoints is array (Positive range <>) of Point;
+        function Generate_Segments (Points : in Point_Lists.List) return Segment_Lists.List is
+                Segments : Segment_Lists.List;
+                Point_Pos : Point_Lists.Cursor;
+                First, Prev, cPoint, Last : Point;
+                cSegment : Segment;
+        begin
+                Point_Pos := Point_Lists.First( Points );
+                First := Point_Lists.Element( Point_Pos );
+                Prev := First;
 
-        type pPoints is access ArrayPoints;
+                loop
+                        Point_Lists.Next( Point_Pos );
+                        exit when not Point_Lists.Has_Element( Point_Pos );
 
-        package Point_Lists is new Ada.Containers.Doubly_Linked_Lists ( Point );
-        --type Point_List is Point_Lists.List;
-        --type pPoint is access Point_Lists.List;
+                        cPoint := Point_Lists.Element( Point_Pos );
+
+                        cSegment(1) := Prev;
+                        cSegment(2) := cPoint;
+
+                        Segment_Lists.Append( Segments, cSegment );
+
+                        Prev := cPoint;
+                end loop;
+
+                Last := cPoint;
+
+
+                cSegment(1) := Last;
+                cSegment(2) := First;
+
+                Segment_Lists.Append( Segments, cSegment );
+
+                return Segments;
+        end;
 
 
         Points : Point_Lists.List;
         Segments : Segment_Lists.List;
         ABR : Noeud;
+        Point_Pos : Point_Lists.Cursor;
 begin
 
         if Argument_Count < 1 then
                 Put_Line(Standard_Error, "Usage : " & Command_Name & " polygon.in");
                 Set_Exit_Status(Failure);
-        --else
-                -- parse .in
-                -- Points := parse_in();
-                -- Segments := generate_segments(Points);
+        else
+                Lire_Polygone(Argument(1), Points);
 
-                -- beg svg
+                Segments := Generate_Segments(Points);
+
+                Svg_Header(100, 100);
+
                 -- print input as polygon
+                Svg_Polygon(Points);
 
                 -- algo + print new segs
-                -- for Point in Points:
-                --      algo1(Point, ABR)
+                Point_Pos := Point_Lists.First( Points );
 
-                -- end svg
+                while Point_Lists.Has_Element( Point_Pos ) loop
+                        --Point := Point_Lists.Element( Point_Pos );
+                        -- algo1(Point, ABR)
+                        Point_Lists.Next( Point_Pos );
+                end loop;
+
+                Svg_Footer;
         end if;
 
 end Main;

@@ -9,6 +9,8 @@ clean:
 	gnatclean $(EXEC)
 
 run: all
-	./$(EXEC) tests/1.in
+	./$(EXEC) tests/1.in > test.svg
+	inkscape test.svg
+	rm test.svg
 
 
