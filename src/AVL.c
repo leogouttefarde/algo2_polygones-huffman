@@ -12,7 +12,8 @@ struct node
     struct node *right;
     int height;
 };
- 
+
+// = Positive'Max(A, B);
 // A utility function to get maximum of two integers
 int max(int a, int b);
  

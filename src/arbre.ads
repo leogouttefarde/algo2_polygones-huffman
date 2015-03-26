@@ -3,7 +3,8 @@
 
 generic
         type Type_Clef is private;
-        with function Compare (X, Y: Type_Clef) return Boolean;
+        with function "<" (X, Y: Type_Clef) return Boolean;
+        with function ">" (X, Y: Type_Clef) return Boolean;
 
 package Arbre is
 
@@ -16,6 +17,7 @@ package Arbre is
                 Fils : Tableau_Fils;
                 Pere : Arbre;
                 Compte : Positive; -- nombre de noeuds dans le sous-arbre
+                Hauteur : Natural;
         end record;
 
 

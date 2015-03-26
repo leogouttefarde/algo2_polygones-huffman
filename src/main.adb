@@ -9,12 +9,17 @@ with Common; use Common;
 
 procedure Main is
 
-        function Compare (X, Y: Segment) return Boolean is
+        function "<" (X, Y: Segment) return Boolean is
         begin
                 return False;
         end;
 
-        package Arbre_Segments is new Arbre(Segment, Compare);
+        function ">" (X, Y: Segment) return Boolean is
+        begin
+                return False;
+        end;
+
+        package Arbre_Segments is new Arbre(Segment, ">", "<");
         use Arbre_Segments;
 
         function Generate_Segments (Points : in Point_Lists.List) return Segment_Lists.List is
