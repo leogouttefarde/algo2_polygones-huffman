@@ -9,58 +9,14 @@ with Common; use Common;
 
 procedure Main is
 
-        function "<" (X, Y: Segment) return Boolean is
-        begin
-                return False;
-        end;
-
-        function ">" (X, Y: Segment) return Boolean is
-        begin
-                return False;
-        end;
-
-        package Arbre_Segments is new Arbre(Segment, ">", "<");
+        package Arbre_Segments is new Arbre(Segment, "<", ">");
         use Arbre_Segments;
 
-        function Generate_Segments (Points : in Point_Lists.List) return Segment_Lists.List is
-                Segments : Segment_Lists.List;
-                Point_Pos : Point_Lists.Cursor;
-                First, Prev, cPoint, Last : Point;
-                cSegment : Segment;
-        begin
-                Point_Pos := Point_Lists.First( Points );
-                First := Point_Lists.Element( Point_Pos );
-                Prev := First;
-
-                loop
-                        Point_Lists.Next( Point_Pos );
-                        exit when not Point_Lists.Has_Element( Point_Pos );
-
-                        cPoint := Point_Lists.Element( Point_Pos );
-
-                        cSegment(1) := Prev;
-                        cSegment(2) := cPoint;
-
-                        Segment_Lists.Append( Segments, cSegment );
-
-                        Prev := cPoint;
-                end loop;
-
-                Last := cPoint;
-
-
-                cSegment(1) := Last;
-                cSegment(2) := First;
-
-                Segment_Lists.Append( Segments, cSegment );
-
-                return Segments;
-        end;
-
+        package Point_Sorting is new Point_Lists.Generic_Sorting( "<" );
 
         Points : Point_Lists.List;
         Segments : Segment_Lists.List;
-        ABR : Noeud;
+        AVL : Noeud;
         Point_Pos : Point_Lists.Cursor;
         cPoint : Point;
 begin
@@ -77,6 +33,8 @@ begin
 
                 Svg_Polygon(Points);
 
+                Point_Sorting.Sort(Points);
+
                 Point_Pos := Point_Lists.First( Points );
 
                 while Point_Lists.Has_Element( Point_Pos ) loop
@@ -84,7 +42,7 @@ begin
                         cPoint := Point_Lists.Element( Point_Pos );
 
                         -- print new segs
-                        --Decomposition(Point, ABR);
+                        --Decomposition(Point, AVL);
 
                         Point_Lists.Next( Point_Pos );
 

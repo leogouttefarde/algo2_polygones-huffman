@@ -9,6 +9,8 @@ package Common is
                 Y : Float;
         end record;
 
+        function "=" (P1, P2 : Point) return Boolean;
+
         type Segment is array (Positive range 1 .. 2) of Point;
 
         package Segment_Lists is new Ada.Containers.Doubly_Linked_Lists ( Segment );
@@ -21,7 +23,18 @@ package Common is
                 OutSegs : Segment_Lists.List;
         end record;
 
-        package Point_Lists is new Ada.Containers.Doubly_Linked_Lists ( Point );
+
+
+        function "<" (S1, S2 : Segment) return Boolean;
+        function ">" (S1, S2 : Segment) return Boolean;
+
+        function "<" (P1, P2 : Point) return Boolean;
+        function ">" (P1, P2 : Point) return Boolean;
+
+
+        package Point_Lists is new Ada.Containers.Doubly_Linked_Lists ( Point, "=" );
+
+        function Generate_Segments (Points : in Point_Lists.List) return Segment_Lists.List;
 
 end Common;
 
