@@ -29,6 +29,8 @@ package AVL is
 
         function Inserer(Noeud : Arbre ; Clef : Type_Clef) return Arbre;
 
+        function Supprimer_Noeud(Racine : Arbre ; Clef : Type_Clef) return Arbre;
+
 end AVL;
 
 

@@ -112,16 +112,110 @@ package body Decompose is
                 end loop;
         end;
 
-        -- print new segs
+        function Intersect(X : Float ; cSegment : Segment) return SimplePoint is
+                Inter : SimplePoint;
+                dx, dy : Float;
+                X1, X2, Y1, Y2 : Float;
+                A, B : Float;
+        begin
+                Inter.X := X;
+
+                if cSegment(1).X < cSegment(2).X then
+                        X1 := cSegment(1).X;
+                        Y1 := cSegment(1).Y;
+
+                        X2 := cSegment(2).X;
+                        Y2 := cSegment(2).Y;
+                else
+                        X1 := cSegment(2).X;
+                        Y1 := cSegment(2).Y;
+
+                        X2 := cSegment(1).X;
+                        Y2 := cSegment(1).Y;
+                end if;
+
+                dy := Y2 - Y1;
+                dx := X2 - X1;
+
+                A := dy / dx;
+                B := Y1 - A * X1;
+
+                Inter.Y := A * X + B;
+
+                -- old
+                -- dy := cSegment(2).Y - cSegment(1).Y;
+                -- dx := cSegment(2).X - cSegment(1).X;
+                --Inter.Y := Sqrt( dx**2 + dy**2 );
+
+                return Inter;
+        end;
+
+        procedure Reconnect(sPoint : SimplePoint ; Down, Up : Arbre_Segments.Arbre) is
+                downPoint, upPoint : SimplePoint;
+        begin
+                downPoint := Intersect(sPoint.X, Down.C);
+                upPoint := Intersect(sPoint.X, Up.C);
+
+                Svg_Line(sPoint, upPoint, Green);
+                Svg_Line(sPoint, downPoint, Green);
+        end;
+
         procedure Decomposition(cPoint : Point ; cAVL : in out Arbre_Segments.Arbre) is
                 R : Boolean := False;
                 cSegment : Segment;
                 sPoint : SimplePoint := cPoint.Pt;
+                pNoeud : Arbre_Segments.Arbre;
+                V_petit, V_Grand : Arbre_Segments.Arbre;
+                C_petits, C_Grands : Natural;
+                Segment_Pos : Segment_Lists.Cursor;
         begin
                 if Segment_Lists.Length(cPoint.OutSegs) >= 2 then
                         R := True;
                         cSegment := ( sPoint, sPoint );
+                        pNoeud := Arbre_Segments.Inserer(cAVL, cSegment);
+
+                        Noeuds_Voisins(pNoeud, V_petit, V_Grand);
+                        Compte_Position(pNoeud, C_petits, C_Grands);
+
+                        cAVL := Arbre_Segments.Supprimer_Noeud(pNoeud, cSegment);
+                end if;
+
+
+                Segment_Pos := Segment_Lists.First( cPoint.InSegs );
+                while Segment_Lists.Has_Element( Segment_Pos ) loop
+
+                        cSegment := Segment_Lists.Element( Segment_Pos );
+                        cAVL := Arbre_Segments.Supprimer_Noeud(cAVL, cSegment);
+
+                        Segment_Lists.Next( Segment_Pos );
+
+                end loop;
+
+                Segment_Pos := Segment_Lists.First( cPoint.OutSegs );
+                while Segment_Lists.Has_Element( Segment_Pos ) loop
+
+                        cSegment := Segment_Lists.Element( Segment_Pos );
                         cAVL := Arbre_Segments.Inserer(cAVL, cSegment);
+
+                        Segment_Lists.Next( Segment_Pos );
+
+                end loop;
+
+
+                if Segment_Lists.Length(cPoint.InSegs) >= 2 then
+                        R := True;
+                        cSegment := ( sPoint, sPoint );
+                        pNoeud := Arbre_Segments.Inserer(cAVL, cSegment);
+
+                        Noeuds_Voisins(pNoeud, V_petit, V_Grand);
+                        Compte_Position(pNoeud, C_petits, C_Grands);
+
+                        cAVL := Arbre_Segments.Supprimer_Noeud(pNoeud, cSegment);
+                end if;
+
+
+                if R and ((C_petits mod 2) = 1 or (C_Grands mod 2) = 1) then
+                        Reconnect(sPoint, V_petit, V_Grand);
                 end if;
         end;
 

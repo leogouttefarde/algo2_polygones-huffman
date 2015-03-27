@@ -3,14 +3,46 @@
 
 package body AVL is
 
+        function Max_Noeud(Noeud : Arbre) return Arbre is
+                cNoeud : Arbre := Noeud;
+        begin
+                while cNoeud.Fils(Droite) /= null loop
+                        cNoeud := cNoeud.Fils(Droite);
+                end loop;
+
+                return cNoeud;
+        end;
+
+        function Min_Noeud(Noeud : Arbre) return Arbre is
+                cNoeud : Arbre := Noeud;
+        begin
+                while cNoeud.Fils(Gauche) /= null loop
+                        cNoeud := cNoeud.Fils(Gauche);
+                end loop;
+
+                return cNoeud;
+        end;
+
         procedure Noeuds_Voisins(Cible : Arbre ; Petit_Voisin, Grand_Voisin : out Arbre) is
         begin
-                NULL;
+                Petit_Voisin := Max_Noeud( Cible.Fils(Gauche) );
+                Grand_Voisin := Min_Noeud( Cible.Fils(Droite) );
+        end;
+
+        function Compte( Cible : Arbre ) return Natural is
+                Res : Natural := 0;
+        begin
+                if Cible /= null then
+                        Res := 1 + Compte( Cible.Fils(Gauche) ) + Compte( Cible.Fils(Droite) );
+                end if;
+
+                return Res;
         end;
 
         procedure Compte_Position( Cible : Arbre ; Nb_Petits, Nb_Grands : out Natural) is
         begin
-                NULL;
+                Nb_Petits := Compte( Cible.Fils(Gauche) );
+                Nb_Grands := Compte( Cible.Fils(Droite) );
         end;
 
 
@@ -103,16 +135,6 @@ package body AVL is
 
 
                 return Noeud;
-        end;
-
-        function Min_Noeud(Noeud : Arbre) return Arbre is
-                cNoeud : Arbre := Noeud;
-        begin
-                while cNoeud.Fils(Gauche) /= null loop
-                        cNoeud := cNoeud.Fils(Gauche);
-                end loop;
-
-                return cNoeud;
         end;
 
         function Supprimer_Noeud(Racine : Arbre ; Clef : Type_Clef) return Arbre is

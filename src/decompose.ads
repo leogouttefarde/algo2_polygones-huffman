@@ -3,6 +3,10 @@ with Common; use Common; use Common.Arbre_Segments;
 with AVL;
 with Ada.Containers;
 use Ada.Containers;
+with Ada.Numerics.Elementary_Functions;
+use Ada.Numerics.Elementary_Functions;
+with SVG;
+use SVG;
 
 
 package Decompose is
