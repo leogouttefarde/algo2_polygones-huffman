@@ -6,9 +6,11 @@ package body AVL is
         function Max_Noeud(Noeud : Arbre) return Arbre is
                 cNoeud : Arbre := Noeud;
         begin
-                while cNoeud.Fils(Droite) /= null loop
-                        cNoeud := cNoeud.Fils(Droite);
-                end loop;
+                if cNoeud /= null then
+                        while cNoeud.Fils(Droite) /= null loop
+                                cNoeud := cNoeud.Fils(Droite);
+                        end loop;
+                end if;
 
                 return cNoeud;
         end;
@@ -16,9 +18,11 @@ package body AVL is
         function Min_Noeud(Noeud : Arbre) return Arbre is
                 cNoeud : Arbre := Noeud;
         begin
-                while cNoeud.Fils(Gauche) /= null loop
-                        cNoeud := cNoeud.Fils(Gauche);
-                end loop;
+                if cNoeud /= null then
+                        while cNoeud.Fils(Gauche) /= null loop
+                                cNoeud := cNoeud.Fils(Gauche);
+                        end loop;
+                end if;
 
                 return cNoeud;
         end;

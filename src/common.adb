@@ -6,7 +6,8 @@ package body Common is
 
         function "<" (S1, S2 : Segment) return Boolean is
         begin
-                if S1(1).Y < S2(1).Y and S1(2).Y < S2(2).Y then
+                if (S1(1).Y < S2(1).Y and S1(2).Y <= S2(2).Y) or
+                        (S1(1).Y <= S2(1).Y and S1(2).Y < S2(2).Y) then
                         return True;
                 end if;
 
@@ -15,7 +16,8 @@ package body Common is
 
         function ">" (S1, S2 : Segment) return Boolean is
         begin
-                if S1(1).Y > S2(1).Y and S1(2).Y > S2(2).Y then
+                if (S1(1).Y > S2(1).Y and S1(2).Y >= S2(2).Y) or
+                        (S1(1).Y >= S2(1).Y and S1(2).Y > S2(2).Y) then
                         return True;
                 end if;
 

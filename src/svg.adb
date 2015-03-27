@@ -22,7 +22,7 @@ package body SVG is
                         when Blue => Put("rgb(0,0,255)");
                         when Black => Put("rgb(0,0,0)");
                 end case;
-                Put_Line(";stroke-width:0.2""/>");
+                Put_Line(";stroke-width:0.05""/>");
         end Svg_Line;
 
         procedure Svg_Header(Width, Height : Natural) is
