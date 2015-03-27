@@ -4,6 +4,21 @@ use Ada.Text_IO;
 
 package body Decompose is
 
+        procedure Affiche_Segment(cSegment : Segment) is
+        begin
+                Put_Line( "S1 = ("& Float'Image(cSegment(1).X)
+                        & ", "& Float'Image(cSegment(1).Y)
+                        & ")    S2 = ("& Float'Image(cSegment(2).X)
+                        & ", "& Float'Image(cSegment(2).Y)
+                        & ")");
+                -- Put_Line( "seg(1).X = "& Float'Image(cSegment(1).X)
+                --         & "    seg(1).Y = "& Float'Image(cSegment(1).Y)
+                --         & "    seg(2).X = "& Float'Image(cSegment(2).X)
+                --         & "    seg(2).Y = "& Float'Image(cSegment(2).Y));
+        end;
+
+        procedure Affichage_AVL is new Arbre_Segments.Affichage ( Affiche_Segment );
+
         -- requires Prev(2) = cPoint = Next(1)
         procedure Finish_Point (cPoint : in out Point ; Prev, Next : Segment) is
         begin
@@ -119,6 +134,7 @@ package body Decompose is
                 Segment_Pos : Segment_Lists.Cursor;
                 cSegment : Segment;
                 D : Float := cPoint.Pt.X;
+                pNoeud : Arbre_Segments.Arbre;
         begin
                 Segment_Pos := Segment_Lists.First( Segments );
 
@@ -127,12 +143,15 @@ package body Decompose is
                         cSegment := Segment_Lists.Element( Segment_Pos );
 
                         if cSegment(1).X <= D and D <= cSegment(2).X then
-                                cAVL := Arbre_Segments.Inserer(cAVL, cSegment);
+                                pNoeud := Arbre_Segments.Inserer(cAVL, cSegment);
                         end if;
 
                         Segment_Lists.Next( Segment_Pos );
 
                 end loop;
+-- Affichage_AVL(cAVL);
+-- new_line;
+-- new_line;
         end;
 
         function Intersect(X : Float ; cSegment : Segment) return SimplePoint is
@@ -209,6 +228,14 @@ package body Decompose is
                 C_petits, C_Grands : Natural;
                 Segment_Pos : Segment_Lists.Cursor;
         begin
+        -- if cAVL = null then
+        -- Put_Line("WTF");
+        -- end if;
+-- new_line;
+-- new_line;
+-- Affichage_AVL(cAVL);
+-- new_line;
+-- new_line;
                 -- Put_Line("Length(OutSegs) = "&Count_Type'image(Segment_Lists.Length(cPoint.OutSegs)));
                 if Segment_Lists.Length(cPoint.OutSegs) >= 2 then
                         -- Put_Line("check beg R");
@@ -218,8 +245,28 @@ package body Decompose is
 
                         Noeuds_Voisins(pNoeud, V_petit, V_Grand);
                         Compte_Position(pNoeud, C_petits, C_Grands);
+-- new_line;
 
-                        cAVL := Arbre_Segments.Supprimer_Noeud(pNoeud, cSegment);
+-- Affichage_AVL(cAVL);
+-- new_line;
+-- new_line;
+
+--                         if V_petit /= null then
+--                         Put_Line("V_petit");
+--                                 Affiche_Segment(V_petit.C);
+--                         end if;
+--                         Put_Line("C_petits="&Natural'image(C_petits));
+--                         Put_Line("C_Grands="&Natural'image(C_Grands));
+
+--                         Put_Line("cSegment");
+--                                 Affiche_Segment(cSegment);
+
+--                         if V_Grand /= null then
+--                         Put_Line("V_Grand");
+--                                 Affiche_Segment(V_Grand.C);
+--                         end if;
+
+                        cAVL := Arbre_Segments.Supprimer_Noeud(cAVL, cSegment);
                 end if;
 
 
@@ -239,7 +286,7 @@ package body Decompose is
 
                         -- Put_Line("Add");
                         cSegment := Segment_Lists.Element( Segment_Pos );
-                        cAVL := Arbre_Segments.Inserer(cAVL, cSegment);
+                        pNoeud := Arbre_Segments.Inserer(cAVL, cSegment);
 
                         Segment_Lists.Next( Segment_Pos );
 
@@ -254,9 +301,34 @@ package body Decompose is
                         pNoeud := Arbre_Segments.Inserer(cAVL, cSegment);
 
                         Noeuds_Voisins(pNoeud, V_petit, V_Grand);
+--                         new_line;
+--                         new_line;
+-- new_line;
+
+-- Affichage_AVL(cAVL);
+-- new_line;
+-- new_line;
+
+--                         if V_petit /= null then
+--                         Put_Line("V_petit");
+--                                 Affiche_Segment(V_petit.C);
+--                         end if;
+--                         Put_Line("C_petits="&Natural'image(C_petits));
+--                         Put_Line("C_Grands="&Natural'image(C_Grands));
+
+--                         Put_Line("cSegment");
+--                                 Affiche_Segment(cSegment);
+
+--                         if V_Grand /= null then
+--                         Put_Line("V_Grand");
+--                                 Affiche_Segment(V_Grand.C);
+--                         end if;
+
+--                         new_line;
+
                         Compte_Position(pNoeud, C_petits, C_Grands);
 
-                        cAVL := Arbre_Segments.Supprimer_Noeud(pNoeud, cSegment);
+                        cAVL := Arbre_Segments.Supprimer_Noeud(cAVL, cSegment);
                 end if;
 
                 -- if cAVL = null then

@@ -34,6 +34,8 @@ begin
 
 
                 Point_Pos := Point_Lists.First( Points );
+                Point_Lists.Next( Point_Pos );
+
                 cPoint := Point_Lists.Element( Point_Pos );
 
                 -- On remplit l'arbre avec les segments en intersection

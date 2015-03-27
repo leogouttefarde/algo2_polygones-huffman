@@ -27,9 +27,13 @@ package AVL is
         -- Coût pire cas = O(h)
         procedure Compte_Position( Cible : Arbre ; Nb_Petits, Nb_Grands : out Natural);
 
-        function Inserer(Noeud : Arbre ; Clef : Type_Clef) return Arbre;
+        function Inserer(Noeud : in out Arbre ; Clef : Type_Clef) return Arbre;
 
         function Supprimer_Noeud(Racine : Arbre ; Clef : Type_Clef) return Arbre;
+
+        generic
+                with procedure Affiche(Clef : Type_Clef);
+        procedure Affichage(Racine : Arbre);
 
 end AVL;
 
