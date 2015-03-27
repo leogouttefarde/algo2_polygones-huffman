@@ -23,6 +23,7 @@ package body Parseur is
 
                 Count : Natural := 0;
                 cPoint : Point;
+                sPoint : SimplePoint;
         begin
                 Open( File => File, Mode => In_File, Name => Chemin );
 
@@ -35,8 +36,9 @@ package body Parseur is
 
                         Elems := ParseLine(File);
 
-                        cPoint.X := Float'Value( Slice(Elems, 1) );
-                        cPoint.Y := Float'Value( Slice(Elems, 2) );
+                        sPoint.X := Float'Value( Slice(Elems, 1) );
+                        sPoint.Y := Float'Value( Slice(Elems, 2) );
+                        cPoint.Pt := sPoint;
 
                         Point_Lists.Append( Points, cPoint );
 

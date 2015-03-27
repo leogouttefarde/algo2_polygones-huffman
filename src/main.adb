@@ -25,8 +25,9 @@ begin
                 Lire_Polygone(Argument(1), Points);
 
                 Segments := Generate_Segments(Points);
+                Finish_Points(Points, Segments);
 
-                Svg_Header(100, 100);
+                Svg_Header(10, 10);
                 Svg_Polygon(Points);
 
                 Point_Sorting.Sort(Points);
@@ -40,7 +41,7 @@ begin
                 cPoint := Point_Lists.Element( Point_Pos );
 
                 -- On remplit l'arbre avec les segments en intersection
-                Intersection(Segments, cPoint.X, cAVL);
+                Intersection(Segments, cPoint, cAVL);
 
 
                 while Point_Lists.Has_Element( Point_Pos ) loop

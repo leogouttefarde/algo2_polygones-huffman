@@ -5,7 +5,7 @@ package body SVG is
 
         Display_Width, Display_Height : Float;
 
-        procedure Svg_Line(P1, P2 : Point ; C : Color) is
+        procedure Svg_Line(P1, P2 : SimplePoint ; C : Color) is
         begin
                 Put("<line x1=""");
                 Put(P1.X);
@@ -52,7 +52,7 @@ package body SVG is
                 while Point_Lists.Has_Element( Point_Pos ) loop
                         cPoint := Point_Lists.Element( Point_Pos );
 
-                        Put(Float'Image(cPoint.X) & "," & Float'Image(cPoint.Y) & " ");
+                        Put(Float'Image(cPoint.Pt.X) & "," & Float'Image(cPoint.Pt.Y) & " ");
 
                         Point_Lists.Next( Point_Pos );
                 end loop;
