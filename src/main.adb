@@ -49,7 +49,7 @@ begin
 
 
                 -- Libération AVL
-                Arbre_Segments.Liberer(cAVL);
+                --Arbre_Segments.Liberer(cAVL);
         end if;
 
 end Main;

@@ -121,66 +121,34 @@ package body Decompose is
                 return Segments;
         end;
 
-        function Intersection(X : Float ; cSegment : Segment) return SimplePoint is
-                Inter : SimplePoint;
-                dx, dy : Float;
-                X1, X2, Y1, Y2 : Float;
-                A, B : Float;
-        begin
-                Inter.X := X;
-
-                if cSegment(1).X < cSegment(2).X then
-                        X1 := cSegment(1).X;
-                        Y1 := cSegment(1).Y;
-
-                        X2 := cSegment(2).X;
-                        Y2 := cSegment(2).Y;
-                else
-                        X1 := cSegment(2).X;
-                        Y1 := cSegment(2).Y;
-
-                        X2 := cSegment(1).X;
-                        Y2 := cSegment(1).Y;
-                end if;
-
-                dy := Y2 - Y1;
-                dx := X2 - X1;
-
-                A := dy / dx;
-                B := Y1 - A * X1;
-
-                Inter.Y := A * X + B;
-
-                -- debug
-                -- Put_Line("X1 = " & Float'Image(X1));
-                -- Put_Line("X2 = " & Float'Image(X2));
-                -- Put_Line("Y1 = " & Float'Image(Y1));
-                -- Put_Line("Y2 = " & Float'Image(Y2));
-                -- Put_Line("dx = " & Float'Image(dx));
-                -- Put_Line("dy = " & Float'Image(dy));
-                -- Put_Line("A = " & Float'Image(A));
-                -- Put_Line("B = " & Float'Image(B));
-                -- Put_Line("Y = " & Float'Image(Inter.Y));
-
-                return Inter;
-        end;
-
         procedure Reconnect(sPoint : SimplePoint ; pUp, pDown : Arbre_Segments.Arbre) is
                 UpPoint, DownPoint : SimplePoint;
-                D : Float := sPoint.X;
         begin
                 if pUp /= null then
                         -- Put_Line("UP");
-                        UpPoint := Intersection(D, pUp.C);
+                        UpPoint := Intersection(sPoint, pUp.C);
                         Svg_Line(sPoint, UpPoint, Green);
                 end if;
 
                 if pDown /= null then
                         -- Put_Line("DOWN");
-                        DownPoint := Intersection(D, pDown.C);
+                        DownPoint := Intersection(sPoint, pDown.C);
                         Svg_Line(sPoint, DownPoint, Green);
                 end if;
         end;
+
+        -- procedure UpdateAVL(cAVL, nAVL : in out Arbre_Segments.Arbre) is
+        --         pNoeud : Arbre_Segments.Arbre;
+        -- begin
+        --         if cAVL /= null then
+        --                 pNoeud := Arbre_Segments.Inserer(nAVL, cAVL.C);
+
+        --                 UpdateAVL(cAVL.Fils(Gauche), nAVL);
+        --                 UpdateAVL(cAVL.Fils(Droite), nAVL);
+        --         end if;
+        -- end;
+
+
 
         procedure Decomposition(cPoint : Point ; cAVL : in out Arbre_Segments.Arbre) is
                 R : Boolean := False;
@@ -190,7 +158,17 @@ package body Decompose is
                 V_petit, V_Grand : Arbre_Segments.Arbre;
                 C_petits, C_Grands : Natural;
                 Segment_Pos : Segment_Lists.Cursor;
+
+                -- nAVL : Arbre_Segments.Arbre;
         begin
+
+                -- Common.D_Pos := sPoint.X;
+
+                -- nAVL := null;
+                -- UpdateAVL(cAVL, nAVL);
+                -- cAVL := nAVL;
+                -- nAVL := null;
+
         -- if cAVL = null then
         -- Put_Line("WTF");
         -- end if;

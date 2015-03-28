@@ -5,6 +5,8 @@ with Ada.Containers.Doubly_Linked_Lists;
 
 package Common is
 
+        D_Pos : Float;
+
         type SimplePoint is record
                 X : Float;
                 Y : Float;
@@ -26,6 +28,7 @@ package Common is
 
 
 
+        -- function "<" (S1, S2 : Segment) return Boolean;
         function "<" (iS1, iS2 : Segment) return Boolean;
         function ">" (S1, S2 : Segment) return Boolean;
 
@@ -38,6 +41,9 @@ package Common is
 
 
         package Point_Lists is new Ada.Containers.Doubly_Linked_Lists ( Point, "=" );
+
+
+        function Intersection(sPoint : SimplePoint ; cSegment : Segment) return SimplePoint;
 
 end Common;
 

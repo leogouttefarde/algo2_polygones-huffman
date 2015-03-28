@@ -99,4 +99,6 @@ begin
 
 
         Affichage_AVL(cAVL);
+
+        Arbre_Entiers.Liberer(cAVL);
 end;
