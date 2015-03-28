@@ -351,6 +351,15 @@ package body AVL is
                 return oRacine;
         end Supprimer_Noeud;
 
+        procedure Liberer(Racine : in out Arbre) is
+        begin
+                if Racine /= null then
+                        Liberer(Racine.Fils(Gauche));
+                        Liberer(Racine.Fils(Droite));
+                        Liberer_Noeud(Racine);
+                end if;
+        end;
+
         procedure Affichage(Racine : Arbre) is
         begin
                 if Racine /= null then

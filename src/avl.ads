@@ -35,6 +35,9 @@ package AVL is
 
         function Supprimer_Noeud(Racine : Arbre ; Clef : Type_Clef) return Arbre;
 
+        procedure Liberer(Racine : in out Arbre);
+
+
         generic
                 with procedure Affiche(Clef : Type_Clef);
         procedure Affichage(Racine : Arbre);

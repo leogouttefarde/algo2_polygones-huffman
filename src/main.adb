@@ -48,11 +48,8 @@ begin
                 Svg_Footer;
 
 
-                -- Libérations si pas finies correctement
-                -- (déjà faites normalement)
-                while cAVL /= null loop
-                        cAVL := Arbre_Segments.Supprimer_Noeud(cAVL, cAVL.C);
-                end loop;
+                -- Libération AVL
+                Arbre_Segments.Liberer(cAVL);
         end if;
 
 end Main;
