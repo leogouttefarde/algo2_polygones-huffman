@@ -47,6 +47,8 @@ package Common is
 
         procedure Affiche_Segment(cSegment : Segment);
 
+        function IsPoint (cSegment : Segment) return Boolean;
+
 end Common;
 
 

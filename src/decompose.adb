@@ -127,13 +127,19 @@ package body Decompose is
                 if pUp /= null then
                         -- Put_Line("UP");
                         UpPoint := Intersection(sPoint, pUp.C);
-                        Svg_Line(sPoint, UpPoint, Green);
+
+                        if not IsPoint((sPoint, UpPoint, sPoint)) then
+                                Svg_Line(sPoint, UpPoint, Green);
+                        end if;
                 end if;
 
                 if pDown /= null then
                         -- Put_Line("DOWN");
                         DownPoint := Intersection(sPoint, pDown.C);
-                        Svg_Line(sPoint, DownPoint, Green);
+
+                        if not IsPoint((sPoint, DownPoint, sPoint)) then
+                                Svg_Line(sPoint, DownPoint, Green);
+                        end if;
                 end if;
         end;
 
