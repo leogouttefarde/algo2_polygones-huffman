@@ -15,7 +15,7 @@ package Decompose is
 
         function Generate_Segments (Points : in Point_Lists.List) return Segment_Lists.List;
 
-        procedure Intersection(Segments : Segment_Lists.List ; cPoint : Point ; cAVL : in out Arbre_Segments.Arbre);
+        -- procedure Intersection(Segments : Segment_Lists.List ; cPoint : Point ; cAVL : in out Arbre_Segments.Arbre);
 
         procedure Decomposition(cPoint : Point ; cAVL : in out Arbre_Segments.Arbre);
 

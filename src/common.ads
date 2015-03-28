@@ -26,7 +26,7 @@ package Common is
 
 
 
-        function "<" (S1, S2 : Segment) return Boolean;
+        function "<" (iS1, iS2 : Segment) return Boolean;
         function ">" (S1, S2 : Segment) return Boolean;
 
         package Arbre_Segments is new AVL(Segment, "<", ">");

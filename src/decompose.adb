@@ -6,7 +6,7 @@ package body Decompose is
 
         procedure Affiche_Segment(cSegment : Segment) is
         begin
-                Put_Line( Integer'Image(Integer(cSegment(3).X))
+                Put_Line( Float'Image(cSegment(3).X)
                         & "  S1 = ("& Float'Image(cSegment(1).X)
                         & ", "& Float'Image(cSegment(1).Y)
                         & ")    S2 = ("& Float'Image(cSegment(2).X)
@@ -99,7 +99,7 @@ package body Decompose is
                 First, Prev, Last : SimplePoint;
                 sPoint : SimplePoint;
                 cSegment : Segment;
-                i : Float := 1.0;
+                i : Float := 1.01;
         begin
                 Point_Pos := Point_Lists.First( Points );
                 cPoint := Point_Lists.Element( Point_Pos );
@@ -137,29 +137,29 @@ package body Decompose is
                 return Segments;
         end;
 
-        procedure Intersection(Segments : Segment_Lists.List ; cPoint : Point ; cAVL : in out Arbre_Segments.Arbre) is
-                Segment_Pos : Segment_Lists.Cursor;
-                cSegment : Segment;
-                D : Float := cPoint.Pt.X;
-                pNoeud : Arbre_Segments.Arbre;
-        begin
-                Segment_Pos := Segment_Lists.First( Segments );
+--         procedure Intersection(Segments : Segment_Lists.List ; cPoint : Point ; cAVL : in out Arbre_Segments.Arbre) is
+--                 Segment_Pos : Segment_Lists.Cursor;
+--                 cSegment : Segment;
+--                 D : Float := cPoint.Pt.X;
+--                 pNoeud : Arbre_Segments.Arbre;
+--         begin
+--                 Segment_Pos := Segment_Lists.First( Segments );
 
-                while Segment_Lists.Has_Element( Segment_Pos ) loop
+--                 while Segment_Lists.Has_Element( Segment_Pos ) loop
 
-                        cSegment := Segment_Lists.Element( Segment_Pos );
+--                         cSegment := Segment_Lists.Element( Segment_Pos );
 
-                        if cSegment(1).X <= D and D <= cSegment(2).X then
-                                pNoeud := Arbre_Segments.Inserer(cAVL, cSegment);
-                        end if;
+--                         if cSegment(1).X <= D and D <= cSegment(2).X then
+--                                 pNoeud := Arbre_Segments.Inserer(cAVL, cSegment);
+--                         end if;
 
-                        Segment_Lists.Next( Segment_Pos );
+--                         Segment_Lists.Next( Segment_Pos );
 
-                end loop;
--- Affichage_AVL(cAVL);
--- new_line;
--- new_line;
-        end;
+--                 end loop;
+-- -- Affichage_AVL(cAVL);
+-- -- new_line;
+-- -- new_line;
+--         end;
 
         function Intersect(X : Float ; cSegment : Segment) return SimplePoint is
                 Inter : SimplePoint;
@@ -248,7 +248,17 @@ package body Decompose is
                         -- Put_Line("check beg R");
                         R := True;
                         cSegment := ( sPoint, sPoint, sPoint );
+-- new_line;
+-- Put_Line("yy");
+-- Affichage_AVL(cAVL);
+-- new_line;
+
                         pNoeud := Arbre_Segments.Inserer(cAVL, cSegment);
+
+-- new_line;
+-- Put_Line("yy");
+-- Affichage_AVL(cAVL);
+-- new_line;
 
                         Noeuds_Voisins(pNoeud, V_petit, V_Grand);
                         Compte_Position(pNoeud, C_petits, C_Grands);
@@ -274,6 +284,11 @@ package body Decompose is
 --                         end if;
 
                         cAVL := Arbre_Segments.Supprimer_Noeud(cAVL, cSegment);
+-- new_line;
+-- Put_Line("yy");
+-- Affichage_AVL(cAVL);
+-- new_line;
+
                 end if;
 
 
@@ -299,6 +314,9 @@ package body Decompose is
 
                 end loop;
 
+-- new_line;
+-- Affichage_AVL(cAVL);
+-- new_line;
 
                 -- Put_Line("Length(InSegs) = "&Count_Type'image(Segment_Lists.Length(cPoint.InSegs)));
                 if Segment_Lists.Length(cPoint.InSegs) >= 2 then

@@ -38,8 +38,8 @@ begin
 
                 cPoint := Point_Lists.Element( Point_Pos );
 
-                -- On remplit l'arbre avec les segments en intersection
-                Intersection(Segments, cPoint, cAVL);
+                --Non. -- On remplit l'arbre avec les segments en intersection
+                --Intersection(Segments, cPoint, cAVL);
 
 
                 while Point_Lists.Has_Element( Point_Pos ) loop
