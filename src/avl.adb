@@ -48,6 +48,7 @@ package body AVL is
                 end if;
         end;
 
+        -- requires Cible /= null
         function GrandVoisin(Cible : Arbre) return Arbre is
                 Pere : Arbre := Cible.Pere;
         begin
@@ -72,6 +73,9 @@ package body AVL is
                 if Cible /= null then
                         Petit_Voisin := PetitVoisin( Cible );
                         Grand_Voisin := GrandVoisin( Cible );
+                else
+                        Petit_Voisin := null;
+                        Grand_Voisin := null;
                 end if;
         end;
 
@@ -79,7 +83,11 @@ package body AVL is
                 Res : Natural := 0;
         begin
                 if Cible /= null then
-                        Res := 1 + Compte( Cible.Fils(Gauche) ) + Compte( Cible.Fils(Droite) );
+                        -- Debug bruteforce calc pas O(h)
+                         Res := 1 + Compte( Cible.Fils(Gauche) ) + Compte( Cible.Fils(Droite) );
+
+                        -- O(h) optim calc (fonctionnel quand comparaisons type ok)
+                        --Res := Cible.Compte;
                 end if;
 
                 return Res;
@@ -154,6 +162,7 @@ package body AVL is
         function Rotation_Droite(pNoeud : Arbre) return Arbre is
                 Noeud : Arbre := pNoeud.Fils(Gauche);
                 Noeud2 : Arbre := Noeud.Fils(Droite);
+                Count : Positive := pNoeud.Compte;
         begin
                 Noeud.Fils(Droite) := pNoeud;
                 pNoeud.Fils(Gauche) := Noeud2;
@@ -163,7 +172,15 @@ package body AVL is
 
                 if Noeud2 /= null then
                         Noeud2.Pere := pNoeud;
+                        pNoeud.Compte := pNoeud.Compte + Noeud2.Compte;
                 end if;
+
+
+                if pNoeud.Compte > Noeud.Compte then
+                        pNoeud.Compte := pNoeud.Compte - Noeud.Compte;
+                end if;
+
+                Noeud.Compte := Count;
 
                 pNoeud.Hauteur := Natural'Max( Hauteur(pNoeud.Fils(Gauche)), Hauteur(pNoeud.Fils(Droite))+1 );
                 Noeud.Hauteur := Natural'Max( Hauteur(Noeud.Fils(Gauche)), Hauteur(Noeud.Fils(Droite))+1 );
@@ -174,6 +191,7 @@ package body AVL is
         function Rotation_Gauche(A : Arbre) return Arbre is
                 B : Arbre := A.Fils(Droite);
                 C : Arbre := B.Fils(Gauche);
+                Count : Positive := A.Compte;
         begin
                 B.Fils(Gauche) := A;
                 A.Fils(Droite) := C;
@@ -183,7 +201,15 @@ package body AVL is
 
                 if C /= null then
                         C.Pere := A;
+                        A.Compte := A.Compte + C.Compte;
                 end if;
+
+
+                if A.Compte > B.Compte then
+                        A.Compte := A.Compte - B.Compte;
+                end if;
+
+                B.Compte := Count;
 
                 A.Hauteur := Natural'Max( Hauteur(A.Fils(Gauche)), Hauteur(A.Fils(Droite))+1 );
                 B.Hauteur := Natural'Max( Hauteur(B.Fils(Gauche)), Hauteur(B.Fils(Droite))+1 );
@@ -220,6 +246,7 @@ package body AVL is
                         Noeud.Fils(Droite).Pere := Noeud;
                 end if;
 
+                Noeud.Compte := Noeud.Compte + 1;
                 Noeud.Hauteur := Natural'Max( Hauteur(Noeud.Fils(Gauche)), Hauteur(Noeud.Fils(Droite))+1 );
 
                 cBalance := Balance(Noeud);
@@ -293,6 +320,12 @@ package body AVL is
 
                 if oRacine = null then
                         return oRacine;
+                end if;
+
+                if oRacine.Compte > 1 then
+                        oRacine.Compte := oRacine.Compte - 1;
+                --else
+                        --  Else shouldn't be happenning ... may be a bug.
                 end if;
 
                 oRacine.Hauteur := Natural'Max( Hauteur(oRacine.Fils(Gauche)), Hauteur(oRacine.Fils(Droite))+1 );
