@@ -309,7 +309,7 @@ package body AVL is
                                         oRacine.all := temp.all;
                                 end if;
 
-                                --Free(temp);
+                                Liberer_Noeud(temp);
                         else
                                 temp := Min_Noeud(oRacine.Fils(Droite));
                                 oRacine.C := temp.C;
@@ -325,7 +325,8 @@ package body AVL is
                 if oRacine.Compte > 1 then
                         oRacine.Compte := oRacine.Compte - 1;
                 --else
-                        --  Else shouldn't be happenning ... may be a bug.
+                        -- Exécution else
+                        -- = Erreur apparemment causée si comparaisons type non ok
                 end if;
 
                 oRacine.Hauteur := Natural'Max( Hauteur(oRacine.Fils(Gauche)), Hauteur(oRacine.Fils(Droite))+1 );

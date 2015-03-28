@@ -1,5 +1,7 @@
 
 
+with Ada.Unchecked_Deallocation;
+
 
 generic
         type Type_Clef is private;
@@ -20,6 +22,8 @@ package AVL is
                 Hauteur : Natural;
         end record;
 
+
+        procedure Liberer_Noeud is new Ada.Unchecked_Deallocation (Object => Noeud, Name => Arbre);
 
         -- Coût pire cas = O(h)
         procedure Noeuds_Voisins(Cible : Arbre ; Petit_Voisin, Grand_Voisin : out Arbre);
