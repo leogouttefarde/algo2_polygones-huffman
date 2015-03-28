@@ -23,6 +23,10 @@ package body Decompose is
         -- requires Prev(2) = cPoint = Next(1)
         procedure Finish_Point (cPoint : in out Point ; Prev, Next : Segment) is
         begin
+                -- new_line;
+                -- Affiche_Segment(Prev);
+                -- Affiche_Segment(Next);
+                -- new_line;
                 if Prev(1).X < cPoint.Pt.X then
                         -- Put_Line("InSegs++ Prev"); OK 1
                         Segment_Lists.Append(cPoint.InSegs, Prev);
