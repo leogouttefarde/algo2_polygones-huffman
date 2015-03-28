@@ -33,7 +33,7 @@ package body AVL is
                 Pere : Arbre := Cible.Pere;
         begin
                 if Cible.Fils(Gauche) /= null then
-                        return Min_Noeud( Cible.Fils(Gauche) );
+                        return Max_Noeud( Cible.Fils(Gauche) );
 
                 else
                         while Pere /= null loop
@@ -52,7 +52,7 @@ package body AVL is
                 Pere : Arbre := Cible.Pere;
         begin
                 if Cible.Fils(Droite) /= null then
-                        return Max_Noeud( Cible.Fils(Droite) );
+                        return Min_Noeud( Cible.Fils(Droite) );
 
                 else
                         while Pere /= null loop
@@ -151,12 +151,6 @@ package body AVL is
                 return pNoeud;
         end;
 
-        -- procedure Echange(Noeud1, Noeud2 : in out Arbre) is
-        --         temp : Noeud := Noeud1;
-        -- begin
-        --         Noeud1.Pere := Noeud2.Pere;
-        -- end;
-
         function Rotation_Droite(pNoeud : Arbre) return Arbre is
                 Noeud : Arbre := pNoeud.Fils(Gauche);
                 Noeud2 : Arbre := Noeud.Fils(Droite);
@@ -231,18 +225,18 @@ package body AVL is
                 cBalance := Balance(Noeud);
 
                 if (cBalance > 1 and then Clef < Noeud.Fils(Gauche).C) then
-                        return Rotation_Droite(Noeud);
+                        Noeud := Rotation_Droite(Noeud);
 
                 elsif (cBalance < -1 and then Clef > Noeud.Fils(Droite).C) then
-                        return Rotation_Gauche(Noeud);
+                        Noeud := Rotation_Gauche(Noeud);
 
                 elsif (cBalance > 1 and then Clef > Noeud.Fils(Gauche).C) then
                         Noeud.Fils(Gauche) := Rotation_Gauche(Noeud.Fils(Gauche));
-                        return Rotation_Droite(Noeud);
+                        Noeud := Rotation_Droite(Noeud);
 
                 elsif (cBalance < -1 and then Clef < Noeud.Fils(Droite).C) then
                         Noeud.Fils(Droite) := Rotation_Droite(Noeud.Fils(Droite));
-                        return Rotation_Gauche(Noeud);
+                        Noeud := Rotation_Gauche(Noeud);
                 end if;
 
                 if Noeud.Fils(Gauche) /= null then
@@ -293,7 +287,6 @@ package body AVL is
                                 temp := Min_Noeud(oRacine.Fils(Droite));
                                 oRacine.C := temp.C;
                                 oRacine.Fils(Droite) := Supprimer_Noeud(oRacine.Fils(Droite), temp.C);
-                                --oRacine.Fils(Droite).Pere := oRacine;-- useless
                         end if;
 
                 end if;
@@ -328,7 +321,6 @@ package body AVL is
         begin
                 if Racine /= null then
                         Affiche(Racine.C);
-                        --New_Line;
                         Affichage(Racine.Fils(Gauche));
                         Affichage(Racine.Fils(Droite));
                 end if;
