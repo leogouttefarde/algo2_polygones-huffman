@@ -4,6 +4,13 @@ use Ada.Text_IO;
 
 package body Decompose is
 
+        procedure Affiche_Point(sPoint : SimplePoint) is
+        begin
+                Put_Line( "("& Float'Image(sPoint.X)
+                        & ", "& Float'Image(sPoint.Y)
+                        & ")");
+        end;
+
         procedure Affiche_Segment(cSegment : Segment) is
         begin
                 Put_Line( Float'Image(cSegment(3).X)
@@ -19,6 +26,9 @@ package body Decompose is
         -- requires Prev(2) = cPoint = Next(1)
         procedure Finish_Point (cPoint : in out Point ; Prev, Next : Segment) is
         begin
+                -- new_line;
+                -- new_line;
+                -- Affiche_Point(cPoint.Pt);
                 -- new_line;
                 -- Affiche_Segment(Prev);
                 -- Affiche_Segment(Next);
@@ -162,6 +172,14 @@ package body Decompose is
                 -- nAVL : Arbre_Segments.Arbre;
         begin
 
+                New_Line;
+                Put("Point courant : ");
+                Affiche_Point(sPoint);
+
+                New_Line;
+                Affichage_AVL(cAVL);
+                New_Line;
+                New_Line;
                 -- Common.D_Pos := sPoint.X;
 
                 -- nAVL := null;
@@ -172,11 +190,6 @@ package body Decompose is
         -- if cAVL = null then
         -- Put_Line("WTF");
         -- end if;
--- new_line;
--- new_line;
--- Affichage_AVL(cAVL);
--- new_line;
--- new_line;
                 if Segment_Lists.Length(cPoint.OutSegs) = 2 then
                         R := True;
                         cSegment := ( sPoint, sPoint, sPoint );
@@ -227,8 +240,10 @@ package body Decompose is
                 Segment_Pos := Segment_Lists.First( cPoint.InSegs );
                 while Segment_Lists.Has_Element( Segment_Pos ) loop
 
-                        -- Put_Line("Del");
                         cSegment := Segment_Lists.Element( Segment_Pos );
+                        Put_Line("Del");
+                        Affiche_Segment(cSegment);
+                        New_Line;
                         cAVL := Arbre_Segments.Supprimer_Noeud(cAVL, cSegment);
 
                         Segment_Lists.Next( Segment_Pos );

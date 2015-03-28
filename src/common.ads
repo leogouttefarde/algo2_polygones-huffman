@@ -16,7 +16,7 @@ package Common is
 
         package Segment_Lists is new Ada.Containers.Doubly_Linked_Lists ( Segment );
         --type Segment_List is Segment_Lists.List;
-        --type pSegments is access Segment_Lists.List;
+        -- type pSegments is access Segment_Lists.List;
 
         type Point is record
                 Pt : SimplePoint;

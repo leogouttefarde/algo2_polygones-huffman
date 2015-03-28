@@ -287,9 +287,11 @@ package body AVL is
                 end if;
 
                 if Clef < Racine.C then
+                                Put_Line("Clef < Racine.C");
                         Racine.Fils(Gauche) := Supprimer_Noeud(Racine.Fils(Gauche), Clef);
 
                 elsif Clef > Racine.C then
+                                Put_Line("Clef > Racine.C");
                         Racine.Fils(Droite) := Supprimer_Noeud(Racine.Fils(Droite), Clef);
                 
                 else
@@ -309,8 +311,11 @@ package body AVL is
                                         oRacine.all := temp.all;
                                 end if;
 
+                                -- Affiche(temp.C);
+                                Put_Line("Del OK");
                                 Liberer_Noeud(temp);
                         else
+                                Put_Line("Min_Noeud");
                                 temp := Min_Noeud(oRacine.Fils(Droite));
                                 oRacine.C := temp.C;
                                 oRacine.Fils(Droite) := Supprimer_Noeud(oRacine.Fils(Droite), temp.C);
@@ -364,8 +369,11 @@ package body AVL is
         begin
                 if Racine /= null then
                         Affiche(Racine.C);
+                        Put_Line("Gauche");
                         Affichage(Racine.Fils(Gauche));
+                        Put_Line("Droite");
                         Affichage(Racine.Fils(Droite));
+                        Put_Line("Fin");
                 end if;
         end;
 
