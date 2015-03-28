@@ -6,7 +6,8 @@ package body Decompose is
 
         procedure Affiche_Segment(cSegment : Segment) is
         begin
-                Put_Line( "S1 = ("& Float'Image(cSegment(1).X)
+                Put_Line( Integer'Image(Integer(cSegment(3).X))
+                        & "  S1 = ("& Float'Image(cSegment(1).X)
                         & ", "& Float'Image(cSegment(1).Y)
                         & ")    S2 = ("& Float'Image(cSegment(2).X)
                         & ", "& Float'Image(cSegment(2).Y)
@@ -98,6 +99,7 @@ package body Decompose is
                 First, Prev, Last : SimplePoint;
                 sPoint : SimplePoint;
                 cSegment : Segment;
+                i : Float := 1.0;
         begin
                 Point_Pos := Point_Lists.First( Points );
                 cPoint := Point_Lists.Element( Point_Pos );
@@ -113,10 +115,13 @@ package body Decompose is
 
                         cSegment(1) := Prev;
                         cSegment(2) := sPoint;
+                        cSegment(3).X := i;
 
                         Segment_Lists.Append( Segments, cSegment );
+                        -- Affiche_Segment(cSegment);
 
                         Prev := sPoint;
+                        i := i + 1.0;
                 end loop;
 
                 Last := sPoint;
@@ -124,6 +129,8 @@ package body Decompose is
 
                 cSegment(1) := Last;
                 cSegment(2) := First;
+                cSegment(3).X := i;
+                -- Affiche_Segment(cSegment);
 
                 Segment_Lists.Append( Segments, cSegment );
 
@@ -240,7 +247,7 @@ package body Decompose is
                 if Segment_Lists.Length(cPoint.OutSegs) >= 2 then
                         -- Put_Line("check beg R");
                         R := True;
-                        cSegment := ( sPoint, sPoint );
+                        cSegment := ( sPoint, sPoint, sPoint );
                         pNoeud := Arbre_Segments.Inserer(cAVL, cSegment);
 
                         Noeuds_Voisins(pNoeud, V_petit, V_Grand);
@@ -297,7 +304,7 @@ package body Decompose is
                 if Segment_Lists.Length(cPoint.InSegs) >= 2 then
                         -- Put_Line("check end R");
                         R := True;
-                        cSegment := ( sPoint, sPoint );
+                        cSegment := ( sPoint, sPoint, sPoint );
                         pNoeud := Arbre_Segments.Inserer(cAVL, cSegment);
 
                         Noeuds_Voisins(pNoeud, V_petit, V_Grand);

@@ -10,7 +10,7 @@ package Common is
                 Y : Float;
         end record;
 
-        type Segment is array (Positive range 1 .. 2) of SimplePoint;
+        type Segment is array (Positive range 1 .. 3) of SimplePoint;
 
         package Segment_Lists is new Ada.Containers.Doubly_Linked_Lists ( Segment );
         --type Segment_List is Segment_Lists.List;
