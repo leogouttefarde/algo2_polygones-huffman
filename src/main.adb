@@ -9,15 +9,6 @@ with Decompose; use Decompose;
 
 procedure Main is
 
-        procedure Affiche_Segment(cSegment : Segment) is
-        begin
-                Put_Line( Float'Image(cSegment(3).X)
-                        & "  S1 = ("& Float'Image(cSegment(1).X)
-                        & ", "& Float'Image(cSegment(1).Y)
-                        & ")    S2 = ("& Float'Image(cSegment(2).X)
-                        & ", "& Float'Image(cSegment(2).Y)
-                        & ")");
-        end;
         package Point_Sorting is new Point_Lists.Generic_Sorting( "<" );
 
         Points : Point_Lists.List;
@@ -37,8 +28,8 @@ begin
                 Segments := Generate_Segments(Points);
                 Finish_Points(Points, Segments);
 
-                -- Svg_Header(10, 10);
-                -- Svg_Polygon(Points);
+                Svg_Header(10, 10);
+                Svg_Polygon(Points);
 
                 Point_Sorting.Sort(Points);
 
@@ -55,7 +46,7 @@ begin
 
                 end loop;
 
-                -- Svg_Footer;
+                Svg_Footer;
 
 
                 -- Libération AVL

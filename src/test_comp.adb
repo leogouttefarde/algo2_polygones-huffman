@@ -20,7 +20,7 @@ begin
 end;
         Points : Point_Lists.List;
         Segments : Segment_Lists.List;
-        cSegment, s2, s4 : Segment;
+        s2, s4 : Segment;
         Segment_Pos : Segment_Lists.Cursor;
 begin
         Lire_Polygone("tests/5.in", Points);
@@ -39,7 +39,20 @@ begin
 
         Affiche_Segment(s2);
         Affiche_Segment(s4);
+        New_Line;
+        New_Line;
+        New_Line;
 
+        if s4 < s2 then
+                Put_Line("s4 < s2");
+        end if;
+
+        if s4 > s2 then
+                Put_Line("s4 > s2");
+        end if;
+
+
+        -- Test ordre
         if s2 < s4 then
                 Put_Line("s2 < s4");
         end if;
@@ -47,6 +60,7 @@ begin
         if s2 > s4 then
                 Put_Line("s2 > s4");
         end if;
+
 
         if s2 = s4 then
                 Put_Line("s2 = s4");

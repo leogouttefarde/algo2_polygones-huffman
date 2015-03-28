@@ -33,7 +33,7 @@ svg: all
 test_avl:
 	gnatmake $@
 
-test_comp:
+test_comp: all
 	gnatmake $@
 
 dot:

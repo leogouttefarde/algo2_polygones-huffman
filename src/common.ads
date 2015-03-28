@@ -28,9 +28,9 @@ package Common is
 
 
 
-        -- function "<" (S1, S2 : Segment) return Boolean;
-        function "<" (iS1, iS2 : Segment) return Boolean;
-        function ">" (S1, S2 : Segment) return Boolean;
+        function "<" (S1, S2 : Segment) return Boolean;
+        -- function "<" (iS1, iS2 : Segment) return Boolean;
+        function ">" (iS1, iS2 : Segment) return Boolean;
 
         package Arbre_Segments is new AVL(Segment, "<", ">");
         use Arbre_Segments;
@@ -44,6 +44,8 @@ package Common is
 
 
         function Intersection(sPoint : SimplePoint ; cSegment : Segment) return SimplePoint;
+
+        procedure Affiche_Segment(cSegment : Segment);
 
 end Common;
 

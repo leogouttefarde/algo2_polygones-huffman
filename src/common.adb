@@ -6,6 +6,16 @@ use Ada.Text_IO;
 
 package body Common is
 
+        procedure Affiche_Segment(cSegment : Segment) is
+        begin
+                Put_Line( Float'Image(cSegment(3).X)
+                        & "  S1 = ("& Float'Image(cSegment(1).X)
+                        & ", "& Float'Image(cSegment(1).Y)
+                        & ")    S2 = ("& Float'Image(cSegment(2).X)
+                        & ", "& Float'Image(cSegment(2).Y)
+                        & ")");
+        end;
+
         function "=" (P1, P2 : SimplePoint) return Boolean is
         begin
                 if P1.X = P2.X and P1.Y = P2.Y then
@@ -92,54 +102,145 @@ package body Common is
                 return Inter;
         end;
 
-        function "<" (iS1, iS2 : Segment) return Boolean is
-                dx, dy : Float;
-                X1, X2, Y1, Y2 : Float;
-                A, B : Float;
-                Im1, Im2 : Float;
-                S1 : Segment := iS1;
-                S2 : Segment := iS2;
+        -- function "<" (iS1, iS2 : Segment) return Boolean is
+        --         dx, dy : Float;
+        --         X1, X2, Y1, Y2 : Float;
+        --         A, B : Float;
+        --         Im1, Im2 : Float;
+        --         S1 : Segment := iS1;
+        --         S2 : Segment := iS2;
 
-                Inverse : Boolean := False;
+        --         Inverse : Boolean := False;
+        -- begin
+        --         if IsPoint(iS2) then
+        --                 S2 := iS1;
+        --                 S1 := iS2;
+
+        --                 Inverse := True;
+        --         end if;
+
+        --         if S2(1).X < S2(2).X then
+        --                 X1 := S2(1).X;
+        --                 Y1 := S2(1).Y;
+
+        --                 X2 := S2(2).X;
+        --                 Y2 := S2(2).Y;
+        --         else
+        --                 X1 := S2(2).X;
+        --                 Y1 := S2(2).Y;
+
+        --                 X2 := S2(1).X;
+        --                 Y2 := S2(1).Y;
+        --         end if;
+
+        --         dy := Y2 - Y1;
+        --         dx := X2 - X1;
+
+        --         A := dy / dx;
+        --         B := Y1 - A * X1;
+
+        --         Im1 := A * S1(1).X + B;
+        --         Im2 := A * S1(2).X + B;
+
+        --         if Inverse then
+        --                 if (Im1 <= S1(1).Y and Im2 < S1(2).Y) or
+        --                         (Im1 < S1(1).Y and Im2 <= S1(2).Y) then
+        --                         return True;
+        --                 end if;
+
+        --         elsif (Im1 >= S1(1).Y and Im2 > S1(2).Y) or
+        --                 (Im1 > S1(1).Y and Im2 >= S1(2).Y) then
+        --                 return True;
+        --         end if;
+
+        --         return False;
+        -- end;
+
+        function Ordonner_Segment (cSeg : Segment) return Segment is
+                oSeg : Segment := cSeg;
         begin
-                if IsPoint(iS2) then
-                        S2 := iS1;
-                        S1 := iS2;
+                if cSeg(1).X > cSeg(2).X then
+                        oSeg(1).X := cSeg(2).X;
+                        oSeg(2).X := cSeg(1).X;
+                end if;
+
+                return oSeg;
+        end;
+
+        function ">" (iS1, iS2 : Segment) return Boolean is
+                S1, S2 : Segment;
+                pS1, pS2 : Segment;
+                Inverse : Boolean := False;
+                IsPointS1, IsPointS2 : Boolean;
+                Inter : SimplePoint;
+        begin
+                -- Affiche_Segment(iS1);
+                -- Affiche_Segment(iS2);
+                -- New_Line;
+                -- New_Line;
+
+                IsPointS1 := IsPoint(iS1);
+                IsPointS2 := IsPoint(iS2);
+
+                if IsPointS1 and IsPointS2 then
+                        if iS1(1).Y > iS2(1).Y then
+                                return True;
+                        else
+                                return False;
+                        end if;
+                elsif IsPointS1 and not IsPointS2 then
+                        Inter := Intersection(iS1(1), iS2);
+
+                        if Inter.Y < iS1(1).Y then
+                                return True;
+                        else
+                                return False;
+                        end if;
+                elsif not IsPointS1 and IsPointS2 then
+                        Inter := Intersection(iS2(1), iS1);
+
+                        if Inter.Y > iS2(1).Y then
+                                return True;
+                        else
+                                return False;
+                        end if;
+                end if;
+
+                S1 := Ordonner_Segment(iS1);
+                S2 := Ordonner_Segment(iS2);
+
+                pS1 := S1;
+                pS2 := S2;
+
+                -- On s'assure de choisir le second segment pour S1
+                if S1(1).X < S2(1).X then
+                        pS1 := S2;
+                        pS2 := S1;
 
                         Inverse := True;
                 end if;
 
-                if S2(1).X < S2(2).X then
-                        X1 := S2(1).X;
-                        Y1 := S2(1).Y;
+                pS2(1) := Intersection(pS1(1), pS2);
 
-                        X2 := S2(2).X;
-                        Y2 := S2(2).Y;
+                if pS1(2).X > pS2(2).X then
+                        pS1(2) := Intersection(pS2(2), pS1);
                 else
-                        X1 := S2(2).X;
-                        Y1 := S2(2).Y;
-
-                        X2 := S2(1).X;
-                        Y2 := S2(1).Y;
+                        pS2(2) := Intersection(pS1(2), pS2);
                 end if;
 
-                dy := Y2 - Y1;
-                dx := X2 - X1;
-
-                A := dy / dx;
-                B := Y1 - A * X1;
-
-                Im1 := A * S1(1).X + B;
-                Im2 := A * S1(2).X + B;
+                -- Affiche_Segment(pS1);
+                -- Affiche_Segment(pS2);
+                -- New_Line;
+                -- New_Line;
 
                 if Inverse then
-                        if (Im1 <= S1(1).Y and Im2 < S1(2).Y) or
-                                (Im1 < S1(1).Y and Im2 <= S1(2).Y) then
+                        if (pS1(1).Y < pS2(1).Y and pS1(2).Y <= pS2(2).Y) or
+                                (pS1(1).Y <= pS2(1).Y and pS1(2).Y < pS2(2).Y) then
                                 return True;
                         end if;
 
-                elsif (Im1 >= S1(1).Y and Im2 > S1(2).Y) or
-                        (Im1 > S1(1).Y and Im2 >= S1(2).Y) then
+                elsif (pS1(1).Y > pS2(1).Y and pS1(2).Y >= pS2(2).Y) or
+                        (pS1(1).Y >= pS2(1).Y and pS1(2).Y > pS2(2).Y) then
                         return True;
                 end if;
 
@@ -169,23 +270,23 @@ package body Common is
                 return False;
         end;
 
-        function ">" (S1, S2 : Segment) return Boolean is
-        begin
-                if not (S1 < S2) and not (S1 = S2) then
-                        return True;
-                end if;
-
-                return False;
-        end;
-
-        -- function "<" (S1, S2 : Segment) return Boolean is
+        -- function ">" (S1, S2 : Segment) return Boolean is
         -- begin
-        --         if not (S1 > S2) and not (S1 = S2) then
+        --         if not (S1 < S2) and not (S1 = S2) then
         --                 return True;
         --         end if;
 
         --         return False;
         -- end;
+
+        function "<" (S1, S2 : Segment) return Boolean is
+        begin
+                if not (S1 > S2) and not (S1 = S2) then
+                        return True;
+                end if;
+
+                return False;
+        end;
 
         function "<" (P1, P2 : Point) return Boolean is
         begin

@@ -11,16 +11,6 @@ package body Decompose is
                         & ")");
         end;
 
-        procedure Affiche_Segment(cSegment : Segment) is
-        begin
-                Put_Line( Float'Image(cSegment(3).X)
-                        & "  S1 = ("& Float'Image(cSegment(1).X)
-                        & ", "& Float'Image(cSegment(1).Y)
-                        & ")    S2 = ("& Float'Image(cSegment(2).X)
-                        & ", "& Float'Image(cSegment(2).Y)
-                        & ")");
-        end;
-
         procedure Affichage_AVL is new Arbre_Segments.Affichage ( Affiche_Segment );
 
         -- requires Prev(2) = cPoint = Next(1)
@@ -172,14 +162,14 @@ package body Decompose is
                 -- nAVL : Arbre_Segments.Arbre;
         begin
 
-                New_Line;
-                Put("Point courant : ");
-                Affiche_Point(sPoint);
+                -- New_Line;
+                -- Put("Point courant : ");
+                -- Affiche_Point(sPoint);
 
-                New_Line;
-                Affichage_AVL(cAVL);
-                New_Line;
-                New_Line;
+                -- New_Line;
+                -- Affichage_AVL(cAVL);
+                -- New_Line;
+                -- New_Line;
                 -- Common.D_Pos := sPoint.X;
 
                 -- nAVL := null;
@@ -196,10 +186,12 @@ package body Decompose is
 -- new_line;
 -- Put_Line("yy");
 -- Affichage_AVL(cAVL);
+-- Put_Line("zz");
 -- new_line;
 
                         pNoeud := Arbre_Segments.Inserer(cAVL, cSegment);
 
+-- Affiche_Segment(cSegment);
 -- new_line;
 -- Put_Line("yy");
 -- Affichage_AVL(cAVL);
@@ -227,11 +219,12 @@ package body Decompose is
 --                         Put_Line("V_Grand");
 --                                 Affiche_Segment(V_Grand.C);
 --                         end if;
-
+                        -- Put_Line("Del");
                         cAVL := Arbre_Segments.Supprimer_Noeud(cAVL, cSegment);
 -- new_line;
 -- Put_Line("yy");
 -- Affichage_AVL(cAVL);
+-- Put_Line("zz");
 -- new_line;
 
                 end if;
@@ -241,14 +234,18 @@ package body Decompose is
                 while Segment_Lists.Has_Element( Segment_Pos ) loop
 
                         cSegment := Segment_Lists.Element( Segment_Pos );
-                        Put_Line("Del");
-                        Affiche_Segment(cSegment);
-                        New_Line;
+                        -- Put_Line("Del");
+                        -- Affiche_Segment(cSegment);
+                        -- New_Line;
                         cAVL := Arbre_Segments.Supprimer_Noeud(cAVL, cSegment);
 
                         Segment_Lists.Next( Segment_Pos );
 
                 end loop;
+
+-- new_line;
+-- Affichage_AVL(cAVL);
+-- new_line;
 
                 Segment_Pos := Segment_Lists.First( cPoint.OutSegs );
                 while Segment_Lists.Has_Element( Segment_Pos ) loop
