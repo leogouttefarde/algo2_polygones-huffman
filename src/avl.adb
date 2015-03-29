@@ -277,14 +277,14 @@ package body AVL is
                 return Cible;
         end;
 
-        function Recherche(Racine : Arbre ; Clef : Type_Clef) return Arbre is
+        function Rechercher(Racine : Arbre ; Clef : Type_Clef) return Arbre is
                 Result : Arbre := null;
         begin
                 if Racine /= null then
                         if Clef < Racine.C then
-                                Result := Recherche(Racine.Fils(Gauche), Clef);
+                                Result := Rechercher(Racine.Fils(Gauche), Clef);
                         elsif Clef > Racine.C then
-                                Result := Recherche(Racine.Fils(Droite), Clef);
+                                Result := Rechercher(Racine.Fils(Droite), Clef);
                         else
                                 Result := Racine;
                         end if;
