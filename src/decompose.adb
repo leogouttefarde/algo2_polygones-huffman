@@ -189,6 +189,7 @@ package body Decompose is
         begin
 
                 -- New_Line;
+                -- New_Line;
                 -- Put("Point courant : ");
                 -- Affiche_Point(sPoint);
 

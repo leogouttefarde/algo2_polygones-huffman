@@ -34,6 +34,66 @@ package body Common is
                 return False;
         end;
 
+
+        F_Epsilon : Float := 0.0001;
+
+        function Egal (F1, F2 : Float) return Boolean is
+                Diff : Float := F1 - F2;
+                Result : Boolean := False;
+        begin
+                if Diff < 0.0 then
+                        Diff := - Diff;
+                end if;
+
+                if Diff < F_Epsilon then
+                        Result := True;
+                end if;
+
+                return Result;
+        end;
+
+        function Inf (F1, F2 : Float) return Boolean is
+                Diff : Float := F2 - F1;
+                Result : Boolean := False;
+        begin
+                if Diff > 0.0 and Diff >= F_Epsilon then
+                        Result := True;
+                end if;
+
+                return Result;
+        end;
+
+        function InfEgal (F1, F2 : Float) return Boolean is
+                Result : Boolean := False;
+        begin
+                if Egal(F1, F2) or Inf(F1, F2) then
+                        Result := True;
+                end if;
+
+                return Result;
+        end;
+
+        function Sup (F1, F2 : Float) return Boolean is
+                Diff : Float := F1 - F2;
+                Result : Boolean := False;
+        begin
+                if Diff > 0.0 and Diff >= F_Epsilon then
+                        Result := True;
+                end if;
+
+                return Result;
+        end;
+
+        function SupEgal (F1, F2 : Float) return Boolean is
+                Result : Boolean := False;
+        begin
+                if Egal(F1, F2) or Sup(F1, F2) then
+                        Result := True;
+                end if;
+
+                return Result;
+        end;
+
         function Intersection(sPoint : SimplePoint ; cSegment : Segment) return SimplePoint is
                 Inter : SimplePoint;
                 dx, dy : Float;
@@ -238,14 +298,26 @@ package body Common is
                 -- New_Line;
 
                 if Inverse then
-                        if (pS1(1).Y < pS2(1).Y and pS1(2).Y <= pS2(2).Y) or
-                                (pS1(1).Y <= pS2(1).Y and pS1(2).Y < pS2(2).Y) then
+                        -- Put_Line("ini");
+                        -- if (pS1(1).Y < pS2(1).Y) then
+                        -- Put_Line("pS1(1).Y < pS2(1).Y");
+                        -- end if;
+                        -- if (pS1(2).Y <= pS2(2).Y) then
+                        -- Put_Line("pS1(2).Y <= pS2(2).Y");
+                        -- else
+                        -- Put_Line("pS1(2).Y > pS2(2).Y");
+                        -- Put_Line("pS1(2).Y = "& Float'Image(pS1(2).Y) &"  > pS2(2).Y"& Float'Image(pS2(2).Y));
+                        -- Put_Line("pS1(2).Y - pS2(2).Y = "& Float'Image(pS1(2).Y - pS2(2).Y));
+                        -- end if;
+                        if (Inf(pS1(1).Y, pS2(1).Y) and InfEgal(pS1(2).Y, pS2(2).Y)) or
+                                (InfEgal(pS1(1).Y, pS2(1).Y) and Inf(pS1(2).Y, pS2(2).Y)) then
                         -- Put_Line("first");
                                 return True;
                         end if;
 
-                elsif (pS1(1).Y > pS2(1).Y and pS1(2).Y >= pS2(2).Y) or
-                        (pS1(1).Y >= pS2(1).Y and pS1(2).Y > pS2(2).Y) then
+                elsif (Sup(pS1(1).Y, pS2(1).Y) and SupEgal(pS1(2).Y, pS2(2).Y)) or
+                        (SupEgal(pS1(1).Y, pS2(1).Y) and Sup(pS1(2).Y, pS2(2).Y)) then
+                        -- Put_Line("sec");
                                 return True;
                 -- else
                 --         Put_Line("sec");
@@ -265,6 +337,7 @@ package body Common is
                 --         end if;
                 end if;
 
+                        -- Put_Line("false");
                 return False;
         end;
 
