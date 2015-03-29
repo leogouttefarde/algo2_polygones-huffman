@@ -26,19 +26,29 @@ package body Decompose is
                 if Prev(1).X < cPoint.Pt.X then
                         -- Put_Line("InSegs++ Prev"); OK 1
                         Segment_Lists.Append(cPoint.InSegs, Prev);
-                else
+                elsif Prev(1).X > cPoint.Pt.X then
                         -- Put_Line("OutSegs++ Prev");
                         Segment_Lists.Append(cPoint.OutSegs, Prev);
+                else
+                        -- Cheat traitement segments verticaux
+                        cPoint.InCount := cPoint.InCount + 1;
                 end if;
 
                 if Next(2).X < cPoint.Pt.X then
                         -- Put_Line("InSegs++ Next");
                         Segment_Lists.Append(cPoint.InSegs, Next);
-                else
+                elsif Next(2).X > cPoint.Pt.X then
                         -- Put_Line("OutSegs++ Next");
                         Segment_Lists.Append(cPoint.OutSegs, Next);
+                else
+                        -- Cheat traitement segments verticaux
+                        cPoint.OutCount := cPoint.OutCount + 1;
                 end if;
                         -- Put_Line("Finish_Point_End");
+
+                -- Cheat traitement segments verticaux
+                cPoint.InCount := cPoint.InCount + Natural(Segment_Lists.Length(cPoint.InSegs));
+                cPoint.OutCount := cPoint.OutCount + Natural(Segment_Lists.Length(cPoint.OutSegs));
         end;
 
         procedure Finish_Points (Points : in out Point_Lists.List ; Segments : Segment_Lists.List) is
@@ -196,7 +206,7 @@ package body Decompose is
         -- if cAVL = null then
         -- Put_Line("WTF");
         -- end if;
-                if Segment_Lists.Length(cPoint.OutSegs) = 2 then
+                if cPoint.OutCount = 2 then
                         R := True;
                         cSegment := ( sPoint, sPoint, sPoint );
 -- new_line;
@@ -256,7 +266,7 @@ package body Decompose is
                         -- Put_Line("V_Grand");
                         --         Affiche_Segment(V_Grand.C);
                         -- end if;
-                        -- Put_Line("Del");
+                        -- Put_Line("Del 1");
                         cAVL := Arbre_Segments.Supprimer_Noeud(cAVL, cSegment);
 -- new_line;
 -- Put_Line("yy");
@@ -265,13 +275,16 @@ package body Decompose is
 -- new_line;
 
                 end if;
+-- new_line;
+-- Affichage_AVL(cAVL);
+-- new_line;
 
 
                 Segment_Pos := Segment_Lists.First( cPoint.InSegs );
                 while Segment_Lists.Has_Element( Segment_Pos ) loop
 
                         cSegment := Segment_Lists.Element( Segment_Pos );
-                        -- Put_Line("Del");
+                        -- Put_Line("Del 2");
                         -- Affiche_Segment(cSegment);
                         -- New_Line;
                         cAVL := Arbre_Segments.Supprimer_Noeud(cAVL, cSegment);
@@ -300,7 +313,9 @@ package body Decompose is
 -- new_line;
 
                 -- Put_Line("Length(InSegs) = "&Count_Type'image(Segment_Lists.Length(cPoint.InSegs)));
-                if Segment_Lists.Length(cPoint.InSegs) = 2 then
+                -- Put_Line("Length(InSegs) = "&Count_Type'image(Segment_Lists.Length(cPoint.InSegs)));
+                -- Put_Line("inc = "&Natural'image(cPoint.InCount));
+                if cPoint.InCount = 2 then
                         R := True;
                         cSegment := ( sPoint, sPoint, sPoint );
                         pNoeud := Arbre_Segments.Inserer(cAVL, cSegment);
@@ -359,7 +374,7 @@ package body Decompose is
                         --         Affiche_Segment(V_Grand.C);
                         -- end if;
 
-                        -- Put_Line("Del");
+                        -- Put_Line("Del 3");
                         cAVL := Arbre_Segments.Supprimer_Noeud(cAVL, cSegment);
 -- Put_Line("yy");
 -- Affichage_AVL(cAVL);

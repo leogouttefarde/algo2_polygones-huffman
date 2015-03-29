@@ -26,7 +26,9 @@ package Common is
         type Point is record
                 Pt : SimplePoint;
                 InSegs : Segment_Lists.List;
+                InCount : Natural := 0;
                 OutSegs : Segment_Lists.List;
+                OutCount : Natural := 0;
         end record;
 
         function "=" (P1, P2 : Point) return Boolean;

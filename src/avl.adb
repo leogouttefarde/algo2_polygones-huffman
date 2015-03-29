@@ -303,11 +303,11 @@ package body AVL is
                 end if;
 
                 if Clef < Racine.C then
-                        --Put_Line("Clef < Racine.C");
+                        -- Put_Line("Clef < Racine.C");
                         Racine.Fils(Gauche) := Supprimer_Noeud(Racine.Fils(Gauche), Clef);
 
                 elsif Clef > Racine.C then
-                        --Put_Line("Clef > Racine.C");
+                        -- Put_Line("Clef > Racine.C");
                         Racine.Fils(Droite) := Supprimer_Noeud(Racine.Fils(Droite), Clef);
                 
                 else

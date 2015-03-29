@@ -174,6 +174,10 @@ package body Common is
                 IsPointS1, IsPointS2 : Boolean;
                 Inter : SimplePoint;
         begin
+                if iS1 = iS2 then
+                        return False;
+                end if;
+
                 -- Affiche_Segment(iS1);
                 -- Affiche_Segment(iS2);
                 -- New_Line;
@@ -236,12 +240,29 @@ package body Common is
                 if Inverse then
                         if (pS1(1).Y < pS2(1).Y and pS1(2).Y <= pS2(2).Y) or
                                 (pS1(1).Y <= pS2(1).Y and pS1(2).Y < pS2(2).Y) then
+                        -- Put_Line("first");
                                 return True;
                         end if;
 
                 elsif (pS1(1).Y > pS2(1).Y and pS1(2).Y >= pS2(2).Y) or
                         (pS1(1).Y >= pS2(1).Y and pS1(2).Y > pS2(2).Y) then
-                        return True;
+                                return True;
+                -- else
+                --         Put_Line("sec");
+
+                --         if (pS1(1).Y > pS2(1).Y and pS1(2).Y >= pS2(2).Y) then
+                --         Put_Line("1");
+                --                 return True;
+                --         end if;
+
+                --         if pS1(2).Y > pS2(2).Y then
+                --         Put_Line("pS1(2).Y = "& Float'Image(pS1(2).Y) &"  > pS2(2).Y"& Float'Image(pS2(2).Y));
+                --         >> (4.00000E+00 > 4.00000E+00) donne True en Ada içi ...
+                --         end if;
+                --         if (pS1(1).Y >= pS2(1).Y and pS1(2).Y > pS2(2).Y) then
+                --         Put_Line("2");
+                --                 return True;
+                --         end if;
                 end if;
 
                 return False;
