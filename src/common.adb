@@ -159,7 +159,7 @@ package body Common is
         function Ordonner_Segment (cSeg : Segment) return Segment is
                 oSeg : Segment := cSeg;
         begin
-                if cSeg(1).X > cSeg(2).X then
+                if cSeg(2).X < cSeg(1).X then
                         oSeg(1) := cSeg(2);
                         oSeg(2) := cSeg(1);
                 end if;

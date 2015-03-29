@@ -277,6 +277,36 @@ package body AVL is
                 return Cible;
         end;
 
+-- /*
+--     find a specific node's key in the tree
+-- */
+-- node* find(int e, node* t )
+-- {
+--     if( t == NULL )
+--         return NULL;
+--     if( e < t->data )
+--         return find( e, t->left );
+--     else if( e > t->data )
+--         return find( e, t->right );
+--     else
+--         return t;
+-- }
+        function Recherche(Racine : Arbre ; Clef : Type_Clef) return Arbre is
+                Result : Arbre := null;
+        begin
+                if Racine /= null then
+                        if Clef < Racine.C then
+                                Result := Recherche(Racine.Fils(Gauche), Clef);
+                        elsif Clef > Racine.C then
+                                Result := Recherche(Racine.Fils(Droite), Clef);
+                        else
+                                Result := Racine;
+                        end if;
+                end if;
+
+                return Result;
+        end;
+
         function Supprimer_Noeud(Racine : Arbre ; Clef : Type_Clef) return Arbre is
                 Temp : Arbre;
                 oRacine : Arbre := Racine;
