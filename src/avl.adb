@@ -86,7 +86,8 @@ package body AVL is
                         -- Debug bruteforce calc pas O(h)
                         Res := 1 + Compte( Cible.Fils(Gauche) ) + Compte( Cible.Fils(Droite) );
 
-                        -- O(h) optim calc (fonctionnel quand comparaisons type ok)
+                        -- O(h) optim calc (fonctionnel quand comparaisons type ok sauf des fois)
+                        -- Buggué
                         --Res := Cible.Compte;
                 end if;
 
@@ -303,11 +304,9 @@ package body AVL is
                 end if;
 
                 if Clef < Racine.C then
-                        -- Put_Line("Clef < Racine.C");
                         Racine.Fils(Gauche) := Supprimer_Noeud(Racine.Fils(Gauche), Clef);
 
                 elsif Clef > Racine.C then
-                        -- Put_Line("Clef > Racine.C");
                         Racine.Fils(Droite) := Supprimer_Noeud(Racine.Fils(Droite), Clef);
                 
                 else
@@ -327,11 +326,8 @@ package body AVL is
                                         oRacine.all := temp.all;
                                 end if;
 
-                                -- Affiche(temp.C);
-                                -- Put_Line("Del OK");
                                 Liberer_Noeud(temp);
                         else
-                                --Put_Line("Min_Noeud");
                                 temp := Min_Noeud(oRacine.Fils(Droite));
                                 oRacine.C := temp.C;
                                 oRacine.Fils(Droite) := Supprimer_Noeud(oRacine.Fils(Droite), temp.C);

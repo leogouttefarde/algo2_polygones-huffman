@@ -49,8 +49,8 @@ begin
                 Svg_Footer;
 
 
-                -- Libération AVL
-                --Arbre_Segments.Liberer(cAVL);
+                -- Libération AVL (inutile car déjà vidé normalement)
+                Arbre_Segments.Liberer(cAVL);
         end if;
 
 end Main;

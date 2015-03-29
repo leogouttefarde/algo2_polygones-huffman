@@ -6,8 +6,6 @@ with Ada.Unchecked_Deallocation;
 
 package Common is
 
-        D_Pos : Float;
-
         type SimplePoint is record
                 X : Float;
                 Y : Float;
@@ -16,8 +14,6 @@ package Common is
         type Segment is array (Positive range 1 .. 3) of SimplePoint;
 
         package Segment_Lists is new Ada.Containers.Doubly_Linked_Lists ( Segment );
-        --type Segment_List is Segment_Lists.List;
-        -- type pSegments is access Segment_Lists.List;
         type pSegment is access Segment;
 
         procedure Liberer_Segment is new Ada.Unchecked_Deallocation (Object => Segment, Name => pSegment);
@@ -36,7 +32,6 @@ package Common is
 
 
         function "<" (S1, S2 : Segment) return Boolean;
-        -- function "<" (iS1, iS2 : Segment) return Boolean;
         function ">" (iS1, iS2 : Segment) return Boolean;
 
         package Arbre_Segments is new AVL(Segment, "<", ">");

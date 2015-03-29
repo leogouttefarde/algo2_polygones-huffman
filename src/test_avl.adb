@@ -98,7 +98,7 @@ begin
         Put_Line( "6 : C_Grands = " & Natural'image( C_Grands ));
 
 
-        Affichage_AVL(cAVL);
+        --Affichage_AVL(cAVL);
 
         Arbre_Entiers.Liberer(cAVL);
 end;

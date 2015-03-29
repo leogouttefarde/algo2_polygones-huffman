@@ -3,8 +3,6 @@ with Common; use Common;
 
 package SVG is
 
-        --type pPoint is access all Point;
-
         type Color is (Red, Green, Blue, Black);
 
 

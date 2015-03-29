@@ -146,75 +146,11 @@ package body Common is
                         Y := A * X + B;
                 end if;
 
-                -- debug
-                -- Put_Line("X1 = " & Float'Image(X1));
-                -- Put_Line("X2 = " & Float'Image(X2));
-                -- Put_Line("Y1 = " & Float'Image(Y1));
-                -- Put_Line("Y2 = " & Float'Image(Y2));
-                -- Put_Line("dx = " & Float'Image(dx));
-                -- Put_Line("dy = " & Float'Image(dy));
-                -- Put_Line("A = " & Float'Image(A));
-                -- Put_Line("B = " & Float'Image(B));
-                -- Put_Line("Y = " & Float'Image(Inter.Y));
-                
+
                 Inter.Y := Y;
 
                 return Inter;
         end;
-
-        -- function "<" (iS1, iS2 : Segment) return Boolean is
-        --         dx, dy : Float;
-        --         X1, X2, Y1, Y2 : Float;
-        --         A, B : Float;
-        --         Im1, Im2 : Float;
-        --         S1 : Segment := iS1;
-        --         S2 : Segment := iS2;
-
-        --         Inverse : Boolean := False;
-        -- begin
-        --         if IsPoint(iS2) then
-        --                 S2 := iS1;
-        --                 S1 := iS2;
-
-        --                 Inverse := True;
-        --         end if;
-
-        --         if S2(1).X < S2(2).X then
-        --                 X1 := S2(1).X;
-        --                 Y1 := S2(1).Y;
-
-        --                 X2 := S2(2).X;
-        --                 Y2 := S2(2).Y;
-        --         else
-        --                 X1 := S2(2).X;
-        --                 Y1 := S2(2).Y;
-
-        --                 X2 := S2(1).X;
-        --                 Y2 := S2(1).Y;
-        --         end if;
-
-        --         dy := Y2 - Y1;
-        --         dx := X2 - X1;
-
-        --         A := dy / dx;
-        --         B := Y1 - A * X1;
-
-        --         Im1 := A * S1(1).X + B;
-        --         Im2 := A * S1(2).X + B;
-
-        --         if Inverse then
-        --                 if (Im1 <= S1(1).Y and Im2 < S1(2).Y) or
-        --                         (Im1 < S1(1).Y and Im2 <= S1(2).Y) then
-        --                         return True;
-        --                 end if;
-
-        --         elsif (Im1 >= S1(1).Y and Im2 > S1(2).Y) or
-        --                 (Im1 > S1(1).Y and Im2 >= S1(2).Y) then
-        --                 return True;
-        --         end if;
-
-        --         return False;
-        -- end;
 
         function Ordonner_Segment (cSeg : Segment) return Segment is
                 oSeg : Segment := cSeg;
@@ -234,14 +170,11 @@ package body Common is
                 IsPointS1, IsPointS2 : Boolean;
                 Inter : SimplePoint;
         begin
+                -- Si les segments sont égaux,
+                -- pas la peine de tester
                 if iS1 = iS2 then
                         return False;
                 end if;
-
-                -- Affiche_Segment(iS1);
-                -- Affiche_Segment(iS2);
-                -- New_Line;
-                -- New_Line;
 
                 IsPointS1 := IsPoint(iS1);
                 IsPointS2 := IsPoint(iS2);
@@ -292,67 +225,20 @@ package body Common is
                         pS2(2) := Intersection(pS1(2), pS2);
                 end if;
 
-                -- Affiche_Segment(pS1);
-                -- Affiche_Segment(pS2);
-                -- New_Line;
-                -- New_Line;
 
                 if Inverse then
-                        -- Put_Line("ini");
-                        -- if (pS1(1).Y < pS2(1).Y) then
-                        -- Put_Line("pS1(1).Y < pS2(1).Y");
-                        -- end if;
-                        -- if (pS1(2).Y <= pS2(2).Y) then
-                        -- Put_Line("pS1(2).Y <= pS2(2).Y");
-                        -- else
-                        -- Put_Line("pS1(2).Y > pS2(2).Y");
-                        -- Put_Line("pS1(2).Y = "& Float'Image(pS1(2).Y) &"  > pS2(2).Y"& Float'Image(pS2(2).Y));
-                        -- Put_Line("pS1(2).Y - pS2(2).Y = "& Float'Image(pS1(2).Y - pS2(2).Y));
-                        -- end if;
                         if (Inf(pS1(1).Y, pS2(1).Y) and InfEgal(pS1(2).Y, pS2(2).Y)) or
                                 (InfEgal(pS1(1).Y, pS2(1).Y) and Inf(pS1(2).Y, pS2(2).Y)) then
-                        -- Put_Line("first");
                                 return True;
                         end if;
 
                 elsif (Sup(pS1(1).Y, pS2(1).Y) and SupEgal(pS1(2).Y, pS2(2).Y)) or
                         (SupEgal(pS1(1).Y, pS2(1).Y) and Sup(pS1(2).Y, pS2(2).Y)) then
-                        -- Put_Line("sec");
                                 return True;
-                -- else
-                --         Put_Line("sec");
-
-                --         if (pS1(1).Y > pS2(1).Y and pS1(2).Y >= pS2(2).Y) then
-                --         Put_Line("1");
-                --                 return True;
-                --         end if;
-
-                --         if pS1(2).Y > pS2(2).Y then
-                --         Put_Line("pS1(2).Y = "& Float'Image(pS1(2).Y) &"  > pS2(2).Y"& Float'Image(pS2(2).Y));
-                --         >> (4.00000E+00 > 4.00000E+00) donne True en Ada içi ...
-                --         end if;
-                --         if (pS1(1).Y >= pS2(1).Y and pS1(2).Y > pS2(2).Y) then
-                --         Put_Line("2");
-                --                 return True;
-                --         end if;
                 end if;
 
-                        -- Put_Line("false");
                 return False;
         end;
-
-        -- function ">" (S1, S2 : Segment) return Boolean is
-        --         P1, P2 : SimplePoint;
-        -- begin
-        --         P1 := Intersection(D_Pos, S1);
-        --         P2 := Intersection(D_Pos, S2);
-
-        --         if P1.X > P2.X then
-        --                 return True;
-        --         end if;
-
-        --         return False;
-        -- end;
 
         function "=" (S1, S2 : Segment) return Boolean is
         begin
@@ -363,15 +249,6 @@ package body Common is
 
                 return False;
         end;
-
-        -- function ">" (S1, S2 : Segment) return Boolean is
-        -- begin
-        --         if not (S1 < S2) and not (S1 = S2) then
-        --                 return True;
-        --         end if;
-
-        --         return False;
-        -- end;
 
         function "<" (S1, S2 : Segment) return Boolean is
         begin

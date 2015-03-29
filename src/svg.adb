@@ -37,16 +37,12 @@ package body SVG is
                 Display_Height := Float(Height);
         end Svg_Header;
 
-        -- Svg_Rect(Width, Height : Integer ; Color : Color)
-        -- (type Points is array(Positive range<>) of Float;)
-
         procedure Svg_Polygon(Points : Point_Lists.List) is
                 Point_Pos : Point_Lists.Cursor;
                 cPoint : Point;
         begin
                 Put("<polygon points=""");
 
-                -- algo + print new segs
                 Point_Pos := Point_Lists.First( Points );
 
                 while Point_Lists.Has_Element( Point_Pos ) loop

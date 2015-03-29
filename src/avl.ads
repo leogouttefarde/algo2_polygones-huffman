@@ -19,7 +19,7 @@ package AVL is
                 Fils : Tableau_Fils;
                 Pere : Arbre;
                 Compte : Positive; -- nombre de noeuds dans le sous-arbre
-                Hauteur : Natural;
+                Hauteur : Natural; -- Champ supplémentaire des AVL
         end record;
 
 
