@@ -121,21 +121,30 @@ package body Decompose is
                 return Segments;
         end;
 
-        procedure Reconnect(sPoint : SimplePoint ; pUp, pDown : Arbre_Segments.Arbre) is
+        procedure Reconnect(sPoint : SimplePoint ; Up, Down : pSegment) is
                 UpPoint, DownPoint : SimplePoint;
         begin
-                if pUp /= null then
+                if Up /= null then
+                        -- Put_Line("");
+                        -- Put_Line("");
                         -- Put_Line("UP");
-                        UpPoint := Intersection(sPoint, pUp.C);
+                        UpPoint := Intersection(sPoint, Up.all);
+                        -- Affiche_Point(sPoint);
+                        -- Affiche_Segment(Up.all);
+                        -- Affiche_Point(UpPoint);
 
                         if not IsPoint((sPoint, UpPoint, sPoint)) then
                                 Svg_Line(sPoint, UpPoint, Green);
                         end if;
                 end if;
 
-                if pDown /= null then
+                if Down /= null then
+                        -- Put_Line("");
                         -- Put_Line("DOWN");
-                        DownPoint := Intersection(sPoint, pDown.C);
+                        -- Affiche_Point(sPoint);
+                        -- Affiche_Segment(Down.all);
+                        DownPoint := Intersection(sPoint, Down.all);
+                        -- Affiche_Point(DownPoint);
 
                         if not IsPoint((sPoint, DownPoint, sPoint)) then
                                 Svg_Line(sPoint, DownPoint, Green);
@@ -162,6 +171,7 @@ package body Decompose is
                 sPoint : SimplePoint := cPoint.Pt;
                 pNoeud : Arbre_Segments.Arbre;
                 V_petit, V_Grand : Arbre_Segments.Arbre;
+                S_petit, S_Grand : pSegment;
                 C_petits, C_Grands : Natural;
                 Segment_Pos : Segment_Lists.Cursor;
 
@@ -204,6 +214,30 @@ package body Decompose is
 -- new_line;
 
                         Noeuds_Voisins(pNoeud, V_petit, V_Grand);
+
+                        if V_petit /= null then
+
+                                if S_petit /= null then
+                                        Liberer_Segment(S_petit);
+                                end if;
+
+                                S_petit := new Segment'(V_petit.C);
+                        else
+                                S_petit := null;
+                        end if;
+
+                        if V_Grand /= null then
+
+                                if S_Grand /= null then
+                                        Liberer_Segment(S_Grand);
+                                end if;
+
+                                S_Grand := new Segment'(V_Grand.C);
+                        else
+                                S_Grand := null;
+                        end if;
+
+
                         Compte_Position(pNoeud, C_petits, C_Grands);
 -- new_line;
 
@@ -211,20 +245,17 @@ package body Decompose is
 -- new_line;
 -- new_line;
 
---                         if V_petit /= null then
---                         Put_Line("V_petit");
---                                 Affiche_Segment(V_petit.C);
---                         end if;
---                         Put_Line("C_petits="&Natural'image(C_petits));
---                         Put_Line("C_Grands="&Natural'image(C_Grands));
+                        -- if V_petit /= null then
+                        -- Put_Line("V_petit");
+                        --         Affiche_Segment(V_petit.C);
+                        -- end if;
+                        -- Put_Line("C_petits="&Natural'image(C_petits));
+                        -- Put_Line("C_Grands="&Natural'image(C_Grands));
 
---                         Put_Line("cSegment");
---                                 Affiche_Segment(cSegment);
-
---                         if V_Grand /= null then
---                         Put_Line("V_Grand");
---                                 Affiche_Segment(V_Grand.C);
---                         end if;
+                        -- if V_Grand /= null then
+                        -- Put_Line("V_Grand");
+                        --         Affiche_Segment(V_Grand.C);
+                        -- end if;
                         -- Put_Line("Del");
                         cAVL := Arbre_Segments.Supprimer_Noeud(cAVL, cSegment);
 -- new_line;
@@ -275,13 +306,38 @@ package body Decompose is
                         pNoeud := Arbre_Segments.Inserer(cAVL, cSegment);
 
                         Noeuds_Voisins(pNoeud, V_petit, V_Grand);
+
+                        if V_petit /= null then
+
+                                if S_petit /= null then
+                                        Liberer_Segment(S_petit);
+                                end if;
+
+                                S_petit := new Segment'(V_petit.C);
+                        else
+                                S_petit := null;
+                        end if;
+
+                        if V_Grand /= null then
+
+                                if S_Grand /= null then
+                                        Liberer_Segment(S_Grand);
+                                end if;
+
+                                S_Grand := new Segment'(V_Grand.C);
+                        else
+                                S_Grand := null;
+                        end if;
+                        Compte_Position(pNoeud, C_petits, C_Grands);
 --                         new_line;
 --                         new_line;
 -- new_line;
 
+-- Affiche_Segment(cSegment);
+-- Put_Line("yy");
 -- Affichage_AVL(cAVL);
 -- new_line;
--- new_line;
+-- -- new_line;
 
 --                         if V_petit /= null then
 --                         Put_Line("V_petit");
@@ -290,24 +346,60 @@ package body Decompose is
 --                         Put_Line("C_petits="&Natural'image(C_petits));
 --                         Put_Line("C_Grands="&Natural'image(C_Grands));
 
---                         Put_Line("cSegment");
---                                 Affiche_Segment(cSegment);
-
 --                         if V_Grand /= null then
 --                         Put_Line("V_Grand");
 --                                 Affiche_Segment(V_Grand.C);
 --                         end if;
 
---                         new_line;
+                        -- new_line;
 
-                        Compte_Position(pNoeud, C_petits, C_Grands);
 
+                        -- if V_Grand /= null then
+                        -- Put_Line("V_Grand");
+                        --         Affiche_Segment(V_Grand.C);
+                        -- end if;
+
+                        -- Put_Line("Del");
                         cAVL := Arbre_Segments.Supprimer_Noeud(cAVL, cSegment);
+-- Put_Line("yy");
+-- Affichage_AVL(cAVL);
+-- new_line;
+-- new_line;
+--                         if V_Grand /= null then
+--                         Put_Line("V_Grand");
+--                                 Affiche_Segment(V_Grand.C);
+--                         end if;
+
                 end if;
 
                 if R and ((C_petits mod 2) = 1 or (C_Grands mod 2) = 1) then
-                        Reconnect(sPoint, V_petit, V_Grand);
                         -- Put_Line("Reconnect !");
+
+
+                        -- if V_petit /= null then
+                        -- Put_Line("V_petit");
+                        --         Affiche_Segment(V_petit.C);
+                        -- end if;
+                        -- Put_Line("C_petits="&Natural'image(C_petits));
+                        -- Put_Line("C_Grands="&Natural'image(C_Grands));
+
+                        -- if V_Grand /= null then
+                        -- Put_Line("V_Grand");
+                        --         Affiche_Segment(V_Grand.C);
+                        --         Affiche_Segment(S_Grand.all);
+                        -- end if;
+
+                        Reconnect(sPoint, S_petit, S_Grand);
+                        -- Put_Line("Reconnect done");
+                end if;
+
+
+                if S_petit /= null then
+                        Liberer_Segment(S_petit);
+                end if;
+
+                if S_Grand /= null then
+                        Liberer_Segment(S_Grand);
                 end if;
         end;
 

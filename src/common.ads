@@ -1,6 +1,7 @@
 
 with AVL;
 with Ada.Containers.Doubly_Linked_Lists;
+with Ada.Unchecked_Deallocation;
 
 
 package Common is
@@ -17,6 +18,10 @@ package Common is
         package Segment_Lists is new Ada.Containers.Doubly_Linked_Lists ( Segment );
         --type Segment_List is Segment_Lists.List;
         -- type pSegments is access Segment_Lists.List;
+        type pSegment is access Segment;
+
+        procedure Liberer_Segment is new Ada.Unchecked_Deallocation (Object => Segment, Name => pSegment);
+
 
         type Point is record
                 Pt : SimplePoint;

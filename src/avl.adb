@@ -312,7 +312,7 @@ package body AVL is
                                 end if;
 
                                 -- Affiche(temp.C);
-                                --Put_Line("Del OK");
+                                -- Put_Line("Del OK");
                                 Liberer_Noeud(temp);
                         else
                                 --Put_Line("Min_Noeud");
