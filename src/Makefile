@@ -1,7 +1,7 @@
 
 
 EXEC=main
-TEST=tests/5.in
+TEST=tests/7.in
 SVG=out.svg
 
 all:

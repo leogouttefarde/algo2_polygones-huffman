@@ -180,9 +180,12 @@ package body Decompose is
                 cSegment : Segment;
                 sPoint : SimplePoint := cPoint.Pt;
                 pNoeud : Arbre_Segments.Arbre;
-                V_petit, V_Grand : Arbre_Segments.Arbre;
-                S_petit, S_Grand : pSegment;
-                C_petits, C_Grands : Natural;
+                V_petit : Arbre_Segments.Arbre := null;
+                V_Grand : Arbre_Segments.Arbre := null;
+                S_petit : pSegment := null;
+                S_Grand : pSegment := null;
+                C_petits : Natural := 0;
+                C_Grands : Natural := 0;
                 Segment_Pos : Segment_Lists.Cursor;
 
                 -- nAVL : Arbre_Segments.Arbre;
@@ -207,6 +210,7 @@ package body Decompose is
         -- if cAVL = null then
         -- Put_Line("WTF");
         -- end if;
+                -- Put_Line("OutCount = "&Natural'image(cPoint.OutCount));
                 if cPoint.OutCount = 2 then
                         R := True;
                         cSegment := ( sPoint, sPoint, sPoint );
@@ -388,6 +392,8 @@ package body Decompose is
 
                 end if;
 
+                        -- Put_Line("C_petits="&Natural'image(C_petits));
+                        -- Put_Line("C_Grands="&Natural'image(C_Grands));
                 if R and ((C_petits mod 2) = 1 or (C_Grands mod 2) = 1) then
                         -- Put_Line("Reconnect !");
 
