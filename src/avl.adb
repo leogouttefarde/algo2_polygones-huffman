@@ -84,7 +84,7 @@ package body AVL is
         begin
                 if Cible /= null then
                         -- Debug bruteforce calc pas O(h)
-                         Res := 1 + Compte( Cible.Fils(Gauche) ) + Compte( Cible.Fils(Droite) );
+                        Res := 1 + Compte( Cible.Fils(Gauche) ) + Compte( Cible.Fils(Droite) );
 
                         -- O(h) optim calc (fonctionnel quand comparaisons type ok)
                         --Res := Cible.Compte;
