@@ -4,6 +4,7 @@ use Ada.Text_IO;
 
 package body AVL is
 
+        -- Coût au pire cas : O(h) = O(log2(n)) car AVL
         function Max_Noeud(Noeud : Arbre) return Arbre is
                 cNoeud : Arbre := Noeud;
         begin
@@ -16,6 +17,7 @@ package body AVL is
                 return cNoeud;
         end;
 
+        -- Coût au pire cas : O(h) = O(log2(n)) car AVL
         function Min_Noeud(Noeud : Arbre) return Arbre is
                 cNoeud : Arbre := Noeud;
         begin
@@ -28,7 +30,8 @@ package body AVL is
                 return cNoeud;
         end;
 
-        -- requires Cible /= null
+        -- Coût au pire cas : O(h) = O(log2(n)) car AVL
+        -- Précondition : Cible /= null
         function PetitVoisin(Cible : Arbre) return Arbre is
                 Pere : Arbre := Cible.Pere;
         begin
@@ -48,13 +51,16 @@ package body AVL is
                 end if;
         end;
 
-        -- requires Cible /= null
+        -- Coût au pire cas : O(h) = O(log2(n)) car AVL
+        -- Précondition : Cible /= null
         function GrandVoisin(Cible : Arbre) return Arbre is
                 Pere : Arbre := Cible.Pere;
         begin
+                -- Descente de l'arbre
                 if Cible.Fils(Droite) /= null then
                         return Min_Noeud( Cible.Fils(Droite) );
 
+                -- Remontée de l'arbre
                 else
                         while Pere /= null loop
                                 if Pere.C > Cible.C then
@@ -68,6 +74,7 @@ package body AVL is
                 end if;
         end;
 
+        -- Coût au pire cas : O(h) = O(log2(n)) car AVL
         procedure Noeuds_Voisins(Cible : Arbre ; Petit_Voisin, Grand_Voisin : out Arbre) is
         begin
                 if Cible /= null then
@@ -79,20 +86,21 @@ package body AVL is
                 end if;
         end;
 
+        -- Coût : O(1)
+        -- On a réduit le coût en stockant
+        -- le compte de chaque noeud dans le champ "Compte"
+        -- qui est mis à jour quand nécessaire.
         function Compte( Cible : Arbre ) return Natural is
                 Res : Natural := 0;
         begin
                 if Cible /= null then
-                        -- Debug bruteforce calc pas O(h)
-                        --Res := 1 + Compte( Cible.Fils(Gauche) ) + Compte( Cible.Fils(Droite) );
-
-                        -- O(h) optim calc
                         Res := Cible.Compte;
                 end if;
 
                 return Res;
         end;
 
+        -- Coût au pire cas : O(h - 1)
         function CompteInf(iCible : Arbre ; Clef : Type_Clef) return Natural is
                 Res : Natural := 0;
                 Prev : Arbre := iCible;
@@ -107,12 +115,14 @@ package body AVL is
                                 Res := Res + Compte(Cible.Fils(Gauche));
                         end if;
 
+                        -- Remontée récursive de l'arbre
                         Res := Res + CompteInf(Cible, Clef);
                 end if;
 
                 return Res;
         end;
 
+        -- Coût au pire cas : O(h - 1)
         function CompteSup(iCible : Arbre ; Clef : Type_Clef) return Natural is
                 Res : Natural := 0;
                 Prev : Arbre := iCible;
@@ -123,16 +133,19 @@ package body AVL is
                                 Res := Res + 1;
                         end if;
 
+                        -- Descente de l'arbre
                         if Cible.Fils(Droite) /= Prev then
                                 Res := Res + Compte(Cible.Fils(Droite));
                         end if;
 
+                        -- Remontée récursive de l'arbre
                         Res := Res + CompteSup(Cible, Clef);
                 end if;
 
                 return Res;
         end;
 
+        -- Coût au pire cas : O(h) = O(1) + O(h - 1) = O(log2(n)) car AVL
         procedure Compte_Position( Cible : Arbre ; Nb_Petits, Nb_Grands : out Natural) is
         begin
                 Nb_Petits := Compte( Cible.Fils(Gauche) ) + CompteInf(Cible, Cible.C);

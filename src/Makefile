@@ -11,7 +11,7 @@ clean:
 	gnatclean $(EXEC)
 	gnatclean test_avl
 	gnatclean test_comp
-	rm -f out.png AVL_dot/*
+	rm -f test_avl.dot dots/*
 
 run: all
 	./$(EXEC) $(TEST)

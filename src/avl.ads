@@ -25,18 +25,26 @@ package AVL is
 
         procedure Liberer_Noeud is new Ada.Unchecked_Deallocation (Object => Noeud, Name => Arbre);
 
-        -- Coût pire cas = O(h)
+
+
+        -- Coût au pire cas : O(h) = O(log2(n)) car AVL
         procedure Noeuds_Voisins(Cible : Arbre ; Petit_Voisin, Grand_Voisin : out Arbre);
 
-        -- Coût pire cas = O(h)
+        -- Coût au pire cas : O(h) = O(log2(n)) car AVL
         procedure Compte_Position( Cible : Arbre ; Nb_Petits, Nb_Grands : out Natural);
 
+
+        -- Coût au pire cas : O(h) = O(log2(n)) car AVL
         function Inserer(Noeud : in out Arbre ; Clef : Type_Clef) return Arbre;
 
+        -- Coût au pire cas : O(h) = O(log2(n)) car AVL
         function Rechercher(Racine : Arbre ; Clef : Type_Clef) return Arbre;
 
+        -- Coût au pire cas : O(h) = O(log2(n)) car AVL
         function Supprimer_Noeud(Racine : Arbre ; Clef : Type_Clef) return Arbre;
 
+        -- Libère l'AVL en entier (pour s'assurer qu'il n'y a pas de leak).
+        -- Coût au pire cas : O(h)
         procedure Liberer(Racine : in out Arbre);
 
 

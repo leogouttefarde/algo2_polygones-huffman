@@ -34,10 +34,6 @@ begin
 
         s4 := Segment_Lists.Element( Segment_Pos );
 
-        -- Affiche_Segment(s2);
-        -- Affiche_Segment(s4);
-        -- New_Line;
-
 
         if s2 = s4 then
                 Put_Line("s2 = s4 Erreur");
@@ -71,8 +67,6 @@ begin
         end loop;
 
         s7 := Segment_Lists.Element( Segment_Pos );
-
-        -- Affiche_Segment(s7);
 
 
         if s7 = s7 then

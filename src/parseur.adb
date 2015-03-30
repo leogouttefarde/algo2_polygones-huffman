@@ -43,6 +43,14 @@ package body Parseur is
                         Point_Lists.Append( Points, cPoint );
 
                 end loop;
+
+
+        exception
+                -- Si une exception est levée,
+                -- le fichier est invalide : on arrête l'exécution.
+                when others =>
+                        Put_Line("Polygone invalide.");
+                        GNAT.OS_Lib.OS_Exit (1); -- On quitte le programme.
         end;
 
 end Parseur;

@@ -99,7 +99,7 @@ begin
 
 
         --Affichage_AVL(cAVL);
-        Arbre_Entiers.Export("entiers.dot", cAVL);
+        Arbre_Entiers.Export("test_avl.dot", cAVL);
 
         Arbre_Entiers.Liberer(cAVL);
 end;
