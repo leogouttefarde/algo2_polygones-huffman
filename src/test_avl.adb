@@ -12,7 +12,7 @@ procedure Test_AVL is
 
         procedure Affiche_Entier(Entier : Integer) is
         begin
-                Put( " " & Integer'Image(Entier) );
+                Put_Line( Integer'Image(Entier) );
         end;
 
         procedure Affichage_AVL is new Arbre_Entiers.Affichage ( Affiche_Entier );
@@ -99,6 +99,7 @@ begin
 
 
         --Affichage_AVL(cAVL);
+        Arbre_Entiers.Export("entiers.dot", cAVL);
 
         Arbre_Entiers.Liberer(cAVL);
 end;

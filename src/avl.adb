@@ -84,11 +84,10 @@ package body AVL is
         begin
                 if Cible /= null then
                         -- Debug bruteforce calc pas O(h)
-                        Res := 1 + Compte( Cible.Fils(Gauche) ) + Compte( Cible.Fils(Droite) );
+                        --Res := 1 + Compte( Cible.Fils(Gauche) ) + Compte( Cible.Fils(Droite) );
 
-                        -- O(h) optim calc (fonctionnel quand comparaisons type ok sauf des fois)
-                        -- Buggué
-                        --Res := Cible.Compte;
+                        -- O(h) optim calc
+                        Res := Cible.Compte;
                 end if;
 
                 return Res;
@@ -156,6 +155,9 @@ package body AVL is
                 pNoeud.C := Clef;
                 pNoeud.Compte := 1;
                 pNoeud.Hauteur := 1;
+                pNoeud.Pere := null;
+                pNoeud.Fils(Gauche) := null;
+                pNoeud.Fils(Droite) := null;
 
                 return pNoeud;
         end;
@@ -177,14 +179,15 @@ package body AVL is
                 end if;
 
 
+                -- Else jamais rencontré normalement
                 if pNoeud.Compte > Noeud.Compte then
                         pNoeud.Compte := pNoeud.Compte - Noeud.Compte;
                 end if;
 
                 Noeud.Compte := Count;
 
-                pNoeud.Hauteur := Natural'Max( Hauteur(pNoeud.Fils(Gauche)), Hauteur(pNoeud.Fils(Droite))+1 );
-                Noeud.Hauteur := Natural'Max( Hauteur(Noeud.Fils(Gauche)), Hauteur(Noeud.Fils(Droite))+1 );
+                pNoeud.Hauteur := Natural'Max( Hauteur(pNoeud.Fils(Gauche)), Hauteur(pNoeud.Fils(Droite))) + 1;
+                Noeud.Hauteur := Natural'Max( Hauteur(Noeud.Fils(Gauche)), Hauteur(Noeud.Fils(Droite))) + 1;
 
                 return Noeud;
         end;
@@ -206,14 +209,15 @@ package body AVL is
                 end if;
 
 
+                -- Else jamais rencontré normalement
                 if A.Compte > B.Compte then
                         A.Compte := A.Compte - B.Compte;
                 end if;
 
                 B.Compte := Count;
 
-                A.Hauteur := Natural'Max( Hauteur(A.Fils(Gauche)), Hauteur(A.Fils(Droite))+1 );
-                B.Hauteur := Natural'Max( Hauteur(B.Fils(Gauche)), Hauteur(B.Fils(Droite))+1 );
+                A.Hauteur := Natural'Max( Hauteur(A.Fils(Gauche)), Hauteur(A.Fils(Droite))) + 1;
+                B.Hauteur := Natural'Max( Hauteur(B.Fils(Gauche)), Hauteur(B.Fils(Droite))) + 1;
 
                 return B;
         end;
@@ -248,7 +252,7 @@ package body AVL is
                 end if;
 
                 Noeud.Compte := Noeud.Compte + 1;
-                Noeud.Hauteur := Natural'Max( Hauteur(Noeud.Fils(Gauche)), Hauteur(Noeud.Fils(Droite))+1 );
+                Noeud.Hauteur := Natural'Max( Hauteur(Noeud.Fils(Gauche)), Hauteur(Noeud.Fils(Droite))) + 1;
 
                 cBalance := Balance(Noeud);
 
@@ -341,28 +345,25 @@ package body AVL is
 
                 if oRacine.Compte > 1 then
                         oRacine.Compte := oRacine.Compte - 1;
-                --else
-                        -- Exécution else
-                        -- = Erreur apparemment causée si comparaisons type non ok
                 end if;
 
-                oRacine.Hauteur := Natural'Max( Hauteur(oRacine.Fils(Gauche)), Hauteur(oRacine.Fils(Droite))+1 );
+                oRacine.Hauteur := Natural'Max( Hauteur(oRacine.Fils(Gauche)), Hauteur(oRacine.Fils(Droite))) + 1;
 
                 cBalance := Balance(oRacine);
 
                 if (cBalance > 1 and then Balance(oRacine.Fils(Gauche)) >= 0) then
-                        return Rotation_Droite(oRacine);
+                        oRacine := Rotation_Droite(oRacine);
 
                 elsif (cBalance > 1 and then Balance(oRacine.Fils(Gauche)) < 0) then
                         oRacine.Fils(Gauche) := Rotation_Gauche(oRacine.Fils(Gauche));
-                        return Rotation_Droite(oRacine);
+                        oRacine := Rotation_Droite(oRacine);
 
                 elsif (cBalance < -1 and then Balance(oRacine.Fils(Droite)) <= 0) then
-                        return Rotation_Gauche(oRacine);
+                        oRacine := Rotation_Gauche(oRacine);
 
                 elsif (cBalance < -1 and then Balance(oRacine.Fils(Droite)) > 0) then
                         oRacine.Fils(Droite) := Rotation_Droite(oRacine.Fils(Droite));
-                        return Rotation_Gauche(oRacine);
+                        oRacine := Rotation_Gauche(oRacine);
                 end if;
 
                 return oRacine;
@@ -389,7 +390,43 @@ package body AVL is
                 end if;
         end;
 
+        procedure Export(Dest : String ; Racine : Arbre) is
 
+                procedure Subtree(File : File_Type ; Racine : Arbre ; Index : in out Natural) is
+                        Cur : Natural := Index + 1;
+                begin
+                        if Racine /= null then
+                                Index := Cur;
+                                Put(File, " -- " & Natural'Image(Cur) );
+                                Subtree(File, Racine.Fils(Gauche), Index);
+                                Put(File, "   " & Natural'Image(Cur) );
+                                Subtree(File, Racine.Fils(Droite), Index);
+                        else
+                                New_Line(File);
+                        end if;
+                end;
+
+                File : File_Type;
+                Index : Natural := 0;
+                Cur : Natural := Index;
+        begin
+                if Racine /= null then
+
+                        Create( File => File, Mode => Out_File, Name => Dest );
+
+                        New_Line(File);
+                        Put_Line(File, "graph { ");
+                        Put(File, "   " & Natural'Image(Cur));
+                        Subtree(File, Racine.Fils(Gauche), Index);
+                        Put(File, "   " & Natural'Image(Cur));
+                        Subtree(File, Racine.Fils(Droite), Index);
+                        Put_Line(File, "}");
+                        New_Line(File);
+
+                        Close(File);
+
+                end if;
+        end;
 
 end AVL;
 

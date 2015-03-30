@@ -11,7 +11,7 @@ clean:
 	gnatclean $(EXEC)
 	gnatclean test_avl
 	gnatclean test_comp
-	rm -f out.png
+	rm -f out.png AVL_dot/*
 
 run: all
 	./$(EXEC) $(TEST)
@@ -30,7 +30,7 @@ svg: all
 	./$(EXEC) $(TEST) > $(SVG)
 	inkscape $(SVG)
 
-test_avl:
+test_avl: all
 	gnatmake $@
 
 test_comp: all
@@ -38,5 +38,8 @@ test_comp: all
 
 dot:
 	dot -Tpng test.dot > out.png
+
+avls:
+	sh dot.sh
 
 

@@ -44,6 +44,8 @@ package AVL is
                 with procedure Affiche(Clef : Type_Clef);
         procedure Affichage(Racine : Arbre);
 
+        procedure Export(Dest : String ; Racine : Arbre);
+
 end AVL;
 
 
