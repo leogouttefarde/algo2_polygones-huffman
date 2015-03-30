@@ -26,6 +26,8 @@ package Common is
         end record;
 
 
+        F_Epsilon : constant Float := 0.0001;
+
         function Egal (F1, F2 : Float) return Boolean;
 
         function Inf (F1, F2 : Float) return Boolean;
@@ -33,6 +35,14 @@ package Common is
 
         function Sup (F1, F2 : Float) return Boolean;
         function SupEgal (F1, F2 : Float) return Boolean;
+
+
+
+        function "+" (P1, P2 : SimplePoint) return SimplePoint;
+        function "-" (P1, P2 : SimplePoint) return SimplePoint;
+        function "*" (P1 : SimplePoint ; Coef : Float) return SimplePoint;
+        function "*" (Coef : Float ; P1 : SimplePoint) return SimplePoint;
+        function "*" (P1, P2 : SimplePoint) return SimplePoint;
 
 
         function "<" (S1, S2 : Segment) return Boolean;
@@ -52,6 +62,9 @@ package Common is
 
 
         function Intersection(sPoint : SimplePoint ; cSegment : Segment) return SimplePoint;
+
+
+        procedure Affiche_Point(sPoint : SimplePoint);
 
         procedure Affiche_Segment(cSegment : Segment);
 

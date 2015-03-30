@@ -4,13 +4,6 @@ use Ada.Text_IO;
 
 package body Decompose is
 
-        procedure Affiche_Point(sPoint : SimplePoint) is
-        begin
-                Put_Line( "("& Float'Image(sPoint.X)
-                        & ", "& Float'Image(sPoint.Y)
-                        & ")");
-        end;
-
         procedure Affichage_AVL is new Arbre_Segments.Affichage ( Affiche_Segment );
 
         -- requires Prev(2) = cPoint = Next(1)

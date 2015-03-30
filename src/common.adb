@@ -6,6 +6,13 @@ use Ada.Text_IO;
 
 package body Common is
 
+        procedure Affiche_Point(sPoint : SimplePoint) is
+        begin
+                Put_Line( "("& Float'Image(sPoint.X)
+                        & ", "& Float'Image(sPoint.Y)
+                        & ")");
+        end;
+
         procedure Affiche_Segment(cSegment : Segment) is
         begin
                 Put_Line( "S1 = ("& Float'Image(cSegment(1).X)
@@ -24,6 +31,47 @@ package body Common is
                 return False;
         end;
 
+        function "+" (P1, P2 : SimplePoint) return SimplePoint is
+                oPt : SimplePoint;
+        begin
+                oPt.X := P1.X + P2.X;
+                oPt.Y := P1.Y + P2.Y;
+
+                return oPt;
+        end;
+
+        function "-" (P1, P2 : SimplePoint) return SimplePoint is
+                oPt : SimplePoint;
+        begin
+                oPt.X := P1.X - P2.X;
+                oPt.Y := P1.Y - P2.Y;
+
+                return oPt;
+        end;
+
+        function "*" (P1 : SimplePoint ; Coef : Float) return SimplePoint is
+                oPt : SimplePoint;
+        begin
+                oPt.X := P1.X * Coef;
+                oPt.Y := P1.Y * Coef;
+
+                return oPt;
+        end;
+
+        function "*" (Coef : Float ; P1 : SimplePoint) return SimplePoint is
+        begin
+                return P1 * Coef;
+        end;
+
+        function "*" (P1, P2 : SimplePoint) return SimplePoint is
+                oPt : SimplePoint;
+        begin
+                oPt.X := P1.X * P2.X;
+                oPt.Y := P1.Y * P2.Y;
+
+                return oPt;
+        end;
+
         function IsPoint (cSegment : Segment) return Boolean is
         begin
                 if cSegment(1) = cSegment(2) then
@@ -33,8 +81,6 @@ package body Common is
                 return False;
         end;
 
-
-        F_Epsilon : Float := 0.0001;
 
         function Egal (F1, F2 : Float) return Boolean is
                 Diff : Float := F1 - F2;

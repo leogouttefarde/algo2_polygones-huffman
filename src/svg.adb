@@ -3,38 +3,126 @@ use Ada.Text_IO, Ada.Float_Text_IO, Ada.Integer_Text_IO;
 
 package body SVG is
 
-        Display_Width, Display_Height : Float;
+        Width, Height : Float;
+        Scale : Float;
+        Base : SimplePoint := (0.0, 0.0);
+
+        -- Améliore la compatibilité des valeurs Float
+        -- en enlevant l'espace mis au début par Float'Image
+        function SClean(iString : String) return String is
+        begin
+                return iString(iString'First + 1 .. iString'Last);
+        end;
+
+        procedure PutF(Value : Float) is
+        begin
+                Put( SClean( Float'Image(Value) ) );
+        end;
+
+
+        procedure Svg_Scale(Points : Point_Lists.List) is
+                Point_Pos : Point_Lists.Cursor;
+                cPoint : Point;
+                sPoint : SimplePoint;
+                X_Min : Float := 0.0;
+                X_Max : Float := Width;
+                Y_Min : Float := 0.0;
+                Y_Max : Float := Height;
+                rWidth : Float := Width;
+                rHeight : Float := Height;
+        begin
+                Point_Pos := Point_Lists.First( Points );
+
+                cPoint := Point_Lists.Element( Point_Pos );
+                sPoint := cPoint.Pt;
+
+                X_Min := sPoint.X;
+                X_Max := sPoint.X;
+                Y_Min := sPoint.Y;
+                Y_Max := sPoint.Y;
+
+                while Point_Lists.Has_Element( Point_Pos ) loop
+                        cPoint := Point_Lists.Element( Point_Pos );
+                        sPoint := cPoint.Pt;
+
+                        if sPoint.X > X_Max then
+                                X_Max := sPoint.X;
+                        end if;
+
+                        if sPoint.X < X_Min then
+                                X_Min := sPoint.X;
+                        end if;
+
+                        if sPoint.Y > Y_Max then
+                                Y_Max := sPoint.Y;
+                        end if;
+
+                        if sPoint.Y < Y_Min then
+                                Y_Min := sPoint.Y;
+                        end if;
+
+                        Point_Lists.Next( Point_Pos );
+                end loop;
+
+                rWidth := X_Max - X_Min;
+                rHeight := Y_Max - Y_Min;
+
+                Scale := Float'Min(Width / rWidth, Height / rHeight);
+                Scale := Scale * 0.8;
+
+                Base.X := 0.1 * Float'Min(Width, Height) - X_Min * Scale;
+                Base.Y := 0.1 * Float'Min(Width, Height) - Y_Min * Scale;
+
+        end Svg_Scale;
+
 
         procedure Svg_Line(P1, P2 : SimplePoint ; C : Color) is
+                cP1 : SimplePoint := Base + P1 * Scale;
+                cP2 : SimplePoint := Base + P2 * Scale;
         begin
                 Put("<line x1=""");
-                Put(P1.X);
+                PutF(cP1.X);
                 Put(""" y1=""");
-                Put(P1.Y);
+                PutF(cP1.Y);
                 Put(""" x2=""");
-                Put(P2.X);
+                PutF(cP2.X);
                 Put(""" y2=""");
-                Put(P2.Y);
-                Put(""" style=""stroke:");
+                PutF(cP2.Y);
+                Put(""" stroke=""");
                 case C is
-                        when Red => Put("rgb(255,0,0)");
-                        when Green => Put("rgb(0,255,0)");
-                        when Blue => Put("rgb(0,0,255)");
-                        when Black => Put("rgb(0,0,0)");
+                        when Red => Put("red");
+                        when Green => Put("green");
+                        when Blue => Put("blue");
+                        when Black => Put("black");
                 end case;
-                Put_Line(";stroke-width:0.2""/>");
+                Put_Line(""" stroke-width=""4""/>");
         end Svg_Line;
 
-        procedure Svg_Header(Width, Height : Natural) is
+        procedure Svg_Rect(iWidth, iHeight : Natural) is
+        begin
+                Put_Line("<rect width="""
+                & Natural'Image( iWidth )
+                & """ height="""
+                & Natural'Image( iHeight )
+                & """ fill=""white""/>");
+
+                Width := Float(iWidth);
+                Height := Float(iHeight);
+        end;
+
+        procedure Svg_Header(iWidth, iHeight : Natural) is
         begin
                 Put_Line("<svg width="""
-                & Natural'Image( Width )
+                & Natural'Image( iWidth )
                 & """ height="""
-                & Natural'Image( Height )
+                & Natural'Image( iHeight )
                 & """>");
 
-                Display_Width := Float(Width);
-                Display_Height := Float(Height);
+                Svg_Rect(iWidth, iHeight);
+
+
+                Width := Float(iWidth);
+                Height := Float(iHeight);
         end Svg_Header;
 
         procedure Svg_Polygon(Points : Point_Lists.List) is
@@ -47,8 +135,12 @@ package body SVG is
 
                 while Point_Lists.Has_Element( Point_Pos ) loop
                         cPoint := Point_Lists.Element( Point_Pos );
+                        cPoint.Pt := Base + cPoint.Pt * Scale;
 
-                        Put(Float'Image(cPoint.Pt.X) & "," & Float'Image(cPoint.Pt.Y) & " ");
+                        PutF(cPoint.Pt.X);
+                        Put(",");
+                        PutF(cPoint.Pt.Y);
+                        Put(" ");
 
                         Point_Lists.Next( Point_Pos );
                 end loop;

@@ -26,7 +26,8 @@ begin
                 Segments := Generate_Segments(Points);
                 Finish_Points(Points, Segments);
 
-                Svg_Header(10, 10);
+                Svg_Header(800, 600);
+                Svg_Scale(Points);
                 Svg_Polygon(Points);
 
                 Point_Sorting.Sort(Points);
