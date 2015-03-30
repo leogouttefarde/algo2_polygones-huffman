@@ -149,6 +149,13 @@ package body AVL is
                 end if;
         end;
 
+        procedure Update_Hauteur(A : in out Arbre) is
+        begin
+                if A /= null then
+                        A.Hauteur := Natural'Max( Hauteur(A.Fils(Gauche)), Hauteur(A.Fils(Droite))) + 1;
+                end if;
+        end;
+
         function Creer_Noeud(Clef : Type_Clef) return Arbre is
                 pNoeud : Arbre := new Noeud;
         begin
@@ -162,7 +169,7 @@ package body AVL is
                 return pNoeud;
         end;
 
-        function Rotation_Droite(pNoeud : Arbre) return Arbre is
+        function Rotation_Droite(pNoeud : in out Arbre) return Arbre is
                 Noeud : Arbre := pNoeud.Fils(Gauche);
                 Noeud2 : Arbre := Noeud.Fils(Droite);
                 Count : Positive := pNoeud.Compte;
@@ -186,13 +193,13 @@ package body AVL is
 
                 Noeud.Compte := Count;
 
-                pNoeud.Hauteur := Natural'Max( Hauteur(pNoeud.Fils(Gauche)), Hauteur(pNoeud.Fils(Droite))) + 1;
-                Noeud.Hauteur := Natural'Max( Hauteur(Noeud.Fils(Gauche)), Hauteur(Noeud.Fils(Droite))) + 1;
+                Update_Hauteur(pNoeud);
+                Update_Hauteur(Noeud);
 
                 return Noeud;
         end;
 
-        function Rotation_Gauche(A : Arbre) return Arbre is
+        function Rotation_Gauche(A : in out Arbre) return Arbre is
                 B : Arbre := A.Fils(Droite);
                 C : Arbre := B.Fils(Gauche);
                 Count : Positive := A.Compte;
@@ -216,8 +223,8 @@ package body AVL is
 
                 B.Compte := Count;
 
-                A.Hauteur := Natural'Max( Hauteur(A.Fils(Gauche)), Hauteur(A.Fils(Droite))) + 1;
-                B.Hauteur := Natural'Max( Hauteur(B.Fils(Gauche)), Hauteur(B.Fils(Droite))) + 1;
+                Update_Hauteur(A);
+                Update_Hauteur(B);
 
                 return B;
         end;
@@ -252,7 +259,7 @@ package body AVL is
                 end if;
 
                 Noeud.Compte := Noeud.Compte + 1;
-                Noeud.Hauteur := Natural'Max( Hauteur(Noeud.Fils(Gauche)), Hauteur(Noeud.Fils(Droite))) + 1;
+                Update_Hauteur(Noeud);
 
                 cBalance := Balance(Noeud);
 
@@ -347,7 +354,7 @@ package body AVL is
                         oRacine.Compte := oRacine.Compte - 1;
                 end if;
 
-                oRacine.Hauteur := Natural'Max( Hauteur(oRacine.Fils(Gauche)), Hauteur(oRacine.Fils(Droite))) + 1;
+                Update_Hauteur(oRacine);
 
                 cBalance := Balance(oRacine);
 
