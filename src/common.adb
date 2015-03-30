@@ -113,7 +113,7 @@ package body Common is
                 end if;
 
 
-                if cSegment(1).X < cSegment(2).X then
+                if Inf(cSegment(1).X, cSegment(2).X) then
                         X1 := cSegment(1).X;
                         Y1 := cSegment(1).Y;
 
@@ -134,8 +134,8 @@ package body Common is
                 B := Y1 - A * X1;
 
 
-                if dx = 0.0 then
-                        if X = X1 then
+                if Egal(dx, 0.0) then
+                        if Egal(X, X1) then
                                 Y := sPoint.Y;
                         else
                                 -- Hack, pas d'intersection dans ce cas (ne devrait jamais arriver)
@@ -155,7 +155,7 @@ package body Common is
         function Ordonner_Segment (cSeg : Segment) return Segment is
                 oSeg : Segment := cSeg;
         begin
-                if cSeg(2).X < cSeg(1).X then
+                if Inf(cSeg(2).X, cSeg(1).X) then
                         oSeg(1) := cSeg(2);
                         oSeg(2) := cSeg(1);
                 end if;
@@ -180,7 +180,7 @@ package body Common is
                 IsPointS2 := IsPoint(iS2);
 
                 if IsPointS1 and IsPointS2 then
-                        if iS1(1).Y > iS2(1).Y then
+                        if Sup(iS1(1).Y, iS2(1).Y) then
                                 return True;
                         else
                                 return False;
@@ -188,7 +188,7 @@ package body Common is
                 elsif IsPointS1 and not IsPointS2 then
                         Inter := Intersection(iS1(1), iS2);
 
-                        if Inter.Y < iS1(1).Y then
+                        if Inf(Inter.Y, iS1(1).Y) then
                                 return True;
                         else
                                 return False;
@@ -196,7 +196,7 @@ package body Common is
                 elsif not IsPointS1 and IsPointS2 then
                         Inter := Intersection(iS2(1), iS1);
 
-                        if Inter.Y > iS2(1).Y then
+                        if Sup(Inter.Y, iS2(1).Y) then
                                 return True;
                         else
                                 return False;
@@ -210,7 +210,7 @@ package body Common is
                 pS2 := S2;
 
                 -- On s'assure de choisir le second segment pour S1
-                if S1(1).X < S2(1).X then
+                if Inf(S1(1).X, S2(1).X) then
                         pS1 := S2;
                         pS2 := S1;
 
@@ -219,7 +219,7 @@ package body Common is
 
                 pS2(1) := Intersection(pS1(1), pS2);
 
-                if pS1(2).X > pS2(2).X then
+                if Sup(pS1(2).X, pS2(2).X) then
                         pS1(2) := Intersection(pS2(2), pS1);
                 else
                         pS2(2) := Intersection(pS1(2), pS2);
@@ -261,7 +261,7 @@ package body Common is
 
         function "<" (P1, P2 : Point) return Boolean is
         begin
-                if P1.Pt.X < P2.Pt.X then
+                if Inf(P1.Pt.X, P2.Pt.X) then
                         return True;
                 end if;
 
@@ -270,7 +270,7 @@ package body Common is
 
         function ">" (P1, P2 : Point) return Boolean is
         begin
-                if P1.Pt.X > P2.Pt.X then
+                if Sup(P1.Pt.X, P2.Pt.X) then
                         return True;
                 end if;
 
@@ -279,7 +279,7 @@ package body Common is
 
         function "=" (P1, P2 : Point) return Boolean is
         begin
-                if P1.Pt.X = P2.Pt.X then
+                if Egal(P1.Pt.X, P2.Pt.X) then
                         return True;
                 end if;
 

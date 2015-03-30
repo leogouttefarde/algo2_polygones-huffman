@@ -16,15 +16,15 @@ package body Decompose is
         -- requires Prev(2) = cPoint = Next(1)
         procedure Finish_Point (cPoint : in out Point ; Prev, Next : Segment) is
         begin
-                if Prev(1).X <= cPoint.Pt.X then
+                if InfEgal(Prev(1).X, cPoint.Pt.X) then
                         Segment_Lists.Append(cPoint.InSegs, Prev);
-                elsif Prev(1).X > cPoint.Pt.X then
+                elsif Sup(Prev(1).X, cPoint.Pt.X) then
                         Segment_Lists.Append(cPoint.OutSegs, Prev);
                 end if;
 
-                if Next(2).X < cPoint.Pt.X then
+                if Inf(Next(2).X, cPoint.Pt.X) then
                         Segment_Lists.Append(cPoint.InSegs, Next);
-                elsif Next(2).X >= cPoint.Pt.X then
+                elsif SupEgal(Next(2).X, cPoint.Pt.X) then
                         Segment_Lists.Append(cPoint.OutSegs, Next);
                 end if;
         end;

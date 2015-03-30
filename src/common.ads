@@ -25,6 +25,16 @@ package Common is
                 OutSegs : Segment_Lists.List;
         end record;
 
+
+        function Egal (F1, F2 : Float) return Boolean;
+        function Inf (F1, F2 : Float) return Boolean;
+
+        function InfEgal (F1, F2 : Float) return Boolean;
+        function Sup (F1, F2 : Float) return Boolean;
+
+
+        function SupEgal (F1, F2 : Float) return Boolean;
+
         function "=" (P1, P2 : Point) return Boolean;
 
 
