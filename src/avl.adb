@@ -433,6 +433,8 @@ package body AVL is
                         Close(File);
 
                 end if;
+        exception
+                when others => NULL;
         end;
 
 end AVL;

@@ -116,7 +116,8 @@ package body Decompose is
                 end if;
         end;
 
-        DotIndex : Natural := 0;
+
+        --DotIndex : Natural := 0;
 
         procedure Decomposition(cPoint : Point ; cAVL : in out Arbre_Segments.Arbre) is
                 Rebroussement : Boolean := False;
@@ -193,8 +194,8 @@ package body Decompose is
                 end loop;
 
 
-                --Arbre_Segments.Export("AVL_dot/AVL" & Natural'Image(DotIndex) & ".dot", cAVL);
-                DotIndex := DotIndex + 1;
+                --Arbre_Segments.Export("dots/AVL" & Natural'Image(DotIndex) & ".dot", cAVL);
+                --DotIndex := DotIndex + 1;
 
 
                 if Segment_Lists.Length(cPoint.InSegs) = 2 then

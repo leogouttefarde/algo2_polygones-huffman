@@ -37,9 +37,6 @@ test_comp: all
 	gnatmake $@
 
 dot:
-	dot -Tpng test.dot > out.png
-
-avls:
-	sh dot.sh
+	sh dots2png.sh
 
 
