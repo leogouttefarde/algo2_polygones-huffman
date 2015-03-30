@@ -35,10 +35,6 @@ package Common is
         function SupEgal (F1, F2 : Float) return Boolean;
 
 
-        function "=" (P1, P2 : Point) return Boolean;
-
-
-
         function "<" (S1, S2 : Segment) return Boolean;
         function ">" (iS1, iS2 : Segment) return Boolean;
 
@@ -46,11 +42,13 @@ package Common is
         use Arbre_Segments;
 
 
+        function "=" (P1, P2 : Point) return Boolean;
         function "<" (P1, P2 : Point) return Boolean;
         function ">" (P1, P2 : Point) return Boolean;
 
 
         package Point_Lists is new Ada.Containers.Doubly_Linked_Lists ( Point, "=" );
+        package Point_Sorting is new Point_Lists.Generic_Sorting( "<" );
 
 
         function Intersection(sPoint : SimplePoint ; cSegment : Segment) return SimplePoint;

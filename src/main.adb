@@ -9,8 +9,6 @@ with Decompose; use Decompose;
 
 procedure Main is
 
-        package Point_Sorting is new Point_Lists.Generic_Sorting( "<" );
-
         Points : Point_Lists.List;
         Segments : Segment_Lists.List;
         cAVL : Arbre_Segments.Arbre;
