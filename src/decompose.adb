@@ -109,7 +109,7 @@ package body Decompose is
                 if Up /= null then
                         UpPoint := Intersection(sPoint, Up.all);
 
-                        if not IsPoint((sPoint, UpPoint, sPoint)) then
+                        if not IsPoint( (sPoint, UpPoint) ) then
                                 Svg_Line(sPoint, UpPoint, Green);
                         end if;
                 end if;
@@ -117,7 +117,7 @@ package body Decompose is
                 if Down /= null then
                         DownPoint := Intersection(sPoint, Down.all);
 
-                        if not IsPoint((sPoint, DownPoint, sPoint)) then
+                        if not IsPoint( (sPoint, DownPoint) ) then
                                 Svg_Line(sPoint, DownPoint, Green);
                         end if;
                 end if;
@@ -141,7 +141,7 @@ package body Decompose is
 
                 if Segment_Lists.Length(cPoint.OutSegs) = 2 then
                         Rebroussement := True;
-                        cSegment := ( sPoint, sPoint, sPoint );
+                        cSegment := ( sPoint, sPoint );
 
                         pNoeud := Arbre_Segments.Inserer(cAVL, cSegment);
 
@@ -206,7 +206,7 @@ package body Decompose is
 
                 if Segment_Lists.Length(cPoint.InSegs) = 2 then
                         Rebroussement := True;
-                        cSegment := ( sPoint, sPoint, sPoint );
+                        cSegment := ( sPoint, sPoint );
                         pNoeud := Arbre_Segments.Inserer(cAVL, cSegment);
 
                         Noeuds_Voisins(pNoeud, V_petit, V_Grand);

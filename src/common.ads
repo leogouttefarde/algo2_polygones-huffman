@@ -11,7 +11,7 @@ package Common is
                 Y : Float;
         end record;
 
-        type Segment is array (Positive range 1 .. 3) of SimplePoint;
+        type Segment is array (Positive range 1 .. 2) of SimplePoint;
 
         package Segment_Lists is new Ada.Containers.Doubly_Linked_Lists ( Segment );
         type pSegment is access Segment;
@@ -27,13 +27,13 @@ package Common is
 
 
         function Egal (F1, F2 : Float) return Boolean;
+
         function Inf (F1, F2 : Float) return Boolean;
-
         function InfEgal (F1, F2 : Float) return Boolean;
+
         function Sup (F1, F2 : Float) return Boolean;
-
-
         function SupEgal (F1, F2 : Float) return Boolean;
+
 
         function "=" (P1, P2 : Point) return Boolean;
 

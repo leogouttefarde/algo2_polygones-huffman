@@ -8,8 +8,7 @@ package body Common is
 
         procedure Affiche_Segment(cSegment : Segment) is
         begin
-                Put_Line( Float'Image(cSegment(3).X)
-                        & "  S1 = ("& Float'Image(cSegment(1).X)
+                Put_Line( "S1 = ("& Float'Image(cSegment(1).X)
                         & ", "& Float'Image(cSegment(1).Y)
                         & ")    S2 = ("& Float'Image(cSegment(2).X)
                         & ", "& Float'Image(cSegment(2).Y)
