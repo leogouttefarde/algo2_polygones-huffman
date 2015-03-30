@@ -16,27 +16,17 @@ package body Decompose is
         -- requires Prev(2) = cPoint = Next(1)
         procedure Finish_Point (cPoint : in out Point ; Prev, Next : Segment) is
         begin
-                if Prev(1).X < cPoint.Pt.X then
+                if Prev(1).X <= cPoint.Pt.X then
                         Segment_Lists.Append(cPoint.InSegs, Prev);
                 elsif Prev(1).X > cPoint.Pt.X then
                         Segment_Lists.Append(cPoint.OutSegs, Prev);
-                else
-                        -- Cheat traitement segments verticaux
-                        cPoint.InCount := cPoint.InCount + 1;
                 end if;
 
                 if Next(2).X < cPoint.Pt.X then
                         Segment_Lists.Append(cPoint.InSegs, Next);
-                elsif Next(2).X > cPoint.Pt.X then
+                elsif Next(2).X >= cPoint.Pt.X then
                         Segment_Lists.Append(cPoint.OutSegs, Next);
-                else
-                        -- Cheat traitement segments verticaux
-                        cPoint.OutCount := cPoint.OutCount + 1;
                 end if;
-
-                -- Cheat traitement segments verticaux
-                cPoint.InCount := cPoint.InCount + Natural(Segment_Lists.Length(cPoint.InSegs));
-                cPoint.OutCount := cPoint.OutCount + Natural(Segment_Lists.Length(cPoint.OutSegs));
         end;
 
         procedure Finish_Points (Points : in out Point_Lists.List ; Segments : Segment_Lists.List) is
@@ -149,7 +139,7 @@ package body Decompose is
                 Segment_Pos : Segment_Lists.Cursor;
         begin
 
-                if cPoint.OutCount = 2 then
+                if Segment_Lists.Length(cPoint.OutSegs) = 2 then
                         Rebroussement := True;
                         cSegment := ( sPoint, sPoint, sPoint );
 
@@ -214,7 +204,7 @@ package body Decompose is
                 DotIndex := DotIndex + 1;
 
 
-                if cPoint.InCount = 2 then
+                if Segment_Lists.Length(cPoint.InSegs) = 2 then
                         Rebroussement := True;
                         cSegment := ( sPoint, sPoint, sPoint );
                         pNoeud := Arbre_Segments.Inserer(cAVL, cSegment);
