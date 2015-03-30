@@ -30,6 +30,8 @@ package body SVG is
                 Y_Max : Float := Height;
                 rWidth : Float := Width;
                 rHeight : Float := Height;
+                Scale_X : Float := 1.0;
+                Scale_Y : Float := 1.0;
         begin
                 Point_Pos := Point_Lists.First( Points );
 
@@ -67,11 +69,13 @@ package body SVG is
                 rWidth := X_Max - X_Min;
                 rHeight := Y_Max - Y_Min;
 
-                Scale := Float'Min(Width / rWidth, Height / rHeight);
+                Scale_X := Width / rWidth;
+                Scale_Y := Height / rHeight;
+                Scale := Float'Min(Scale_X, Scale_Y);
                 Scale := Scale * 0.8;
 
-                Base.X := 0.1 * Float'Min(Width, Height) - X_Min * Scale;
-                Base.Y := 0.1 * Float'Min(Width, Height) - Y_Min * Scale;
+                Base.X := 0.1 * Scale_X * rWidth - X_Min * Scale;
+                Base.Y := 0.1 * Scale_Y * rHeight - Y_Min * Scale;
 
         end Svg_Scale;
 
@@ -145,7 +149,7 @@ package body SVG is
                         Point_Lists.Next( Point_Pos );
                 end loop;
 
-                Put_Line(""" style=""fill:blue;fill-opacity:0.5""/>");
+                Put_Line(""" style=""fill:royalblue;fill-opacity:0.5""/>");
 
         end Svg_Polygon;
 
