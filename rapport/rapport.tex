@@ -149,11 +149,15 @@ Nous avons bien évidemment testé le code au fur et à mesure tout au long du p
 
 Pour ces tests nous avons principalement utilisé les fichiers test\_avl.adb et test\_comp.adb.
 
+% \begin{figure}
 \begin{center}
-  \includegraphics[scale=0.5]{entiers.png}
+% \centering
+  \includegraphics[scale=0.75]{avl.pdf}
+  % \caption{Légende}
+% \end{figure}
 \end{center}
 
-Le fichier test\_avl.adb implémente l'exemple d'arbre d'entiers du sujet afin de vérifier les valeurs attendues et en exporte un fichier \textit{test\_avl.dot}, ce qui donne la figure ci-dessus après export en png via le logiciel dot.
+Le fichier test\_avl.adb implémente l'exemple d'arbre d'entiers du sujet afin de vérifier les valeurs attendues et en exporte un fichier \textit{test\_avl.dot}, ce qui donne la figure ci-dessus.
 
 
 En effet nous avons réalisé une fonction d'export générique \textit{dot}, \lstinline!AVL.Generic_Display.Export!, afin de vérifier le bon équilibrage des arbres et visualiser les problèmes de comparaison de segments.
