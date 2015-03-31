@@ -102,7 +102,7 @@ package body Decompose is
                         P2 := Intersection(P1, cSegment.all);
 
                         if not IsPoint((P1, P2)) then
-                                Svg_Line(P1, P2, Green);
+                                Svg_Line(P1, P2, Blue);
                         end if;
                 end if;
         end;
@@ -156,6 +156,7 @@ package body Decompose is
                 Segment_Pos : Segment_Lists.Cursor;
         begin
 
+                -- One regarde si on est sur un point de rebroussement
                 if Segment_Lists.Length(cPoint.OutSegs) = 2 then
                         Rebroussement := True;
                         cSegment := ( sPoint, sPoint );
@@ -176,7 +177,7 @@ package body Decompose is
                 end if;
 
 
-
+                -- On retire de l'AVL les segments qui finissent au point courant
                 Segment_Pos := Segment_Lists.First( cPoint.InSegs );
                 while Segment_Lists.Has_Element( Segment_Pos ) loop
 
@@ -188,6 +189,7 @@ package body Decompose is
                 end loop;
 
 
+                -- On ajoute à l'AVL les segments qui commencent au point courant
                 Segment_Pos := Segment_Lists.First( cPoint.OutSegs );
                 while Segment_Lists.Has_Element( Segment_Pos ) loop
 
@@ -222,6 +224,7 @@ package body Decompose is
                 end if;
 
 
+                -- On traite l'éventuel point de rebroussement
                 if Rebroussement and (Impair(C_petits) or Impair(C_Grands)) then
 
                         Reconnexion(sPoint, S_petit);

@@ -26,7 +26,7 @@ begin
                 Segments := Generate_Segments(Points);
                 Finish_Points(Points, Segments);
 
-                Svg_Header(800, 600);
+                Svg_Header(600, 600);
                 Svg_Scale(Points);
                 Svg_Polygon(Points);
 
