@@ -185,34 +185,34 @@ package body AVL is
         end;
 
 
-        function Rotation_Droite(pNoeud : in out Arbre) return Arbre is
-                Noeud : Arbre := pNoeud.Fils(Gauche);
-                Noeud2 : Arbre := Noeud.Fils(Droite);
-                Count : Positive := pNoeud.Compte;
+        function Rotation_Droite(A : in out Arbre) return Arbre is
+                B : Arbre := A.Fils(Gauche);
+                C : Arbre := B.Fils(Droite);
+                Count : Positive := A.Compte;
         begin
-                Noeud.Fils(Droite) := pNoeud;
-                pNoeud.Fils(Gauche) := Noeud2;
+                B.Fils(Droite) := A;
+                A.Fils(Gauche) := C;
 
-                Noeud.Pere := pNoeud.Pere;
-                pNoeud.Pere := Noeud;
+                B.Pere := A.Pere;
+                A.Pere := B;
 
-                if Noeud2 /= null then
-                        Noeud2.Pere := pNoeud;
-                        pNoeud.Compte := pNoeud.Compte + Noeud2.Compte;
+                if C /= null then
+                        C.Pere := A;
+                        A.Compte := A.Compte + C.Compte;
                 end if;
 
 
                 -- Else jamais rencontré normalement
-                if pNoeud.Compte > Noeud.Compte then
-                        pNoeud.Compte := pNoeud.Compte - Noeud.Compte;
+                if A.Compte > B.Compte then
+                        A.Compte := A.Compte - B.Compte;
                 end if;
 
-                Noeud.Compte := Count;
+                B.Compte := Count;
 
-                Update_Hauteur(pNoeud);
-                Update_Hauteur(Noeud);
+                Update_Hauteur(A);
+                Update_Hauteur(B);
 
-                return Noeud;
+                return B;
 
         end Rotation_Droite;
 
