@@ -1,3 +1,4 @@
+#!/bin/sh
 
 DOT_DIR=dots
 

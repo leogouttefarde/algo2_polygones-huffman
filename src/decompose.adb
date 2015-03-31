@@ -65,7 +65,8 @@ package body Decompose is
         begin
                 Point_Pos := Point_Lists.First( Points );
                 cPoint := Point_Lists.Element( Point_Pos );
-                First := cPoint.Pt;
+                sPoint := cPoint.Pt;
+                First := sPoint;
                 Prev := First;
 
                 loop

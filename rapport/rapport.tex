@@ -12,6 +12,56 @@
 \usepackage{url}
 \newcommand{\dsp}{\displaystyle}
 
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1ex}
+\setlength{\textwidth}{17cm}
+\setlength{\textheight}{24cm}
+\setlength{\oddsidemargin}{-.7cm}
+\setlength{\evensidemargin}{-.7cm}
+\setlength{\topmargin}{-.5in}
+
+
+%%%%%%
+% Pour mise-en-forme des fichiers Ada
+%
+% voir exemple en fin de ce fichier.
+%
+% ATTENTION, requiert encoding utf-8 (voir 2ième "\lstset" ci-dessous)
+ 
+\usepackage{listings}
+\lstset{
+  morekeywords={abort,abs,accept,access,all,and,array,at,begin,body,
+      case,constant,declare,delay,delta,digits,do,else,elsif,end,entry,
+      exception,exit,for,function,generic,goto,if,in,is,limited,loop,
+      mod,new,not,null,of,or,others,out,package,pragma,private,
+      procedure,raise,range,record,rem,renames,return,reverse,select,
+      separate,subtype,task,terminate,then,type,use,when,while,with,
+      xor,abstract,aliased,protected,requeue,tagged,until},
+  sensitive=f,
+  morecomment=[l]--,
+  morestring=[d]",
+  showstringspaces=false,
+  basicstyle=\small\ttfamily,
+  keywordstyle=\bf\small,
+  commentstyle=\itshape,
+  stringstyle=\sf,
+  extendedchars=true,
+  columns=[c]fixed
+}
+
+% CI-DESSOUS: conversion des caractères accentués UTF-8 
+% en caractères TeX dans les listings...
+\lstset{
+  literate=%
+  {À}{{\`A}}1 {Â}{{\^A}}1 {Ç}{{\c{C}}}1%
+  {à}{{\`a}}1 {â}{{\^a}}1 {ç}{{\c{c}}}1%
+  {É}{{\'E}}1 {È}{{\`E}}1 {Ê}{{\^E}}1 {Ë}{{\"E}}1% 
+  {é}{{\'e}}1 {è}{{\`e}}1 {ê}{{\^e}}1 {ë}{{\"e}}1%
+  {Ï}{{\"I}}1 {Î}{{\^I}}1 {Ô}{{\^O}}1%
+  {ï}{{\"i}}1 {î}{{\^i}}1 {ô}{{\^o}}1%
+  {Ù}{{\`U}}1 {Û}{{\^U}}1 {Ü}{{\"U}}1%
+  {ù}{{\`u}}1 {û}{{\^u}}1 {ü}{{\"u}}1%
+}
 
 
 
@@ -31,6 +81,34 @@ PIERUCCI Dimitri \\ GOUTTEFARDE Léo}
 \pagestyle{fancy}
 \maketitle
 
+\begin{center}
+\section* {Introduction }
+\end{center}
+
+Nous avons réalisé l'intégralité du sujet, dont pour commencer la conception d'un package d'arbre binaire de recherche générique, que nous avons décidé d'implémenter à l'aider d'un AVL pour optimiser au maximum l'efficacité, ce qui permet ainsi à toutes les opérations demandées (insertion, suppression, recherche) de s'effectuer en $O(log_2(n))$.
+
+L'exécutable décompose sans problème les polygones au format .in en polygones monotones, et effectue également des mises à l'échelle et translations lors de l'export en .svg afin d'obtenir des polygones qui ne débordent pas des dimensions de la figure.
+
+De plus nous avons bien respecté la contrainte de coût au pire cas de $O(h)$ pour l'écriture des fonctions \lstinline!Noeuds_Voisins! et \lstinline!Compte_Position!, en intégrant notamment l'actualisation du champ \lstinline!Compte! des noeuds de l'AVL au sein des opérations de rotation et autres.
+
+$\newline$
+
+%Choix / pq
+\section* {1\hspace{5mm}Choix d'implémentation }
+
+\subsection* {1.1\hspace{3mm} Structures de données}
+
+
+\subsection* {1.2\hspace{3mm} Organisation du code}
+
+
+
+
+\section* {2\hspace{5mm}Tests }
+
+\subsection* {2.1\hspace{3mm} Tests unitaires}
+
+\subsection* {2.1\hspace{3mm} Mesures de performance}
 
 
 
