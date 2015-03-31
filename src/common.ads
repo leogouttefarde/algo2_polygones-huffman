@@ -67,7 +67,10 @@ package Common is
         package Point_Sorting is new Point_Lists.Generic_Sorting( "<" );
 
 
+
         -- Fonctions usuelles
+
+        -- Calcule la projection verticale d'un point sur un segment
         function Intersection(sPoint : SimplePoint ; cSegment : Segment) return SimplePoint;
 
         procedure Affiche_Point(sPoint : SimplePoint);

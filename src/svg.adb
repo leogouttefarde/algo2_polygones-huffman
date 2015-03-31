@@ -20,6 +20,8 @@ package body SVG is
         end;
 
 
+        -- Prépare l'affichage des points donnés
+        -- à l'échelle des dimensions déclarées via Svg_Header
         procedure Svg_Scale(Points : Point_Lists.List) is
                 Point_Pos : Point_Lists.Cursor;
                 cPoint : Point;
@@ -80,6 +82,7 @@ package body SVG is
         end Svg_Scale;
 
 
+        -- Affiche une ligne de P1 à P2
         procedure Svg_Line(P1, P2 : SimplePoint ; C : Color) is
                 cP1 : SimplePoint := Base + P1 * Scale;
                 cP2 : SimplePoint := Base + P2 * Scale;
@@ -114,6 +117,7 @@ package body SVG is
                 Height := Float(iHeight);
         end;
 
+        -- Génère le header SVG, à exécuter en premier
         procedure Svg_Header(iWidth, iHeight : Natural) is
         begin
                 Put_Line("<svg width="""
@@ -129,6 +133,7 @@ package body SVG is
                 Height := Float(iHeight);
         end Svg_Header;
 
+        -- Affiche un polygone
         procedure Svg_Polygon(Points : Point_Lists.List) is
                 Point_Pos : Point_Lists.Cursor;
                 cPoint : Point;
@@ -153,6 +158,7 @@ package body SVG is
 
         end Svg_Polygon;
 
+        -- Génère le footer SVG, à exécuter à la fin
         procedure Svg_Footer is
         begin
                 Put_Line("</svg>");

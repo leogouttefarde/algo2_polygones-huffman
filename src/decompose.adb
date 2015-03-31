@@ -3,7 +3,8 @@
 
 package body Decompose is
 
-        -- requires Prev(2) = cPoint = Next(1)
+        -- Ajoute les segments entrants / sortants d'un point
+        -- Précondition : Prev(2) = cPoint = Next(1)
         procedure Finish_Point (cPoint : in out Point ; Prev, Next : Segment) is
         begin
                 if InfEgal(Prev(1).X, cPoint.Pt.X) then
@@ -19,6 +20,7 @@ package body Decompose is
                 end if;
         end;
 
+        -- Ajoute les segments entrants / sortants de chaque point
         procedure Finish_Points (Points : in out Point_Lists.List ; Segments : Segment_Lists.List) is
                 Point_Pos, FirstPos : Point_Lists.Cursor;
                 Segment_Pos : Segment_Lists.Cursor;
@@ -54,6 +56,7 @@ package body Decompose is
                 Point_Lists.Replace_Element(Points, FirstPos, First);
         end;
 
+        -- Génère les segments correspondant aux points donnés
         function Generate_Segments (Points : in Point_Lists.List) return Segment_Lists.List is
                 Segments : Segment_Lists.List;
                 Point_Pos : Point_Lists.Cursor;
@@ -94,6 +97,7 @@ package body Decompose is
                 return Segments;
         end;
 
+        -- Génère le code SVG de reconnexion d'un point à un segment
         procedure Reconnexion(P1 : SimplePoint ; cSegment : pSegment) is
                 P2 : SimplePoint;
         begin
@@ -115,7 +119,7 @@ package body Decompose is
                 return False;
         end;
 
-        -- Libération sécurisée
+        -- Libération de segment sécurisée
         procedure Liberation(cSegment : in out pSegment) is
         begin
                 if cSegment /= null then
@@ -124,7 +128,8 @@ package body Decompose is
                 end if;
         end;
 
-        procedure Copie(Dest : in out pSegment ; pNoeud : in out Arbre) is
+        -- Extrait le segment d'un noeud
+        procedure Copie(Dest : in out pSegment ; pNoeud : Arbre) is
         begin
                 if pNoeud /= null then
 
@@ -141,6 +146,7 @@ package body Decompose is
 
         --DotIndex : Natural := 0;
 
+        -- Exécute l'algorithme de décomposition pour le point donné
         procedure Decomposition(cPoint : Point ; cAVL : in out Arbre) is
                 Rebroussement : Boolean := False;
                 cSegment : Segment;

@@ -152,6 +152,7 @@ package body Common is
                 return Result;
         end;
 
+        -- Calcule la projection verticale d'un point sur un segment
         function Intersection(sPoint : SimplePoint ; cSegment : Segment) return SimplePoint is
                 Inter : SimplePoint;
                 dx, dy : Float;
@@ -217,6 +218,7 @@ package body Common is
                 return oSeg;
         end;
 
+        -- Comparaison de segments
         function ">" (iS1, iS2 : Segment) return Boolean is
                 S1, S2 : Segment;
                 pS1, pS2 : Segment;

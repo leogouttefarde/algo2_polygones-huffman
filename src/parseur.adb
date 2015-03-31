@@ -17,6 +17,7 @@ package body Parseur is
                 return Elems;
         end;
 
+        -- Parse un fichier au format .in vers la liste de points donnée
         procedure Lire_Polygone(Chemin : in String ; Points : out Point_Lists.List) is
                 File : File_Type;
                 Elems : Slice_Set;

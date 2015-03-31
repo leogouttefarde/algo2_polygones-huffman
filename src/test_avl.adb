@@ -16,21 +16,22 @@ procedure Test_AVL is
 
         package AVL_Entiers_Disp is new Arbre_Entiers.Generic_Display ( Integer'Image );
 
-        cAVL, V_petit, V_Grand : Arbre_Entiers.Arbre;
-        pNoeud_2 : Arbre_Entiers.Arbre;
-        pNoeud_6 : Arbre_Entiers.Arbre;
-        pNoeud_3 : Arbre_Entiers.Arbre;
-        pNoeud_5 : Arbre_Entiers.Arbre;
-        pNoeud_1 : Arbre_Entiers.Arbre;
+        cAVL, V_petit, V_Grand : Arbre;
+        pNoeud_2 : Arbre;
+        pNoeud_6 : Arbre;
+        pNoeud_3 : Arbre;
+        pNoeud_5 : Arbre;
+        pNoeud_1 : Arbre;
+        pNoeud : Arbre;
 
         C_petits, C_Grands : Natural;
 begin
 
-        pNoeud_2 := Arbre_Entiers.Inserer(cAVL, 2);
-        pNoeud_6 := Arbre_Entiers.Inserer(cAVL, 6);
-        pNoeud_3 := Arbre_Entiers.Inserer(cAVL, 3);
-        pNoeud_5 := Arbre_Entiers.Inserer(cAVL, 5);
-        pNoeud_1 := Arbre_Entiers.Inserer(cAVL, 1);
+        pNoeud_2 := Inserer(cAVL, 2);
+        pNoeud_6 := Inserer(cAVL, 6);
+        pNoeud_3 := Inserer(cAVL, 3);
+        pNoeud_5 := Inserer(cAVL, 5);
+        pNoeud_1 := Inserer(cAVL, 1);
 
         Noeuds_Voisins(pNoeud_5, V_petit, V_Grand);
         Compte_Position(pNoeud_5, C_petits, C_Grands);
@@ -95,6 +96,16 @@ begin
 
         Put_Line( "6 : C_petits = " & Natural'image( C_petits ));
         Put_Line( "6 : C_Grands = " & Natural'image( C_Grands ));
+
+
+        pNoeud := Rechercher(cAVL, 2);
+        --AVL_Entiers_Disp.Affichage(pNoeud);
+
+        if pNoeud /= null and then pNoeud.C = 2 then
+                Put_Line( "Recherche de 2 : OK");
+        else
+                Put_Line( "Recherche de 2 : Erreur");
+        end if;
 
 
         --AVL_Entiers_Disp.Affichage(cAVL);
