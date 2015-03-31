@@ -101,9 +101,10 @@ $\newline$
 
 \subsection* {1.1\hspace{3mm} Structures de données}
 
-L'essentiel de nos structures de données est défini au sein du fichier common.ads :
+L'essentiel de nos structures de données est défini dans le header du package \lstinline!Common! :
 
 \begin{lstlisting}
+
 type SimplePoint is record
         X : Float := 0.0;
         Y : Float := 0.0;
@@ -122,13 +123,12 @@ end record;
 package Point_Lists is new Ada.Containers.Doubly_Linked_Lists ( Point, "=" );
 package Point_Sorting is new Point_Lists.Generic_Sorting( "<" );
 \end{lstlisting}
-
-
+$\newline$
 Nous avons choisi d'utiliser une première structure \lstinline!SimplePoint! de représentation des points simples, et une seconde \lstinline!Point! composée d'un \lstinline!SimplePoint! ainsi que des deux listes de segments respectivement entrants et sortants.
 
 Les segments sont quant à eux représentés à l'aide d'un tableau de deux \lstinline!SimplePoint!.
 
-Pour finir nous avons utilisé les listes chaînées fournies par la bibliothèque standard Ada afin de parcourir les points et segments simplement. Aussi, le tri des points de gauche à droite est ainsi réalisé grâce aux package de tri générique des listes.
+Pour finir nous avons utilisé les listes chaînées fournies par la bibliothèque standard Ada afin de parcourir les points et segments simplement. Aussi, le tri des points de gauche à droite est ainsi réalisé grâce au package de tri générique des listes.
 
 
 
@@ -138,7 +138,7 @@ Nous avons créé un package \lstinline!Parseur! pour implémenter le parseur de
 
 Le programme principal est implémenté au sein du fichier main.adb, qui est relativement simple.
 
-Pour finir, nous avons également réimplémenté la majorité des comparaisons entre flottants afin de les réaliser correctement à $\epsilon = 0.0001$ près.
+Pour finir, nous avons également réimplémenté la majorité des comparaisons entre flottants afin de les réaliser correctement à $\epsilon = 10^{-4}$ près.
 
 
 \section* {2\hspace{5mm}Tests }

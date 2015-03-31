@@ -17,7 +17,7 @@ package AVL is
                 C : Type_Clef;
                 Fils : Tableau_Fils;
                 Pere : Arbre;
-                Compte : Positive; -- nombre de noeuds dans le sous-arbre
+                Compte : Positive; -- Nombre de noeuds dans le sous-arbre
                 Hauteur : Natural; -- Champ supplémentaire des AVL
         end record;
 
