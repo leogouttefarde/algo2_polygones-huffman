@@ -7,8 +7,8 @@ with Ada.Unchecked_Deallocation;
 package Common is
 
         type SimplePoint is record
-                X : Float;
-                Y : Float;
+                X : Float := 0.0;
+                Y : Float := 0.0;
         end record;
 
         type Segment is array (Positive range 1 .. 2) of SimplePoint;
@@ -47,6 +47,7 @@ package Common is
 
         function "<" (S1, S2 : Segment) return Boolean;
         function ">" (iS1, iS2 : Segment) return Boolean;
+        function IsPoint (cSegment : Segment) return Boolean;
 
         package Arbre_Segments is new AVL(Segment, "<", ">");
         use Arbre_Segments;
@@ -63,12 +64,9 @@ package Common is
 
         function Intersection(sPoint : SimplePoint ; cSegment : Segment) return SimplePoint;
 
-
         procedure Affiche_Point(sPoint : SimplePoint);
-
         procedure Affiche_Segment(cSegment : Segment);
-
-        function IsPoint (cSegment : Segment) return Boolean;
+        procedure Affichage_AVL is new Arbre_Segments.Affichage ( Affiche_Segment );
 
 end Common;
 

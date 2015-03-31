@@ -11,7 +11,7 @@ procedure Main is
 
         Points : Point_Lists.List;
         Segments : Segment_Lists.List;
-        cAVL : Arbre_Segments.Arbre;
+        cAVL : Arbre;
         Point_Pos : Point_Lists.Cursor;
         Segment_Pos : Segment_Lists.Cursor;
         cPoint : Point;
@@ -48,8 +48,9 @@ begin
                 Svg_Footer;
 
 
-                -- Libération AVL (inutile car déjà vidé normalement)
-                Arbre_Segments.Liberer(cAVL);
+                -- Libération AVL (pas essentiel car déjà vidé normalement),
+                -- ainsi on est assuré qu'il n'y a pas de leaks.
+                Liberer(cAVL);
         end if;
 
 end Main;

@@ -44,7 +44,6 @@ package AVL is
         function Supprimer_Noeud(Racine : Arbre ; Clef : Type_Clef) return Arbre;
 
         -- Libère l'AVL en entier (pour s'assurer qu'il n'y a pas de leak).
-        -- Coût au pire cas : O(h)
         procedure Liberer(Racine : in out Arbre);
 
 

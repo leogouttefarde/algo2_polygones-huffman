@@ -24,7 +24,7 @@ package body Common is
 
         function "=" (P1, P2 : SimplePoint) return Boolean is
         begin
-                if P1.X = P2.X and P1.Y = P2.Y then
+                if P1.X = P2.X and then P1.Y = P2.Y then
                         return True;
                 end if;
 
@@ -101,7 +101,7 @@ package body Common is
                 Diff : Float := F2 - F1;
                 Result : Boolean := False;
         begin
-                if Diff > 0.0 and Diff >= F_Epsilon then
+                if Diff > 0.0 and then Diff >= F_Epsilon then
                         Result := True;
                 end if;
 
@@ -122,7 +122,7 @@ package body Common is
                 Diff : Float := F1 - F2;
                 Result : Boolean := False;
         begin
-                if Diff > 0.0 and Diff >= F_Epsilon then
+                if Diff > 0.0 and then Diff >= F_Epsilon then
                         Result := True;
                 end if;
 
@@ -150,9 +150,7 @@ package body Common is
                 Inter.X := X;
 
                 if IsPoint(cSegment) then
-                        -- Hack, pas d'intersection dans ce cas (ne devrait jamais arriver)
                         Y := cSegment(1).Y;
-                        --Put_Line("Erreur");
 
                         return Inter;
                 end if;
@@ -183,9 +181,7 @@ package body Common is
                         if Egal(X, X1) then
                                 Y := sPoint.Y;
                         else
-                                -- Hack, pas d'intersection dans ce cas (ne devrait jamais arriver)
                                 Y := sPoint.Y;
-                                --Put_Line("Erreur");
                         end if;
                 else
                         Y := A * X + B;
@@ -211,7 +207,7 @@ package body Common is
         function ">" (iS1, iS2 : Segment) return Boolean is
                 S1, S2 : Segment;
                 pS1, pS2 : Segment;
-                Inverse : Boolean := False;
+                Inversion : Boolean := False;
                 IsPointS1, IsPointS2 : Boolean;
                 Inter : SimplePoint;
         begin
@@ -221,16 +217,21 @@ package body Common is
                         return False;
                 end if;
 
+
                 IsPointS1 := IsPoint(iS1);
                 IsPointS2 := IsPoint(iS2);
 
-                if IsPointS1 and IsPointS2 then
+                -- Comparaison point / point
+                if IsPointS1 and then IsPointS2 then
+
                         if Sup(iS1(1).Y, iS2(1).Y) then
                                 return True;
                         else
                                 return False;
                         end if;
-                elsif IsPointS1 and not IsPointS2 then
+
+                -- Comparaison point / segment
+                elsif IsPointS1 and then not IsPointS2 then
                         Inter := Intersection(iS1(1), iS2);
 
                         if Inf(Inter.Y, iS1(1).Y) then
@@ -238,7 +239,9 @@ package body Common is
                         else
                                 return False;
                         end if;
-                elsif not IsPointS1 and IsPointS2 then
+
+                -- Comparaison segment / point
+                elsif not IsPointS1 and then IsPointS2 then
                         Inter := Intersection(iS2(1), iS1);
 
                         if Sup(Inter.Y, iS2(1).Y) then
@@ -247,6 +250,9 @@ package body Common is
                                 return False;
                         end if;
                 end if;
+
+
+                -- Sinon, comparaison segment / segment
 
                 S1 := Ordonner_Segment(iS1);
                 S2 := Ordonner_Segment(iS2);
@@ -259,7 +265,7 @@ package body Common is
                         pS1 := S2;
                         pS2 := S1;
 
-                        Inverse := True;
+                        Inversion := True;
                 end if;
 
                 pS2(1) := Intersection(pS1(1), pS2);
@@ -271,14 +277,14 @@ package body Common is
                 end if;
 
 
-                if Inverse then
-                        if (Inf(pS1(1).Y, pS2(1).Y) and InfEgal(pS1(2).Y, pS2(2).Y)) or
-                                (InfEgal(pS1(1).Y, pS2(1).Y) and Inf(pS1(2).Y, pS2(2).Y)) then
+                if Inversion then
+                        if (Inf(pS1(1).Y, pS2(1).Y) and then InfEgal(pS1(2).Y, pS2(2).Y)) or
+                                (InfEgal(pS1(1).Y, pS2(1).Y) and then Inf(pS1(2).Y, pS2(2).Y)) then
                                 return True;
                         end if;
 
-                elsif (Sup(pS1(1).Y, pS2(1).Y) and SupEgal(pS1(2).Y, pS2(2).Y)) or
-                        (SupEgal(pS1(1).Y, pS2(1).Y) and Sup(pS1(2).Y, pS2(2).Y)) then
+                elsif (Sup(pS1(1).Y, pS2(1).Y) and then SupEgal(pS1(2).Y, pS2(2).Y)) or
+                        (SupEgal(pS1(1).Y, pS2(1).Y) and then Sup(pS1(2).Y, pS2(2).Y)) then
                                 return True;
                 end if;
 
@@ -287,8 +293,8 @@ package body Common is
 
         function "=" (S1, S2 : Segment) return Boolean is
         begin
-                if (S1(1) = S2(1) and S1(2) = S2(2)) or
-                        (S1(2) = S2(1) and S1(1) = S2(2)) then
+                if (S1(1) = S2(1) and then S1(2) = S2(2)) or
+                        (S1(2) = S2(1) and then S1(1) = S2(2)) then
                         return True;
                 end if;
 
@@ -297,7 +303,7 @@ package body Common is
 
         function "<" (S1, S2 : Segment) return Boolean is
         begin
-                if not (S1 > S2) and not (S1 = S2) then
+                if not (S1 > S2) and then not (S1 = S2) then
                         return True;
                 end if;
 

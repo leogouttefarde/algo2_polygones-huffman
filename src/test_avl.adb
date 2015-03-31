@@ -2,7 +2,7 @@
 with AVL;
 with Ada.Text_IO;
 use Ada.Text_IO;
-with Common; use Common; use Common.Arbre_Segments;
+with Common; use Common;
 
 
 procedure Test_AVL is

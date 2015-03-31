@@ -4,8 +4,6 @@ use Ada.Text_IO;
 
 package body Decompose is
 
-        procedure Affichage_AVL is new Arbre_Segments.Affichage ( Affiche_Segment );
-
         -- requires Prev(2) = cPoint = Next(1)
         procedure Finish_Point (cPoint : in out Point ; Prev, Next : Segment) is
         begin
@@ -96,36 +94,60 @@ package body Decompose is
                 return Segments;
         end;
 
-        procedure Reconnect(sPoint : SimplePoint ; Up, Down : pSegment) is
-                UpPoint, DownPoint : SimplePoint;
+        procedure Reconnexion(P1 : SimplePoint ; cSegment : pSegment) is
+                P2 : SimplePoint;
         begin
-                if Up /= null then
-                        UpPoint := Intersection(sPoint, Up.all);
+                if cSegment /= null then
+                        P2 := Intersection(P1, cSegment.all);
 
-                        if not IsPoint( (sPoint, UpPoint) ) then
-                                Svg_Line(sPoint, UpPoint, Green);
+                        if not IsPoint((P1, P2)) then
+                                Svg_Line(P1, P2, Green);
                         end if;
                 end if;
+        end;
 
-                if Down /= null then
-                        DownPoint := Intersection(sPoint, Down.all);
+        function Impair(Nombre : Natural) return Boolean is
+        begin
+                if (Nombre mod 2) = 1 then
+                        return True;
+                end if;
 
-                        if not IsPoint( (sPoint, DownPoint) ) then
-                                Svg_Line(sPoint, DownPoint, Green);
+                return False;
+        end;
+
+        -- Libération sécurisée
+        procedure Liberation(cSegment : in out pSegment) is
+        begin
+                if cSegment /= null then
+                        Liberer_Segment(cSegment);
+                        cSegment := null;
+                end if;
+        end;
+
+        procedure Copie(Dest : in out pSegment ; pNoeud : in out Arbre) is
+        begin
+                if pNoeud /= null then
+
+                        if Dest = null then
+                                Dest := new Segment;
                         end if;
+
+                        Dest.all := pNoeud.C;
+                else
+                        Liberation(Dest);
                 end if;
         end;
 
 
         --DotIndex : Natural := 0;
 
-        procedure Decomposition(cPoint : Point ; cAVL : in out Arbre_Segments.Arbre) is
+        procedure Decomposition(cPoint : Point ; cAVL : in out Arbre) is
                 Rebroussement : Boolean := False;
                 cSegment : Segment;
                 sPoint : SimplePoint := cPoint.Pt;
-                pNoeud : Arbre_Segments.Arbre;
-                V_petit : Arbre_Segments.Arbre := null;
-                V_Grand : Arbre_Segments.Arbre := null;
+                pNoeud : Arbre;
+                V_petit : Arbre := null;
+                V_Grand : Arbre := null;
                 S_petit : pSegment := null;
                 S_Grand : pSegment := null;
                 C_petits : Natural := 0;
@@ -137,36 +159,18 @@ package body Decompose is
                         Rebroussement := True;
                         cSegment := ( sPoint, sPoint );
 
-                        pNoeud := Arbre_Segments.Inserer(cAVL, cSegment);
+                        pNoeud := Inserer(cAVL, cSegment);
 
                         Noeuds_Voisins(pNoeud, V_petit, V_Grand);
                         Compte_Position(pNoeud, C_petits, C_Grands);
 
-                        if V_petit /= null then
-
-                                if S_petit /= null then
-                                        Liberer_Segment(S_petit);
-                                end if;
-
-                                S_petit := new Segment'(V_petit.C);
-                        else
-                                S_petit := null;
-                        end if;
-
-                        if V_Grand /= null then
-
-                                if S_Grand /= null then
-                                        Liberer_Segment(S_Grand);
-                                end if;
-
-                                S_Grand := new Segment'(V_Grand.C);
-                        else
-                                S_Grand := null;
-                        end if;
+                        -- On copie les segments voisins car la suppression
+                        -- d'en-dessous peut invalider leurs pointeurs
+                        Copie(S_petit, V_petit);
+                        Copie(S_Grand, V_Grand);
 
 
-
-                        cAVL := Arbre_Segments.Supprimer_Noeud(cAVL, cSegment);
+                        cAVL := Supprimer_Noeud(cAVL, cSegment);
 
                 end if;
 
@@ -176,7 +180,7 @@ package body Decompose is
                 while Segment_Lists.Has_Element( Segment_Pos ) loop
 
                         cSegment := Segment_Lists.Element( Segment_Pos );
-                        cAVL := Arbre_Segments.Supprimer_Noeud(cAVL, cSegment);
+                        cAVL := Supprimer_Noeud(cAVL, cSegment);
 
                         Segment_Lists.Next( Segment_Pos );
 
@@ -187,7 +191,7 @@ package body Decompose is
                 while Segment_Lists.Has_Element( Segment_Pos ) loop
 
                         cSegment := Segment_Lists.Element( Segment_Pos );
-                        pNoeud := Arbre_Segments.Inserer(cAVL, cSegment);
+                        pNoeud := Inserer(cAVL, cSegment);
 
                         Segment_Lists.Next( Segment_Pos );
 
@@ -201,52 +205,32 @@ package body Decompose is
                 if Segment_Lists.Length(cPoint.InSegs) = 2 then
                         Rebroussement := True;
                         cSegment := ( sPoint, sPoint );
-                        pNoeud := Arbre_Segments.Inserer(cAVL, cSegment);
+                        pNoeud := Inserer(cAVL, cSegment);
 
                         Noeuds_Voisins(pNoeud, V_petit, V_Grand);
                         Compte_Position(pNoeud, C_petits, C_Grands);
 
-                        if V_petit /= null then
-
-                                if S_petit /= null then
-                                        Liberer_Segment(S_petit);
-                                end if;
-
-                                S_petit := new Segment'(V_petit.C);
-                        else
-                                S_petit := null;
-                        end if;
-
-                        if V_Grand /= null then
-
-                                if S_Grand /= null then
-                                        Liberer_Segment(S_Grand);
-                                end if;
-
-                                S_Grand := new Segment'(V_Grand.C);
-                        else
-                                S_Grand := null;
-                        end if;
+                        -- On copie les segments voisins car la suppression
+                        -- d'en-dessous peut invalider leurs pointeurs
+                        Copie(S_petit, V_petit);
+                        Copie(S_Grand, V_Grand);
 
 
-                        cAVL := Arbre_Segments.Supprimer_Noeud(cAVL, cSegment);
-
-                end if;
-
-                if Rebroussement and ((C_petits mod 2) = 1 or (C_Grands mod 2) = 1) then
-
-                        Reconnect(sPoint, S_petit, S_Grand);
+                        cAVL := Supprimer_Noeud(cAVL, cSegment);
 
                 end if;
 
 
-                if S_petit /= null then
-                        Liberer_Segment(S_petit);
+                if Rebroussement and (Impair(C_petits) or Impair(C_Grands)) then
+
+                        Reconnexion(sPoint, S_petit);
+                        Reconnexion(sPoint, S_Grand);
+
                 end if;
 
-                if S_Grand /= null then
-                        Liberer_Segment(S_Grand);
-                end if;
+                Liberation(S_petit);
+                Liberation(S_Grand);
+
         end;
 
 end Decompose;

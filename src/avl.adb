@@ -160,7 +160,8 @@ package body AVL is
                 else
                         return A.Hauteur;
                 end if;
-        end;
+        end Hauteur;
+
 
         procedure Update_Hauteur(A : in out Arbre) is
         begin
@@ -168,6 +169,7 @@ package body AVL is
                         A.Hauteur := Natural'Max( Hauteur(A.Fils(Gauche)), Hauteur(A.Fils(Droite))) + 1;
                 end if;
         end;
+
 
         function Creer_Noeud(Clef : Type_Clef) return Arbre is
                 pNoeud : Arbre := new Noeud;
@@ -181,6 +183,7 @@ package body AVL is
 
                 return pNoeud;
         end;
+
 
         function Rotation_Droite(pNoeud : in out Arbre) return Arbre is
                 Noeud : Arbre := pNoeud.Fils(Gauche);
@@ -210,7 +213,9 @@ package body AVL is
                 Update_Hauteur(Noeud);
 
                 return Noeud;
-        end;
+
+        end Rotation_Droite;
+
 
         function Rotation_Gauche(A : in out Arbre) return Arbre is
                 B : Arbre := A.Fils(Droite);
@@ -240,7 +245,9 @@ package body AVL is
                 Update_Hauteur(B);
 
                 return B;
-        end;
+
+        end Rotation_Gauche;
+
 
         function Balance(A : Arbre) return Integer is
                 Balance : Integer := 0;
@@ -250,8 +257,11 @@ package body AVL is
                 end if;
 
                 return Balance;
-        end;
 
+        end Balance;
+
+
+        -- Coût au pire cas : O(h) = O(log2(n)) car AVL
         function Inserer(Noeud : in out Arbre ; Clef : Type_Clef) return Arbre is
                 cBalance : Integer;
                 Cible : Arbre;
@@ -300,8 +310,11 @@ package body AVL is
                 end if;
 
                 return Cible;
-        end;
 
+        end Inserer;
+
+
+        -- Coût au pire cas : O(h) = O(log2(n)) car AVL
         function Rechercher(Racine : Arbre ; Clef : Type_Clef) return Arbre is
                 Result : Arbre := null;
         begin
@@ -316,8 +329,11 @@ package body AVL is
                 end if;
 
                 return Result;
-        end;
 
+        end Rechercher;
+
+
+        -- Coût au pire cas : O(h) = O(log2(n)) car AVL
         function Supprimer_Noeud(Racine : Arbre ; Clef : Type_Clef) return Arbre is
                 Temp : Arbre;
                 oRacine : Arbre := Racine;
@@ -350,7 +366,9 @@ package body AVL is
                                         oRacine.all := temp.all;
                                 end if;
 
-                                Liberer_Noeud(temp);
+                                if temp /= null then
+                                        Liberer_Noeud(temp);
+                                end if;
                         else
                                 temp := Min_Noeud(oRacine.Fils(Droite));
                                 oRacine.C := temp.C;
@@ -387,8 +405,11 @@ package body AVL is
                 end if;
 
                 return oRacine;
+
         end Supprimer_Noeud;
 
+
+        -- Libère l'AVL en entier (pour s'assurer qu'il n'y a pas de leak).
         procedure Liberer(Racine : in out Arbre) is
         begin
                 if Racine /= null then
