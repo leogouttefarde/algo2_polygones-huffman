@@ -201,7 +201,7 @@ package body Decompose is
                 end loop;
 
 
-                --Arbre_Segments.Export("dots/AVL" & Natural'Image(DotIndex) & ".dot", cAVL);
+                --AVL_Disp.Export("dots/AVL" & Natural'Image(DotIndex) & ".dot", cAVL);
                 --DotIndex := DotIndex + 1;
 
 

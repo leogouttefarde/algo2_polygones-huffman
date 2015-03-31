@@ -49,8 +49,12 @@ package Common is
         function "<" (S1, S2 : Segment) return Boolean;
         function ">" (iS1, iS2 : Segment) return Boolean;
         function IsPoint (cSegment : Segment) return Boolean;
+        function Get_Segment(cSegment : Segment) return String;
+        function Get_Segment_Clean(cSegment : Segment) return String;
 
         package Arbre_Segments is new AVL(Segment, "<", ">");
+        package AVL_Disp is
+        new Arbre_Segments.Generic_Display ( Get_Segment_Clean );
         use Arbre_Segments;
 
 
@@ -68,7 +72,7 @@ package Common is
 
         procedure Affiche_Point(sPoint : SimplePoint);
         procedure Affiche_Segment(cSegment : Segment);
-        procedure Affichage_AVL is new Arbre_Segments.Affichage ( Affiche_Segment );
+
 
 end Common;
 

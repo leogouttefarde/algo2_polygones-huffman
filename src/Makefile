@@ -1,8 +1,8 @@
 
-
 EXEC=main
 TEST=tests/7.in
 SVG=out.svg
+
 
 all:
 	gnatmake $(EXEC)

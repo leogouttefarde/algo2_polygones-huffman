@@ -13,13 +13,27 @@ package body Common is
                         & ")");
         end;
 
-        procedure Affiche_Segment(cSegment : Segment) is
+        function Get_Segment_Clean(cSegment : Segment) return String is
         begin
-                Put_Line( "S1 = ("& Float'Image(cSegment(1).X)
+                return ( "S1 ("& Integer'Image(Integer(cSegment(1).X))
+                        & ", "& Integer'Image(Integer(cSegment(1).Y))
+                        & ")  S2 ("& Integer'Image(Integer(cSegment(2).X))
+                        & ", "& Integer'Image(Integer(cSegment(2).Y))
+                        & ")");
+        end;
+
+        function Get_Segment(cSegment : Segment) return String is
+        begin
+                return ( "S1 = ("& Float'Image(cSegment(1).X)
                         & ", "& Float'Image(cSegment(1).Y)
                         & ")    S2 = ("& Float'Image(cSegment(2).X)
                         & ", "& Float'Image(cSegment(2).Y)
                         & ")");
+        end;
+
+        procedure Affiche_Segment(cSegment : Segment) is
+        begin
+                Put_Line( Get_Segment(cSegment) );
         end;
 
         function "=" (P1, P2 : SimplePoint) return Boolean is

@@ -15,7 +15,7 @@ procedure Test_AVL is
                 Put_Line( Integer'Image(Entier) );
         end;
 
-        procedure Affichage_AVL is new Arbre_Entiers.Affichage ( Affiche_Entier );
+        package AVL_Entiers_Disp is new Arbre_Entiers.Generic_Display ( Integer'Image );
 
         cAVL, V_petit, V_Grand : Arbre_Entiers.Arbre;
         pNoeud_2 : Arbre_Entiers.Arbre;
@@ -98,8 +98,8 @@ begin
         Put_Line( "6 : C_Grands = " & Natural'image( C_Grands ));
 
 
-        --Affichage_AVL(cAVL);
-        Arbre_Entiers.Export("test_avl.dot", cAVL);
+        --AVL_Entiers_Disp.Affichage(cAVL);
+        AVL_Entiers_Disp.Export("test_avl.dot", cAVL);
 
         Arbre_Entiers.Liberer(cAVL);
 end;

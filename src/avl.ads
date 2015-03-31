@@ -48,10 +48,12 @@ package AVL is
 
 
         generic
-                with procedure Affiche(Clef : Type_Clef);
-        procedure Affichage(Racine : Arbre);
+                with function Get_String(Clef : Type_Clef) return String;
 
-        procedure Export(Dest : String ; Racine : Arbre);
+        package Generic_Display is
+                procedure Affichage(Racine : Arbre);
+                procedure Export(Dest : String ; Racine : Arbre);
+        end Generic_Display;
 
 end AVL;
 

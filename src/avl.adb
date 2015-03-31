@@ -419,10 +419,13 @@ package body AVL is
                 end if;
         end;
 
+
+        package body Generic_Display is
+
         procedure Affichage(Racine : Arbre) is
         begin
                 if Racine /= null then
-                        Affiche(Racine.C);
+                        Put_Line( Get_String(Racine.C) );
                         Put_Line("Gauche");
                         Affichage(Racine.Fils(Gauche));
                         Put_Line("Droite");
@@ -440,6 +443,12 @@ package body AVL is
                                 Index := Cur;
                                 Put(File, " -- " & Natural'Image(Cur) );
                                 Subtree(File, Racine.Fils(Gauche), Index);
+
+
+                                Put_Line( File, "   " & Natural'Image(Cur)
+                                        & " [label=""" & Get_String(Racine.C)
+                                        & """]");
+
                                 Put(File, "   " & Natural'Image(Cur) );
                                 Subtree(File, Racine.Fils(Droite), Index);
                         else
@@ -457,6 +466,11 @@ package body AVL is
 
                         New_Line(File);
                         Put_Line(File, "graph { ");
+
+                        Put_Line( File, "   " & Natural'Image(Cur)
+                                & " [label=""" & Get_String(Racine.C)
+                                & """]");
+
                         Put(File, "   " & Natural'Image(Cur));
                         Subtree(File, Racine.Fils(Gauche), Index);
                         Put(File, "   " & Natural'Image(Cur));
@@ -470,6 +484,9 @@ package body AVL is
         exception
                 when others => NULL;
         end;
+
+        end Generic_Display;
+
 
 end AVL;
 
