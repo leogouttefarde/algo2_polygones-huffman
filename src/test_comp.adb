@@ -74,7 +74,7 @@ begin
         end if;
 
 
-        -- Tests de respect de l'ordre des comparaisons
+        -- Tests du respect de l'ordre des comparaisons
         if s7 < s7 then
                 Put_Line("s7 < s7 Erreur");
         end if;
@@ -100,7 +100,7 @@ begin
         end if;
 
 
-        -- Tests de respect de l'ordre des comparaisons
+        -- Tests du respect de l'ordre des comparaisons
         if s1 < s2 then
                 Put_Line("s1 < s2 Erreur");
         end if;

@@ -4,11 +4,12 @@ use Ada.Text_IO, Ada.Float_Text_IO, Ada.Integer_Text_IO;
 package body SVG is
 
         Width, Height : Float;
-        Scale : Float;
+        Scale : Float := 1.0;
         Base : SimplePoint := (0.0, 0.0);
 
-        -- Améliore la compatibilité des valeurs Float
-        -- en enlevant l'espace mis au début par Float'Image
+        -- Améliore la compatibilité des valeurs Float au sein du fichier SVG
+        -- en enlevant l'espace mis au début par Float'Image.
+        -- KolourPaint ne reconnaît pas les lignes notamment sinon.
         function SClean(iString : String) return String is
         begin
                 return iString(iString'First + 1 .. iString'Last);
