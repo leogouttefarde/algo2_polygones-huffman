@@ -1,5 +1,4 @@
 
-
 with Ada.Unchecked_Deallocation;
 
 
@@ -47,6 +46,7 @@ package AVL is
         procedure Liberer(Racine : in out Arbre);
 
 
+        -- Package générique d'affichage / export d'arbre
         generic
                 with function Get_String(Clef : Type_Clef) return String;
 

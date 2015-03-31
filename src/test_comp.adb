@@ -1,10 +1,8 @@
 
 with Ada.Text_IO;
 use Ada.Text_IO;
-with Common; use Common;
-with Parseur; use Parseur;
-with Decompose; use Decompose;
-
+with Common, Parseur, Decompose;
+use Common, Parseur, Decompose;
 
 
 procedure Test_Comp is
@@ -22,6 +20,43 @@ begin
         Segments := Generate_Segments(Points);
         Segments4 := Generate_Segments(Points4);
         Segments6 := Generate_Segments(Points6);
+
+
+
+        Put_Line("Test polygone 4.in");
+        New_Line;
+
+
+        Segment_Pos := Segment_Lists.First( Segments4 );
+
+        for i in 2 .. 7 loop
+                Segment_Lists.Next( Segment_Pos );
+        end loop;
+
+        s7 := Segment_Lists.Element( Segment_Pos );
+
+
+        if s7 = s7 then
+                Put_Line("s7 = s7 OK");
+        end if;
+
+
+        -- Tests du respect de l'ordre des comparaisons
+        if s7 < s7 then
+                Put_Line("s7 < s7 Erreur");
+        end if;
+
+        if s7 > s7 then
+                Put_Line("s7 > s7 Erreur");
+        end if;
+
+
+
+        New_Line;
+        New_Line;
+        Put_Line("Test polygone 5.in");
+        New_Line;
+
 
         -- s1
         Segment_Pos := Segment_Lists.First( Segments );
@@ -60,29 +95,10 @@ begin
 
 
 
-        Segment_Pos := Segment_Lists.First( Segments4 );
-
-        for i in 2 .. 7 loop
-                Segment_Lists.Next( Segment_Pos );
-        end loop;
-
-        s7 := Segment_Lists.Element( Segment_Pos );
-
-
-        if s7 = s7 then
-                Put_Line("s7 = s7 OK");
-        end if;
-
-
-        -- Tests du respect de l'ordre des comparaisons
-        if s7 < s7 then
-                Put_Line("s7 < s7 Erreur");
-        end if;
-
-        if s7 > s7 then
-                Put_Line("s7 > s7 Erreur");
-        end if;
-
+        New_Line;
+        New_Line;
+        Put_Line("Test polygone 6.in");
+        New_Line;
 
 
         Segment_Pos := Segment_Lists.First( Segments6 );

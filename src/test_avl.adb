@@ -1,8 +1,7 @@
 
 with AVL;
-with Ada.Text_IO;
-use Ada.Text_IO;
 with Common; use Common;
+with Ada.Text_IO; use Ada.Text_IO;
 
 
 procedure Test_AVL is
