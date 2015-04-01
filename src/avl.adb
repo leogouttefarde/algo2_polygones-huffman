@@ -185,6 +185,24 @@ package body AVL is
         end;
 
 
+        -- Rotation droite de l'AVL
+        --
+        -- AVL d'entrée
+        --        A
+        --       /  \
+        --      B     
+        --    /  \
+        --        C
+        --       /  \
+        --
+        -- AVL retourné
+        --        B
+        --       /  \
+        --           A
+        --          /  \
+        --        C
+        --       /  \
+        --
         function Rotation_Droite(A : in out Arbre) return Arbre is
                 B : Arbre := A.Fils(Gauche);
                 C : Arbre := B.Fils(Droite);
@@ -217,6 +235,24 @@ package body AVL is
         end Rotation_Droite;
 
 
+        -- Rotation gauche de l'AVL
+        --
+        -- AVL d'entrée
+        --        A
+        --       /  \
+        --           B
+        --          /  \
+        --        C
+        --       /  \
+        --
+        -- AVL retourné
+        --        B
+        --       /  \
+        --      A     
+        --    /  \
+        --        C
+        --       /  \
+        --
         function Rotation_Gauche(A : in out Arbre) return Arbre is
                 B : Arbre := A.Fils(Droite);
                 C : Arbre := B.Fils(Gauche);

@@ -7,14 +7,8 @@ with Ada.Text_IO; use Ada.Text_IO;
 procedure Test_AVL is
 
         package Arbre_Entiers is new AVL(Integer, "<", ">");
-        use Arbre_Entiers;
-
-        procedure Affiche_Entier(Entier : Integer) is
-        begin
-                Put_Line( Integer'Image(Entier) );
-        end;
-
         package AVL_Entiers_Disp is new Arbre_Entiers.Generic_Display ( Integer'Image );
+        use Arbre_Entiers;
 
         cAVL, V_petit, V_Grand : Arbre;
         pNoeud_2 : Arbre;
