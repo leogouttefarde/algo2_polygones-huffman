@@ -285,6 +285,10 @@ package body Common is
 
                 pS2(1) := Intersection(pS1(1), pS2);
 
+                -- On calcule la projection du point le moins à droite
+                -- des seconds points de segment sur l'autre segment,
+                -- afin de finir l'extraction des sous-segments
+                -- de même largeur à comparer.
                 if Sup(pS1(2).X, pS2(2).X) then
                         pS1(2) := Intersection(pS2(2), pS1);
                 else

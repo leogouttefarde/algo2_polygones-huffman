@@ -162,7 +162,8 @@ package body AVL is
                 end if;
         end Hauteur;
 
-
+        -- Mise à jour de l'a hauteur d'un noeud :
+        -- c'est le maximum de celles des fils + 1
         procedure Update_Hauteur(A : in out Arbre) is
         begin
                 if A /= null then
@@ -284,7 +285,7 @@ package body AVL is
 
         end Rotation_Gauche;
 
-
+        -- Calcul de l'équilibre d'un noeud
         function Balance(A : Arbre) return Integer is
                 Balance : Integer := 0;
         begin
@@ -322,6 +323,8 @@ package body AVL is
 
                 cBalance := Balance(Noeud);
 
+                -- Si le noeud n'est pas -1, 0 ou 1, il est déséquilibré.
+                -- Selon chaque cas on rééquilibre.
                 if (cBalance > 1 and then Clef < Noeud.Fils(Gauche).C) then
                         Noeud := Rotation_Droite(Noeud);
 
@@ -337,13 +340,6 @@ package body AVL is
                         Noeud := Rotation_Gauche(Noeud);
                 end if;
 
-                if Noeud.Fils(Gauche) /= null then
-                        Noeud.Fils(Gauche).Pere := Noeud;
-                end if;
-
-                if Noeud.Fils(Droite) /= null then
-                        Noeud.Fils(Droite).Pere := Noeud;
-                end if;
 
                 return Cible;
 
@@ -384,8 +380,11 @@ package body AVL is
 
                 elsif Clef > Racine.C then
                         Racine.Fils(Droite) := Supprimer_Noeud(Racine.Fils(Droite), Clef);
-                
+
+                -- Clef = Racine.C
+                -- On a trouvé le noeud à supprimer.
                 else
+                        -- Si au moins un fils est null
                         if (Racine.Fils(Gauche) = null) or (Racine.Fils(Droite) = null) then
         
                                 if Racine.Fils(Gauche) /= null then
@@ -394,6 +393,7 @@ package body AVL is
                                         temp := Racine.Fils(Droite);
                                 end if;
 
+                                -- Si pas de fils, on supprime la racine
                                 if temp = null then
                                         temp := Racine;
                                         oRacine := null;
@@ -405,6 +405,8 @@ package body AVL is
                                 if temp /= null then
                                         Liberer_Noeud(temp);
                                 end if;
+
+                        -- S'il y a deux fils
                         else
                                 temp := Min_Noeud(oRacine.Fils(Droite));
                                 oRacine.C := temp.C;
@@ -425,6 +427,8 @@ package body AVL is
 
                 cBalance := Balance(oRacine);
 
+                -- Si le noeud n'est pas -1, 0 ou 1, il est déséquilibré.
+                -- Selon chaque cas on rééquilibre.
                 if (cBalance > 1 and then Balance(oRacine.Fils(Gauche)) >= 0) then
                         oRacine := Rotation_Droite(oRacine);
 

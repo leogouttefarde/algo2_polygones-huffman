@@ -20,6 +20,7 @@ begin
         if Argument_Count < 1 then
                 Put_Line(Standard_Error, "Usage : " & Command_Name & " polygon.in");
                 Set_Exit_Status(Failure);
+
         else
                 Lire_Polygone(Argument(1), Points);
 
