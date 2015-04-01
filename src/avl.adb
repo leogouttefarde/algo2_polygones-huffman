@@ -162,7 +162,7 @@ package body AVL is
                 end if;
         end Hauteur;
 
-        -- Mise à jour de l'a hauteur d'un noeud :
+        -- Mise à jour de la hauteur d'un noeud :
         -- c'est le maximum de celles des fils + 1
         procedure Update_Hauteur(A : in out Arbre) is
         begin
@@ -323,7 +323,7 @@ package body AVL is
 
                 cBalance := Balance(Noeud);
 
-                -- Si le noeud n'est pas -1, 0 ou 1, il est déséquilibré.
+                -- Si l'équilibre n'est pas -1, 0 ou 1, il y a déséquilibre.
                 -- Selon chaque cas on rééquilibre.
                 if (cBalance > 1 and then Clef < Noeud.Fils(Gauche).C) then
                         Noeud := Rotation_Droite(Noeud);
@@ -427,7 +427,7 @@ package body AVL is
 
                 cBalance := Balance(oRacine);
 
-                -- Si le noeud n'est pas -1, 0 ou 1, il est déséquilibré.
+                -- Si l'équilibre n'est pas -1, 0 ou 1, il y a déséquilibre.
                 -- Selon chaque cas on rééquilibre.
                 if (cBalance > 1 and then Balance(oRacine.Fils(Gauche)) >= 0) then
                         oRacine := Rotation_Droite(oRacine);
