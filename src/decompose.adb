@@ -7,12 +7,14 @@ package body Decompose is
         -- Précondition : Prev(2) = cPoint = Next(1)
         procedure Finish_Point (cPoint : in out Point ; Prev, Next : Segment) is
         begin
+                -- Traitement du segment précédent
                 if InfEgal(Prev(1).X, cPoint.Pt.X) then
                         Segment_Lists.Append(cPoint.InSegs, Prev);
                 elsif Sup(Prev(1).X, cPoint.Pt.X) then
                         Segment_Lists.Append(cPoint.OutSegs, Prev);
                 end if;
 
+                -- Traitement du segment suivant
                 if Inf(Next(2).X, cPoint.Pt.X) then
                         Segment_Lists.Append(cPoint.InSegs, Next);
                 elsif SupEgal(Next(2).X, cPoint.Pt.X) then
@@ -34,6 +36,8 @@ package body Decompose is
                 s1 := Segment_Lists.Element( Segment_Pos );
                 sPrev := s1;
 
+                -- Parcours des segments
+                -- et attribution aux points voisins
                 loop
                         Point_Lists.Next( Point_Pos );
                         Segment_Lists.Next( Segment_Pos );
@@ -46,13 +50,19 @@ package body Decompose is
 
                         cPoint := Point_Lists.Element( Point_Pos );
 
+                        -- Ajout des segments entrants / sortants de chaque point
                         Finish_Point(cPoint, sPrev, cSegment);
+
+                        -- Mise à jour de la liste
                         Point_Lists.Replace_Element(Points, Point_Pos, cPoint);
 
                         sPrev := cSegment;
                 end loop;
 
+                -- Ajout des segments entrants / sortants du premier point
                 Finish_Point(First, sPrev, s1);
+
+                -- Mise à jour de la liste
                 Point_Lists.Replace_Element(Points, FirstPos, First);
         end;
 
@@ -71,6 +81,8 @@ package body Decompose is
                 First := sPoint;
                 Prev := First;
 
+                -- Parcours des points et création
+                -- des segments par liaison
                 loop
                         Point_Lists.Next( Point_Pos );
                         exit when not Point_Lists.Has_Element( Point_Pos );
@@ -161,7 +173,7 @@ package body Decompose is
                 Segment_Pos : Segment_Lists.Cursor;
         begin
 
-                -- One regarde si on est sur un point de rebroussement
+                -- On regarde si on est sur un point de rebroussement
                 if Segment_Lists.Length(cPoint.OutSegs) = 2 then
                         Rebroussement := True;
                         cSegment := ( sPoint, sPoint );
@@ -206,6 +218,7 @@ package body Decompose is
                 end loop;
 
 
+                -- Export .dot des AVLs pour le debug
                 --AVL_Disp.Export("dots/AVL" & Natural'Image(DotIndex) & ".dot", cAVL);
                 --DotIndex := DotIndex + 1;
 

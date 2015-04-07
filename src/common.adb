@@ -221,7 +221,7 @@ package body Common is
         -- Comparaison de segments
         function ">" (iS1, iS2 : Segment) return Boolean is
                 S1, S2 : Segment;
-                pS1, pS2 : Segment;
+                pS1, pS2, temp : Segment;
                 Inversion : Boolean := False;
                 IsPointS1, IsPointS2 : Boolean;
                 Inter : SimplePoint;
@@ -295,14 +295,16 @@ package body Common is
                         pS2(2) := Intersection(pS1(2), pS2);
                 end if;
 
-
+                -- Si on a inversé l'ordre des segments,
+                -- on restaure l'ordre d'origine
                 if Inversion then
-                        if (Inf(pS1(1).Y, pS2(1).Y) and then InfEgal(pS1(2).Y, pS2(2).Y)) or
-                                (InfEgal(pS1(1).Y, pS2(1).Y) and then Inf(pS1(2).Y, pS2(2).Y)) then
-                                return True;
-                        end if;
+                        temp := pS1;
+                        pS1 := pS2;
+                        pS2 := temp;
+                end if;
 
-                elsif (Sup(pS1(1).Y, pS2(1).Y) and then SupEgal(pS1(2).Y, pS2(2).Y)) or
+                -- Si le premier segment est au-dessus du second, on renvoie vrai
+                if (Sup(pS1(1).Y, pS2(1).Y) and then SupEgal(pS1(2).Y, pS2(2).Y)) or
                         (SupEgal(pS1(1).Y, pS2(1).Y) and then Sup(pS1(2).Y, pS2(2).Y)) then
                                 return True;
                 end if;

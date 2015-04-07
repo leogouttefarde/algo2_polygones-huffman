@@ -68,14 +68,17 @@ package body SVG is
                         Point_Lists.Next( Point_Pos );
                 end loop;
 
+                -- Calcul des dimensions réelles de la figure
                 rWidth := X_Max - X_Min;
                 rHeight := Y_Max - Y_Min;
 
+                -- Calcul du redimensionnement à appliquer à la figure
                 Scale_X := Width / rWidth;
                 Scale_Y := Height / rHeight;
                 Scale := Float'Min(Scale_X, Scale_Y);
                 Scale := Scale * 0.8;
 
+                -- Calcul de la translation à appliquer à la figure
                 Base.X := 0.1 * Scale_X * rWidth - X_Min * Scale;
                 Base.Y := 0.1 * Scale_Y * rHeight - Y_Min * Scale;
 
@@ -140,6 +143,7 @@ package body SVG is
         begin
                 Put("<polygon points=""");
 
+                -- Parcours et affichage de chaque point du polygone
                 Point_Pos := Point_Lists.First( Points );
 
                 while Point_Lists.Has_Element( Point_Pos ) loop

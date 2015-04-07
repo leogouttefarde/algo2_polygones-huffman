@@ -17,35 +17,47 @@ procedure Main is
         cPoint : Point;
 begin
 
+        -- Gestion des arguments
         if Argument_Count < 1 then
                 Put_Line(Standard_Error, "Usage : " & Command_Name & " polygon.in");
                 Set_Exit_Status(Failure);
 
         else
+                -- Lecture du fichier
                 Lire_Polygone(Argument(1), Points);
 
+                -- Génération des segments
                 Segments := Generate_Segments(Points);
+
+                -- Attribution des segments entrants et sortants de chaque point
                 Finish_Points(Points, Segments);
 
+
+                -- Début de la génération SVG
                 Svg_Header(600, 600);
                 Svg_Scale(Points);
                 Svg_Polygon(Points);
 
+                -- Tri des points
                 Point_Sorting.Sort(Points);
 
 
+                -- Parcours des points ordonnés
                 Point_Pos := Point_Lists.First( Points );
 
                 while Point_Lists.Has_Element( Point_Pos ) loop
 
                         cPoint := Point_Lists.Element( Point_Pos );
 
+                        -- Application de l'algorithme
+                        -- de décomposition sur chaque point
                         Decomposition(cPoint, cAVL);
 
                         Point_Lists.Next( Point_Pos );
 
                 end loop;
 
+                -- Fin de la sortie SVG
                 Svg_Footer;
 
 
