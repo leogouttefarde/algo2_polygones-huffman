@@ -1,6 +1,7 @@
 
-EXEC=main
-TEST=args
+EXEC=huffman
+TEST=fichier.txt
+OUT=$(TEST).huff
 
 
 all:
@@ -8,9 +9,9 @@ all:
 
 clean:
 	gnatclean $(EXEC)
-	rm -f trash.o
+	rm -f $(OUT)
 
 run: all
-	./$(EXEC) $(TEST)
+	./$(EXEC) -c $(TEST) $(OUT)
 
 
