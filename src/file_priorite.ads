@@ -27,4 +27,19 @@ package File_Priorite is
 private
         type File_Interne;
         type File is access File_Interne;
+
+        type Element;
+        type pElement is access Element;
+
+        type Element is record
+                P : Priorite;
+                D : Donnee;
+                Suiv : pElement;
+        end record;
+
+        type File_Interne is record
+                Taille : Natural := 0;
+                Taille_Max : Positive;
+                Tete, Queue : pElement;
+        end record;
 end;
