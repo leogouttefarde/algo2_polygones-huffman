@@ -5,59 +5,41 @@ use Ada.Text_IO;
 package body File_Priorite is
 
 	function Nouvelle_File(Taille: Positive) return File is
-		F : File := new File_Interne;
+		F : File := new File_Interne(Taille);
 	begin
-		F.Taille_Max := Taille;
-		F.Tete := null;
-		F.Queue := null;
-
 		return F;
 	end Nouvelle_File;
 
 	procedure Insertion(F: in out File; P: Priorite; D: Donnee) is
-		Elem, cElem : pElement;
-		Fin : Boolean := False;
+		Elem : Element;
+		iCur, iPere : Natural;
 	begin
-		if F /= null and then F.Taille < F.Taille_Max then
+		if F /= null and then F.Taille < F.Tas'Length then
+		
+			iCur := F.Taille + 1;
+			iPere := iCur / 2;
 
-			Elem := new Element'(P, D, null);
-			cElem := F.Tete;
+			F.Taille := iCur;
+			F.Tas(iCur) := (P, D);
 
-			if cElem = null then
-				F.Tete := Elem;
-				F.Queue := Elem;
+			while (iCur > 1) and then Compare(F.Tas(iCur).P, F.Tas(iPere).P) = INF loop
+				Elem := F.Tas(iCur);
+				F.Tas(iCur) := F.Tas(iPere);
+				F.Tas(iPere) := Elem;
 
-			elsif Compare(P, cElem.P) = INF then
-				F.Tete := Elem;
-				Elem.Suiv := cElem;
-
-			else
-				while cElem.Suiv /= null and not Fin loop
-					if Compare(P, cElem.Suiv.P) = INF then
-						Fin := True;
-
-						Elem.Suiv := cElem.Suiv;
-						cElem.Suiv := Elem;
-					end if;
-
-					cElem := cElem.Suiv;
-				end loop;
-
-				if (cElem.Suiv = null) and not Fin then
-					F.Queue.Suiv := Elem;
-					F.Queue := Elem;
-				end if;
-			end if;
-
-			F.Taille := F.Taille + 1;
+				iCur := iPere;
+				iPere := iCur / 2;
+			end loop;
 		end if;
+
+		null;
 	end Insertion;
 
 	procedure Meilleur(F: in File; P: out Priorite; D: out Donnee; Statut: out Boolean) is
 	begin
-		if F /= null and then F.Tete /= null then
-			P := F.Tete.P;
-			D := F.Tete.D;
+		if F /= null and then F.Taille > 0 then
+			P := F.Tas(1).P;
+			D := F.Tas(1).D;
 
 			Statut := True;
 		else
@@ -66,18 +48,29 @@ package body File_Priorite is
 	end;
 
 	procedure Suppression(F: in out File) is
-		Elem : pElement;
+		Elem : Element;
+		iCur, Fils : Natural;
 	begin
-		if F /= null and then F.Tete /= null then
-			Elem := F.Tete;
-			F.Tete := Elem.Suiv;
-			--Free(Elem);
-
-			if F.Tete = null then
-				F.Queue := null;
-			end if;
-
+		if F /= null and then F.Taille > 0 then
+			F.Tas(1) := F.Tas(F.Taille);
 			F.Taille := F.Taille - 1;
+
+			iCur := 1;
+			while iCur <= (F.Taille / 2) loop
+				Fils := 2 * iCur;
+				if (Fils /= F.Taille) and Compare(F.Tas(Fils).P, F.Tas(Fils + 1).P) /= INF then
+					Fils := Fils + 1;
+				end if;
+
+				if Compare(F.Tas(iCur).P, F.Tas(Fils).P) = SUP then
+					Elem := F.Tas(iCur);
+					F.Tas(iCur) := F.Tas(Fils);
+					F.Tas(Fils) := Elem;
+					iCur := Fils;
+				else
+					exit;
+				end if;
+			end loop;
 		end if;
 	end;
 
