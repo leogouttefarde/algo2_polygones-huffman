@@ -19,14 +19,47 @@ package body Arbre_Huffman is
 
 	procedure Affiche_Arbre(A: Arbre) is
 	begin
-		null; -- TODO
+		if A /= null then
+			if A.EstFeuille then
+				Put(Character'Image(A.Char) & " ");
+			else
+				Affiche_Arbre(A.Fils(0));
+				Affiche_Arbre(A.Fils(1));
+			end if;
+		end if;
 	end Affiche_Arbre;
 
 	--algo principal : calcul l'arbre a partir des frequences
 	function Calcul_Arbre(Frequences : in Tableau_Ascii) return Arbre is
 		A : Arbre;
+		Fils0, Fils1 : Arbre;
+		F : File := Nouvelle_File(Frequences'Length);
+		Statut : Boolean := True;
+		P1, P2 : Natural;
 	begin
-		return A; -- TODO
+		for Char in Frequences'Range loop
+			if Frequences(Char) > 0 then
+				Insertion(F, Frequences(Char), new Noeud'(True, Char));
+			end if;
+		end loop;
+
+		while Statut loop
+			Meilleur(F, P1, Fils0, Statut);
+			Suppression(F);
+
+			if Statut then
+				Meilleur(F, P2, Fils1, Statut);
+			end if;
+
+			if Statut then
+				Insertion(F, P1 + P2, new Noeud'(False, (Fils0, Fils1)));
+				Suppression(F);
+			else
+				A := Fils0;
+			end if;
+		end loop;
+
+		return A;
 	end Calcul_Arbre;
 
 	function Calcul_Dictionnaire(A : Arbre) return Dico is

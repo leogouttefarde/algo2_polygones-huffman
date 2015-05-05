@@ -34,4 +34,7 @@ package Arbre_Huffman is
 private
 	type Noeud;
 	type Arbre is access Noeud;
+
+	type Direction is (Gauche, Droite);
+	type Tableau_Fils is array (Direction) of Arbre;
 end;
