@@ -124,8 +124,8 @@ package body Arbre_Huffman is
 			end if;
 
 			if Statut then
-				Insertion(F, P1 + P2, new Noeud'(False, (Fils0, Fils1)));
 				Suppression(F);
+				Insertion(F, P1 + P2, new Noeud'(False, (Fils0, Fils1)));
 			else
 				A := Fils0;
 			end if;
@@ -166,7 +166,7 @@ package body Arbre_Huffman is
 			if A /= null then
 				if A.EstFeuille then
 					Put(A.Char);
-					D(A.Char) := CreateCode(pCode, Taille);
+					D(A.Char) := CreateCode(pCode, pTaille);
 				else
 					if A.Fils(0) /= null then
 						Calcul_Codes(D, A.Fils(0), cCode, Taille);
