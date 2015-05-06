@@ -25,5 +25,6 @@ frun: test
 
 dot: run
 	dot -Tpng arbre.dot > arbre.png
+	gwenview arbre.png > /dev/null 2>&1
 
 
