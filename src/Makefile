@@ -1,6 +1,6 @@
 
 EXEC=huffman
-TEST=tests/test0.txt
+TEST=tests/test1.txt
 ENC=$(TEST).huff
 DEC=$(TEST)_dec.txt
 
@@ -22,5 +22,8 @@ test: all
 
 frun: test
 	./test_file
+
+dot: run
+	dot -Tpng arbre.dot > arbre.png
 
 

@@ -17,14 +17,86 @@ package body Arbre_Huffman is
 		end case ;
 	end record;
 
+
+	-- Export .dot d'arbre
+        procedure Export(Dest : String ; Racine : Arbre) is
+
+                procedure Subtree(File : File_Type ; Racine : Arbre ; Index : in out Natural) is
+                        Cur : Natural := Index + 1;
+                begin
+                        if Racine /= null then
+                                Index := Cur;
+                                Put(File, " -- " & Natural'Image(Cur) );
+
+                                if Racine.EstFeuille then
+	                                Put_Line( File, "   " & Natural'Image(Cur)
+	                                        & " [label=""" & Character'Image(Racine.Char)
+	                                        & """]");
+	                        else
+                                	Subtree(File, Racine.Fils(0), Index);
+	                                Put_Line( File, "   " & Natural'Image(Cur)
+                                        	& " [label="" ""]");
+
+	                                Put(File, "   " & Natural'Image(Cur) );
+	                                Subtree(File, Racine.Fils(1), Index);
+                                end if;
+                        else
+                                New_Line(File);
+                        end if;
+                end;
+
+                File : File_Type;
+                Index : Natural := 0;
+                Cur : Natural := Index;
+        begin
+                if Racine /= null then
+
+                        Create( File => File, Mode => Out_File, Name => Dest );
+
+                        New_Line(File);
+                        Put_Line(File, "graph { ");
+
+                        if Racine.EstFeuille then
+                                Put_Line( File, "   " & Natural'Image(Cur)
+                                        & " [label=""" & Character'Image(Racine.Char)
+                                        & """]");
+                        else
+                                Put_Line( File, "   " & Natural'Image(Cur)
+                                        & " ");
+                                Put_Line( File, "   " & Natural'Image(Cur)
+                                        & " [label="" ""]");
+                        end if;
+
+
+                        Put(File, "   " & Natural'Image(Cur));
+                        Subtree(File, Racine.Fils(0), Index);
+                        Put(File, "   " & Natural'Image(Cur));
+                        Subtree(File, Racine.Fils(1), Index);
+                        Put_Line(File, "}");
+                        New_Line(File);
+
+                        Close(File);
+
+                end if;
+        exception
+                when others => NULL;
+        end;
+
+
+
+
 	procedure Affiche_Arbre(A: Arbre) is
 	begin
 		if A /= null then
 			if A.EstFeuille then
 				Put(Character'Image(A.Char) & " ");
+				New_Line;
 			else
+				Put_Line("Gauche");
 				Affiche_Arbre(A.Fils(0));
+				Put_Line("Droite");
 				Affiche_Arbre(A.Fils(1));
+				Put_Line("Fin");
 			end if;
 		end if;
 	end Affiche_Arbre;
@@ -113,6 +185,9 @@ package body Arbre_Huffman is
 		-- Affiche_Arbre(A);
 		-- Put_Line("");
 		-- Put_Line("");
+
+		Export("arbre.dot", A);
+
 		New_Line;
 		Calcul_Codes(D, A, 0, 0);
 
