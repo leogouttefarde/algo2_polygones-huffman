@@ -1,7 +1,8 @@
 
 EXEC=huffman
 TEST=tests/test0.txt
-OUT=$(TEST).huff
+ENC=$(TEST).huff
+DEC=$(TEST)_dec.txt
 
 
 all:
@@ -10,10 +11,11 @@ all:
 clean:
 	gnatclean $(EXEC)
 	gnatclean test_file
-	rm -f $(OUT)
+	rm -f $(ENC) $(DEC)
 
 run: all
-	./$(EXEC) -c $(TEST) $(OUT)
+	./$(EXEC) -c $(TEST) $(ENC)
+	./$(EXEC) -d $(ENC) $(DEC)
 
 test: all
 	gnatmake test_file

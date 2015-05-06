@@ -64,8 +64,58 @@ package body Arbre_Huffman is
 
 	function Calcul_Dictionnaire(A : Arbre) return Dico is
 		D : Dico;
+
+		function CreateCode(iCode : Natural ; Taille : Natural) return Code is
+			nCode : Code := new TabBits( 1 .. Taille );
+			cCode : Natural := iCode;
+		begin
+			for i in reverse nCode'Range loop
+				nCode(i) := cCode mod 2;
+				cCode := cCode / 2;
+			end loop;
+
+			if cCode /= 0 then
+				Put_Line("Erreur, reste : " & Natural'Image(cCode));
+			end if;
+
+			Put(Natural'Image(iCode) & " = " );
+			for i in nCode'Range loop
+				Put(Integer'Image(nCode(i)));
+			end loop;
+			New_Line;
+
+			return nCode;
+		end;
+
+		procedure Calcul_Codes(D : in out Dico ; A : Arbre ; pCode : Natural ; pTaille : Natural) is
+			cCode : Natural := pCode * 2;
+			Taille : Natural := pTaille + 1;
+		begin
+			if A /= null then
+				if A.EstFeuille then
+					Put(A.Char);
+					D(A.Char) := CreateCode(pCode, Taille);
+				else
+					if A.Fils(0) /= null then
+						Calcul_Codes(D, A.Fils(0), cCode, Taille);
+					end if;
+
+					if A.Fils(1) /= null then
+						Calcul_Codes(D, A.Fils(1), cCode + 1, Taille);
+					end if;
+				end if;
+			end if;
+		end;
 	begin
-		-- TODO
+		-- Put_Line("");
+		-- Put_Line("");
+		-- Put_Line("Affiche_Arbre 0");
+		-- Affiche_Arbre(A);
+		-- Put_Line("");
+		-- Put_Line("");
+		New_Line;
+		Calcul_Codes(D, A, 0, 0);
+
 		return D;
 	end;
 
