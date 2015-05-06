@@ -19,68 +19,68 @@ package body Arbre_Huffman is
 
 
 	-- Export .dot d'arbre
-        procedure Export(Dest : String ; Racine : Arbre) is
+	procedure Export(Dest : String ; Racine : Arbre) is
 
-                procedure Subtree(File : File_Type ; Racine : Arbre ; Index : in out Natural) is
-                        Cur : Natural := Index + 1;
-                begin
-                        if Racine /= null then
-                                Index := Cur;
-                                Put(File, " -- " & Natural'Image(Cur) );
+		procedure Subtree(File : File_Type ; Racine : Arbre ; Index : in out Natural) is
+			Cur : Natural := Index + 1;
+		begin
+			if Racine /= null then
+				Index := Cur;
+				Put(File, " -- " & Natural'Image(Cur) );
 
-                                if Racine.EstFeuille then
-	                                Put_Line( File, "   " & Natural'Image(Cur)
-	                                        & " [label=""" & Character'Image(Racine.Char)
-	                                        & """]");
-	                        else
-                                	Subtree(File, Racine.Fils(0), Index);
-	                                Put_Line( File, "   " & Natural'Image(Cur)
-                                        	& " [label="" ""]");
+				if Racine.EstFeuille then
+					Put_Line( File, "   " & Natural'Image(Cur)
+						& " [label=""" & Character'Image(Racine.Char)
+						& """]");
+				else
+					Subtree(File, Racine.Fils(0), Index);
+					Put_Line( File, "   " & Natural'Image(Cur)
+						& " [label="" ""]");
 
-	                                Put(File, "   " & Natural'Image(Cur) );
-	                                Subtree(File, Racine.Fils(1), Index);
-                                end if;
-                        else
-                                New_Line(File);
-                        end if;
-                end;
+					Put(File, "   " & Natural'Image(Cur) );
+					Subtree(File, Racine.Fils(1), Index);
+				end if;
+			else
+				New_Line(File);
+			end if;
+		end;
 
-                File : File_Type;
-                Index : Natural := 0;
-                Cur : Natural := Index;
-        begin
-                if Racine /= null then
+		File : File_Type;
+		Index : Natural := 0;
+		Cur : Natural := Index;
+	begin
+		if Racine /= null then
 
-                        Create( File => File, Mode => Out_File, Name => Dest );
+			Create( File => File, Mode => Out_File, Name => Dest );
 
-                        New_Line(File);
-                        Put_Line(File, "graph { ");
+			New_Line(File);
+			Put_Line(File, "graph { ");
 
-                        if Racine.EstFeuille then
-                                Put_Line( File, "   " & Natural'Image(Cur)
-                                        & " [label=""" & Character'Image(Racine.Char)
-                                        & """]");
-                        else
-                                Put_Line( File, "   " & Natural'Image(Cur)
-                                        & " ");
-                                Put_Line( File, "   " & Natural'Image(Cur)
-                                        & " [label="" ""]");
-                        end if;
+			if Racine.EstFeuille then
+				Put_Line( File, "   " & Natural'Image(Cur)
+					& " [label=""" & Character'Image(Racine.Char)
+					& """]");
+			else
+				Put_Line( File, "   " & Natural'Image(Cur)
+					& " ");
+				Put_Line( File, "   " & Natural'Image(Cur)
+					& " [label="" ""]");
+			end if;
 
 
-                        Put(File, "   " & Natural'Image(Cur));
-                        Subtree(File, Racine.Fils(0), Index);
-                        Put(File, "   " & Natural'Image(Cur));
-                        Subtree(File, Racine.Fils(1), Index);
-                        Put_Line(File, "}");
-                        New_Line(File);
+			Put(File, "   " & Natural'Image(Cur));
+			Subtree(File, Racine.Fils(0), Index);
+			Put(File, "   " & Natural'Image(Cur));
+			Subtree(File, Racine.Fils(1), Index);
+			Put_Line(File, "}");
+			New_Line(File);
 
-                        Close(File);
+			Close(File);
 
-                end if;
-        exception
-                when others => NULL;
-        end;
+		end if;
+	exception
+		when others => NULL;
+	end;
 
 
 
@@ -125,7 +125,7 @@ package body Arbre_Huffman is
 
 			if Statut then
 				Suppression(F);
-				Insertion(F, P1 + P2, new Noeud'(False, (Fils0, Fils1)));
+				Insertion(F, P1 + P2, new Noeud'(False, (Fils1, Fils0)));
 			else
 				A := Fils0;
 			end if;

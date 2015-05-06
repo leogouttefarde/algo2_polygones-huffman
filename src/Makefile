@@ -1,6 +1,6 @@
 
 EXEC=huffman
-TEST=tests/test1.txt
+TEST=tests/test0.txt
 ENC=$(TEST).huff
 DEC=$(TEST)_dec.txt
 
@@ -11,7 +11,7 @@ all:
 clean:
 	gnatclean $(EXEC)
 	gnatclean test_file
-	rm -f $(ENC) $(DEC)
+	rm -f $(ENC) $(DEC) arbre.{png,dot}
 
 run: all
 	./$(EXEC) -c $(TEST) $(ENC)
