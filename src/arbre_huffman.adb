@@ -194,19 +194,26 @@ package body Arbre_Huffman is
 		return D;
 	end;
 
+	g_Index : Positive := 1;
+
 	procedure Decodage_Code(Reste : in out Code;
 		Arbre_Huffman : Arbre;
 		Caractere : out Character) is
 
 		Position_Courante : Arbre;
 		Tmp,R : Natural;
-		Nouveau_Reste : Code;
 	begin
+		if Reste = null then
+			Reste := new TabBits(1 .. 8);
+		end if;
+
 		Position_Courante := Arbre_Huffman;
+
 		while not Position_Courante.EstFeuille loop
-			if Reste = null then
+			if g_Index > Reste'Last then
 				--chargement de l'octet suivant du fichier
-				Reste := new TabBits(1..8);
+				-- Reste := new TabBits(1..8);
+				g_Index := Reste'First;
 				Caractere := Octet_Suivant;
 				Tmp := Character'Pos(Caractere);
 				for I in Reste'Range loop
@@ -215,21 +222,24 @@ package body Arbre_Huffman is
 					Tmp := Tmp / 2;
 				end loop;
 			end if;
-			Position_Courante := Position_Courante.Fils(Reste(1)) ;
-			if Reste'Last = 1 then
-				Liberer(Reste);
-				Reste := null;
-			else
-				-- TODO : modifier cette procedure
-				-- pour eviter de faire a chaque iteration
-				-- une allocation + 1 liberation
-				Nouveau_Reste := new TabBits(1..(Reste'Last - 1));
-				for I in Nouveau_Reste'Range loop
-					Nouveau_Reste(I) := Reste(I+1);
-				end loop;
-				Liberer(Reste);
-				Reste := Nouveau_Reste;
-			end if;
+
+			Position_Courante := Position_Courante.Fils(Reste(g_Index)) ;
+			g_Index := g_Index + 1;
+
+			-- if Index = 1 then
+			-- 	Liberer(Reste);
+			-- 	Reste := null;
+			-- else
+			-- 	-- TODO : modifier cette procedure
+			-- 	-- pour eviter de faire a chaque iteration
+			-- 	-- une allocation + 1 liberation
+			-- 	Nouveau_Reste := new TabBits(1..(Reste'Last - 1));
+			-- 	for I in Nouveau_Reste'Range loop
+			-- 		Nouveau_Reste(I) := Reste(I+1);
+			-- 	end loop;
+			-- 	Liberer(Reste);
+			-- 	Reste := Nouveau_Reste;
+			-- end if;
 		end loop;
 		Caractere := Position_Courante.Char;
 	end;
