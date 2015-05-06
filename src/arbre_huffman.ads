@@ -28,7 +28,8 @@ package Arbre_Huffman is
 		--et calcule le caractere correspondant
 		--il peut recuperer des octets supplementaires si besoin a l'aide de la fonction 'octet_suivant'
 		--remplace l'ancien reste par le nouveau
-		procedure Decodage_Code(Reste : in out Code;
+		procedure Decodage_Code(Reste : in out TabBits;
+			Position : in out Positive;
 			Arbre_Huffman : Arbre;
 			Caractere : out Character);
 private

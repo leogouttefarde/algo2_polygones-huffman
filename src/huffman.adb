@@ -143,7 +143,8 @@ procedure Huffman is
 		Taille, Octets_Ecrits: Natural;
 		Caractere: Character;
 		Entree, Sortie: Ada.Streams.Stream_IO.File_Type;
-		Reste : Code;
+		Reste : TabBits(1 .. 8);
+		Position : Positive := Reste'Last + 1;
 		EAcces, SAcces : Stream_Access;
 
 		function Lecture_Octet_Compresse return Character is
@@ -160,10 +161,9 @@ procedure Huffman is
 		Arbre_Huffman := Calcul_Arbre(Tableau_Ascii'Input(EAcces)) ;
 		Create(Sortie, Out_File, Fichier_Sortie);
 		SAcces := Stream (Sortie);
-		Reste := null;
 		Octets_Ecrits := 0;
 		while(Octets_Ecrits < Taille) loop
-			Caractere_Suivant(Reste, Arbre_Huffman, Caractere);
+			Caractere_Suivant(Reste, Position, Arbre_Huffman, Caractere);
 			Octets_Ecrits := Octets_Ecrits + 1;
 			Character'Output(SAcces, Caractere);
 		end loop;
