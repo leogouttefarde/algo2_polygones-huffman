@@ -100,11 +100,10 @@ Nous avons traité l'ensemble du sujet, ainsi que l'optimisation de \lstinline!D
 
 L'exécutable compresse et décompresse sans problème les fichiers texte, et les libérations mémoire sont bien implémentées donc il n'y a pas de memory leak.
 
-L'archive contient l'ensemble du code source au sein du dossier \textit{src}, ainsi que les différents fichiers texte testés dans le dossiers \textit{src/tests}, contenant pour chaque test le fichier \textit{.txt} d'origine, le \textit{.huff} compressé, le \textit{\_dec.txt} décompressé, ainsi que l'arbre de Huffman correspondant en \textit{.dot} et \textit{.png}.
+L'archive contient l'ensemble du code source au sein du dossier \textit{src}, ainsi que les différents fichiers texte testés dans le dossiers \textit{src/tests}, contenant pour chaque test le fichier \textit{.txt} d'origine, le \textit{.huff} compressé, le \textit{.txt} décompressé, ainsi que l'arbre de Huffman correspondant en \textit{dot} et \textit{png}.
 
 
 $\newline$
-
 \section* {1\hspace{5mm}Choix d'implémentation }
 
 Pour l'implémentation des files de priorité, nous avons introduit quelques nouvelles structures :
@@ -124,7 +123,7 @@ type File_Interne (Taille_Max : Positive) is record
 end record;
 
 \end{lstlisting}
-
+$\newline$
 Nous avons ainsi simplement défini le type \lstinline!File_Interne! comme discriminé par la taille maximale de la liste, permettant d'allouer un tableau de taille correspondante pour le \lstinline!Tas!.
 
 Nous avons également un champ \lstinline!Taille! qui permet de savoir combien d'éléments sont réellement contenus, et finalement le type \lstinline!Element! correspond au contenu des cases du \lstinline!Tas!, et se compose donc d'un champ priorité et d'un champ donnée.
@@ -135,11 +134,13 @@ Nous avons également un champ \lstinline!Taille! qui permet de savoir combien d
 
 \section* {2\hspace{5mm}Démarche de validation }
 
-Pour la démarche de validation fonctionnelle, nous avons d'abord testé nos files de priorité à l'aide du fichier \textit{test\_file.adb}.
+Pour la démarche de validation fonctionnelle, nous avons d'abord testé nos files de priorité à l'aide du fichier \lstinline!test_file.adb!.
 
 Puis, pour corriger notre code de génération de l'arbre de Huffman et donc des codes optimaux, nous avons principalement réutilisé la fonction de génération d'arbre \textit{dot} pour facilement visualiser les problèmes de l'arbre \textit{png} généré. Pour ces tests, nous avons repris l'exemple de construction du sujet avec le mot \textit{``hello''}, au sein du fichier de test \textit{src/tests/test0.txt}.
 
-Finalement pour résoudre les problèmes restants après optimisation du code de \lstinline!Compression! / \lstinline!Decompression! par encodage de l'arbre de Huffman, nous avons réutilisé le premier exemple du sujet avec la chaîne \textit{``acbeceea''}, à l'aide du fichier de test \textit{src/tests/test1.txt}. On obtient notamment l'arbre suivant :
+\newpage
+
+Finalement pour résoudre les problèmes restants après optimisation du code de \lstinline!Compression! / \lstinline!Decompression! par encodage de l'arbre de Huffman, nous avons réutilisé le premier exemple du sujet avec la chaîne \textit{``acbeceea''}, à l'aide du fichier de test \textit{src/tests/test1.txt}. On obtient l'arbre suivant :
 
 % \begin{figure}
 \begin{center}
@@ -154,13 +155,9 @@ Nous avons ainsi facilement pu vérifier la bonne fonctionnalité du code, et fi
 
 \section* {3\hspace{5mm}Tests de performance }
 
-\subsection* {3.1\hspace{3mm} Vitesse d'exécution}
+\subsection* {3.1\hspace{3mm} Gains / pertes d'espace après compression}
 
-
-
-\subsection* {3.2\hspace{3mm} Gains / pertes de place après compression}
-
-Pour évaluer les gains et les pertes de place après compression, nous avons utilisé plusieurs fichier de test :
+Pour évaluer les gains et pertes d'espace après compression, nous avons utilisé plusieurs fichier de test :
 
 \begin{enumerate}
 
@@ -182,14 +179,38 @@ Pour évaluer les gains et les pertes de place après compression, nous avons ut
 \end{enumerate}
 
 
-A l'issue de ces tests, on remarque que pour les fichiers relativements petits comme les deux premiers, il y a une légère augmentation de la taille : 5 octets en deviennent 11 pour \textit{``hello''}, tandis que 8 en deviennent également 11 pour \textit{``acbeceea''}.
+A l'issue de ces tests, on remarque que pour les fichiers relativement petits comme les deux premiers, il y a une légère augmentation de la taille : 5 octets en deviennent 11 pour \textit{``hello''}, tandis que 8 en deviennent également 11 pour \textit{``acbeceea''}.
 
 En revanche, tous les \textit{Lorem Ipsum} bénéficient bien d'un gain intéressant, avec le premier qui passe de 2 Ko à presque 1 Ko, le second de 3.4 Ko à 1.8 Ko, et le dernier de 7 Ko à 3.7 Ko.
 
 Ainsi ces derniers fichiers bénéficient quasimment d'un gain de taille de 50 \%, ce qui est relativement intéressant.
 
-Notre programme de compression par encode direct de l'arbre de Huffman en tête de fichier est donc assez puissant.
+Notre programme de compression par encodage direct de l'arbre de Huffman en tête de fichier est donc assez puissant.
 
+
+\subsection* {3.2\hspace{3mm} Vitesse d'exécution}
+
+Les vitesses d'exécution du programme mesurées en moyenne pour les différents tests sont les suivantes :
+%\hspace{-3.3cm}
+\begin{center}
+ % \centering
+\begin{tabular}{|c|c|c|c|c|c|}
+ \hline
+Fichier & test0.txt & test1.txt & test2.txt & test3.txt & test4.txt\\
+ \hline
+Compression & 3 ms & 3 ms & 5 ms & 6 ms & 9 ms\\
+Décompression & 3 ms & 3 ms & 3 ms & 4 ms & 6 ms\\
+ \hline
+\end{tabular}
+\end{center}
+
+On observe que pour les deux premiers tests, la compression et la décompression prennent autant de temps, soit trois millisecondes. C'est probablement une approximation de la borne inférieure de la durée minimale du programme, et vu que les deux textes sont courts la compression et la décompression durent presque autant de temps.
+
+Pour les Lorem Ipsum de taille croîssante en revanche (trois derniers tests), la vitesse de compression devient un peu plus longue que celle de décompression, jusqu'à 9 ms de compression et 6 ms de décompression pour le Lorem Ipsum de 20 paragraphes contre 5 ms de compression et 3 ms de décompression pour celui de 3 paragraphes.
+
+C'est normal puisque la compression nécessite l'analyse fréquentielle des caractères puis la construction de l'arbre de Huffman, tandis que pour la décompression il suffit d'utiliser l'arbre du fichier compressé.
+
+Ce programme de compression est donc relativement performant d'après les tests.
 
 
 \end{document}
