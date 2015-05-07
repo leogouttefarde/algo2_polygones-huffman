@@ -140,15 +140,15 @@ Puis, pour corriger notre code de génération de l'arbre de Huffman et donc des
 
 \newpage
 
-Finalement pour résoudre les problèmes restants après optimisation du code de \lstinline!Compression! / \lstinline!Decompression! par encodage de l'arbre de Huffman, nous avons réutilisé le premier exemple du sujet avec la chaîne \textit{``acbeceea''}, à l'aide du fichier de test \textit{src/tests/test1.txt}. On obtient l'arbre suivant :
+Finalement pour résoudre les problèmes restants après optimisation du code de \lstinline!Compression! / \lstinline!Decompression! par encodage de l'arbre de Huffman, nous avons réutilisé le premier exemple du sujet avec la chaîne \textit{``acbeceea''}, à l'aide du fichier de test \textit{src/tests/test1.txt} (Figure 1).
 
-% \begin{figure}
+\begin{figure}[ht]
 \begin{center}
 % \centering
   \includegraphics[scale=0.75]{test1.pdf}
-  % \caption{Légende}
-% \end{figure}
+ \caption{Arbre de Huffman de \textit{``acbeceea''}}
 \end{center}
+\end{figure}
 
 Nous avons ainsi facilement pu vérifier la bonne fonctionnalité du code, et finalement corrigé l'erreur en remarquant une simple inversion des variables de \lstinline!Stream! lors du décodage, qui était à l'origine du problème.
 
