@@ -157,7 +157,7 @@ Nous avons ainsi facilement pu vérifier la bonne fonctionnalité du code, et fi
 
 \subsection* {3.1\hspace{3mm} Gains / pertes d'espace après compression}
 
-Pour évaluer les gains et pertes d'espace après compression, nous avons utilisé plusieurs fichier de test :
+Pour évaluer les gains et pertes d'espace après compression, nous avons utilisé plusieurs fichiers de test :
 
 \begin{enumerate}
 
@@ -195,7 +195,7 @@ Compressé & 11 o & 11 o & 1.1 Ko & 1.8 Ko & 3.7 Ko\\
 
 \newpage
 
-A l'issue de ces tests, on remarque que pour les fichiers relativement petits comme \textit{``hello''} et \textit{``acbeceea''} (deux premiers tests), il y a une légère augmentation de la taille.
+A l'issue de ces tests, on remarque que pour les fichiers relativement petits comme \textit{``hello''} et \textit{``acbeceea''} (deux premiers tests), il y a une légère augmentation de la taille. On aurait pu réduire leur taille de 4 octets en retirant le nombre total de caractères écrit en tête de fichier, cependant nous l'avons gardé car c'est aussi un moyen de simplifier la décompression et de vérifier la taille du contenu décompressé.
 
 En revanche, les \textit{Lorem Ipsum} bénéficient bien d'un gain en espace intéressant, avec une réduction de quasimment 50 \%.
 
@@ -219,13 +219,13 @@ Décompression & 3 ms & 3 ms & 3 ms & 4 ms & 6 ms\\
 \end{center}
 \vspace{0.25cm}
 
-On observe que pour les deux premiers tests, la compression et la décompression prennent autant de temps, soit trois millisecondes. C'est probablement une approximation de la borne inférieure de la durée minimale du programme, et vu que les deux textes sont courts la compression et la décompression durent presque autant de temps.
+On observe que pour les deux premiers tests, la compression et la décompression prennent autant de temps, soit trois millisecondes. C'est probablement une approximation de la borne inférieure de la durée minimale du programme, et vu que les deux textes sont courts la compression et la décompression durent quasimment autant de temps.
 
 Pour les Lorem Ipsum de taille croîssante en revanche (trois derniers tests), la vitesse de compression devient un peu plus longue que celle de décompression, jusqu'à 9 ms de compression et 6 ms de décompression pour le Lorem Ipsum de 20 paragraphes contre 5 ms de compression et 3 ms de décompression pour celui de 3 paragraphes.
 
 C'est normal puisque la compression nécessite l'analyse fréquentielle des caractères puis la construction de l'arbre de Huffman, tandis que pour la décompression il suffit d'utiliser l'arbre du fichier compressé.
 
-Ce programme de compression est donc relativement performant d'après les tests.
+Ce programme de compression est donc relativement performant d'après les tests effectués.
 
 
 \end{document}
