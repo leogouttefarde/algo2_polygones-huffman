@@ -31,8 +31,6 @@ package body File_Priorite is
 				iPere := iCur / 2;
 			end loop;
 		end if;
-
-		null;
 	end Insertion;
 
 	procedure Meilleur(F: in File; P: out Priorite; D: out Donnee; Statut: out Boolean) is

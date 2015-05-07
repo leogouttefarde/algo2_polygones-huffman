@@ -1,5 +1,5 @@
-with Ada.Text_IO, Comparaisons, File_Priorite;
-use Ada.Text_IO, Comparaisons;
+with Ada.Text_IO, Ada.Streams.Stream_IO, Comparaisons, File_Priorite;
+use Ada.Text_IO, Ada.Streams.Stream_IO, Comparaisons;
 
 package body Arbre_Huffman is
 
@@ -21,7 +21,7 @@ package body Arbre_Huffman is
 	-- Export .dot d'arbre
 	procedure Export(Dest : String ; Racine : Arbre) is
 
-		procedure Subtree(File : File_Type ; Racine : Arbre ; Index : in out Natural) is
+		procedure Subtree(File : Ada.Text_IO.File_Type ; Racine : Arbre ; Index : in out Natural) is
 			Cur : Natural := Index + 1;
 		begin
 			if Racine /= null then
@@ -45,7 +45,7 @@ package body Arbre_Huffman is
 			end if;
 		end;
 
-		File : File_Type;
+		File : Ada.Text_IO.File_Type;
 		Index : Natural := 0;
 		Cur : Natural := Index;
 	begin
@@ -90,13 +90,13 @@ package body Arbre_Huffman is
 		if A /= null then
 			if A.EstFeuille then
 				Put(Character'Image(A.Char) & " ");
-				New_Line;
+				-- New_Line;
 			else
-				Put_Line("Gauche");
+				-- Put_Line("Gauche");
 				Affiche_Arbre(A.Fils(0));
-				Put_Line("Droite");
+				-- Put_Line("Droite");
 				Affiche_Arbre(A.Fils(1));
-				Put_Line("Fin");
+				-- Put_Line("Fin");
 			end if;
 		end if;
 	end Affiche_Arbre;
@@ -146,15 +146,15 @@ package body Arbre_Huffman is
 				cCode := cCode / 2;
 			end loop;
 
-			if cCode /= 0 then
-				Put_Line("Erreur, reste : " & Natural'Image(cCode));
-			end if;
+			-- if cCode /= 0 then
+			-- 	Put_Line("Erreur, reste : " & Natural'Image(cCode));
+			-- end if;
 
-			Put(Natural'Image(iCode) & " = " );
-			for i in nCode'Range loop
-				Put(Integer'Image(nCode(i)));
-			end loop;
-			New_Line;
+			-- Put(Natural'Image(iCode) & " = " );
+			-- for i in nCode'Range loop
+			-- 	Put(Integer'Image(nCode(i)));
+			-- end loop;
+			-- New_Line;
 
 			return nCode;
 		end;
@@ -165,7 +165,7 @@ package body Arbre_Huffman is
 		begin
 			if A /= null then
 				if A.EstFeuille then
-					Put(A.Char);
+					-- Put(A.Char);
 					D(A.Char) := CreateCode(pCode, pTaille);
 				else
 					if A.Fils(0) /= null then
@@ -188,7 +188,7 @@ package body Arbre_Huffman is
 
 		Export("arbre.dot", A);
 
-		New_Line;
+		-- New_Line;
 		Calcul_Codes(D, A, 0, 0);
 
 		return D;
@@ -200,7 +200,7 @@ package body Arbre_Huffman is
 		Caractere : out Character) is
 
 		Position_Courante : Arbre;
-		Tmp, R : Natural;
+		Octet : Natural;
 	begin
 		Position_Courante := Arbre_Huffman;
 
@@ -211,12 +211,11 @@ package body Arbre_Huffman is
 				-- Chargement de l'octet suivant du fichier
 				Position := Reste'First;
 				Caractere := Octet_Suivant;
-				Tmp := Character'Pos(Caractere);
+				Octet := Character'Pos(Caractere);
 
 				for I in reverse Reste'Range loop
-					R := Tmp mod 2;
-					Reste(I) := R;
-					Tmp := Tmp / 2;
+					Reste(I) := Octet mod 2;
+					Octet := Octet / 2;
 				end loop;
 			end if;
 
@@ -225,6 +224,141 @@ package body Arbre_Huffman is
 		end loop;
 
 		Caractere := Position_Courante.Char;
+	end;
+
+
+	function Comptage_Feuilles(A : Arbre) return Natural is
+		Nombre : Natural := 0;
+	begin
+		if A /= null then
+			if A.EstFeuille then
+				Nombre := 1;
+			else
+				Nombre := Comptage_Feuilles(A.Fils(0));
+				Nombre := Nombre + Comptage_Feuilles(A.Fils(1));
+			end if;
+		end if;
+
+		return Nombre;
+	end;
+
+	procedure Encodage_Arbre(A : Arbre ; Index : in out Positive ;
+				Encodage : in out TabBits) is
+		Lettre : Character;
+	begin
+		if A /= null then
+			if A.EstFeuille then
+				Encodage(Index) := 1;
+				Index := Index + 1;
+
+				Lettre := A.Char;
+				for i in reverse 0 .. 7 loop
+					Encodage(Index + i) := Character'Pos(Lettre) mod 2;
+					Lettre := Character'Val(Character'Pos(Lettre) / 2);
+				end loop;
+
+				Index := Index + 8;
+			else
+				Encodage(Index) := 0;
+				Index := Index + 1;
+
+				Encodage_Arbre(A.Fils(0), Index, Encodage);
+				Encodage_Arbre(A.Fils(1), Index, Encodage);
+			end if;
+		end if;
+	end;
+
+	procedure Stockage_Huffman(SAccess : in out Stream_Access ; Arbre_Huffman : Arbre) is
+		NbFeuilles : constant Natural := Comptage_Feuilles(Arbre_Huffman);
+		Taille : constant Natural := 10 * NbFeuilles - 1;
+		Encodage : TabBits(1 .. Taille);
+		Bit : Integer;
+		Octet : Character;
+		Position : Natural := Encodage'First;
+		Index : Natural := Encodage'First;
+	begin
+		Encodage_Arbre(Arbre_Huffman, Index, Encodage);
+		--Natural'Output(SAccess, Integer(Float'Ceiling(Float(Taille)/8.0)));
+
+
+		-- Stockage_bits(Encodage);
+
+		while Position < Encodage'Last loop
+
+			Octet := Character'Val(0);
+
+			for i in 0 .. 7 loop
+				Index := Position + i;
+
+				if Index > Encodage'Last then
+					Bit := 0;
+				else
+					Bit := Encodage(i);
+				end if;
+
+				Octet := Character'Val(Character'Pos(Octet) * 2 + Bit);
+			end loop;
+
+			Character'Output(SAccess, Octet);
+			Position := Position + 8;
+		end loop;
+	end;
+
+	function Lire_Bit(SAccess : in out Stream_Access ; Index : in out Natural ;
+				Reste : in out TabBits) return Integer is
+		Bit : Integer;
+		Caractere : Character;
+		Octet : Integer;
+	begin
+		if Index > Reste'Last then
+			Index := Reste'First;
+			Caractere := Character'Input(SAccess);
+			Octet := Character'Pos(Caractere);
+
+			for i in reverse Reste'Range loop
+				Reste(i) := Octet mod 2;
+				Octet := Octet / 2;
+			end loop;
+		end if;
+
+		Bit := Reste(Index);
+		Index := Index + 1;
+
+		return Bit;
+	end;
+
+	function Creer_Huffman(SAccess : in out Stream_Access ; Index : in out Natural ;
+				Reste : in out TabBits) return Arbre is
+		A : Arbre;
+		Fils0, Fils1 : Arbre;
+		--Taille : Natural := Natural'Input(SAccess);
+		Bit : Integer;
+		Octet : Integer := 0;
+	begin
+		Bit := Lire_Bit(SAccess, Index, Reste);
+
+		if Bit = 0 then
+			Fils0 := Creer_Huffman(SAccess, Index, Reste);
+			Fils1 := Creer_Huffman(SAccess, Index, Reste);
+
+			A := new Noeud'(False, (Fils0, Fils1));
+		else
+			for i in Reste'Range loop
+				Octet := Octet * 2 + Lire_Bit(SAccess, Index, Reste);
+			end loop;
+
+			A := new Noeud'(True, Character'Val(Octet));
+		end if;
+
+		return A;
+	end;
+
+	function Lecture_Huffman(SAccess : in out Stream_Access) return Arbre is
+		--Taille : Natural := Natural'Input(SAccess);
+		Reste : TabBits(1 .. 8);
+		Index : Natural := Reste'Last + 1;
+	begin
+		return Creer_Huffman(SAccess, Index, Reste);
 	end;
 
 end;

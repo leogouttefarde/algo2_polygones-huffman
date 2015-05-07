@@ -7,10 +7,10 @@ procedure test_file is
 	package Ma_File is new File_Priorite(Natural, Compare, Natural);
 	use Ma_File;
 
-	F: File;
+	F : File;
 
-	C: Boolean;
-	E, P1: Natural;
+	C : Boolean;
+	E, P1 : Natural;
 
 begin
 
@@ -21,7 +21,7 @@ begin
 	Insertion(F, 3, 3);
 	Insertion(F, 7, 7);
 	Insertion(F, 15, 15);
-	C := true;
+	C := True;
 	while C loop
 		Meilleur(F, P1, E, C);
 		if C then

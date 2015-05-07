@@ -4,12 +4,13 @@ use Ada.Text_IO, Ada.Integer_Text_IO, Ada.Command_Line, Ada.Streams.Stream_IO, A
 procedure Huffman is
 
 	Fichier_Invalide : exception;
-	--calcul des frequences d'apparition des lettre dans un fichier
+
+	-- Calcul des fréquences d'apparition des lettre dans un fichier
 	procedure Lecture_Frequences(Nom_Fichier: in String ;
 		Frequences : out Tableau_Ascii ;
 		Taille : out Natural) is
 
-		Fichier: Ada.Streams.Stream_IO.File_Type;
+		Fichier : Ada.Streams.Stream_IO.File_Type;
 		Acces : Stream_Access;
 		Char: Character;
 	begin
@@ -45,35 +46,35 @@ procedure Huffman is
 		end loop;
 	end Affiche_Frequences;
 
-	--recupere le prochain caractere a ecrire dans le fichier compresse
+	-- Récupère le prochain caractère du fichier d'entrée
 	procedure Recuperation_Caractere(Reste : in out Code;
 		Entree : Ada.Streams.Stream_IO.File_Type ;
 		Acces : in out Stream_Access ;
 		Caractere_Sortie : out Character ;
 		D : Dico) is
 
-		Compte : Natural; --combien de bits on a reussi a generer
-		Nouveau_Reste : Code; --les bits encore inutilises apres generation du caractere
-		Caractere_Entree : Character; --le prochain caractere lu dans le fichier non compresse
+		Compte : Natural; -- Combien de bits on a réussi à génerer
+		Nouveau_Reste : Code; -- Les bits encore inutilisés après génération du caractère
+		Caractere_Entree : Character; -- Le prochain caractère lu dans le fichier non compressé
 	begin
-		-- on recupere les 8 premiers octets du code
-		-- si il n'y en a pas assez, on lit un nouveau code a partir
-		-- du fichier d'entree
+		-- On récupère les 8 premiers octets du code
+		-- S'il n'y en a pas assez, on lit un nouveau code à partir
+		-- du fichier d'entrée
 		Compte := 0;
 		Caractere_Sortie := Character'Val(0);
 		while Compte /= 8 loop
 			if (Reste = null) then
-				--lecture d'un nouveau code a partir du fichier
+				-- Lecture d'un nouveau code à partir du fichier
 				if (End_Of_File(Entree)) then
-					--a la fin du fichier, il est necessaire de rajouter quelques zero
+					-- A la fin du fichier, il est nécessaire de rajouter quelques zeros
 					Reste := new TabBits(1..(8-Compte));
 					for I in Reste'Range loop
 						Reste(I) := 0;
 					end loop;
 				else
 					Caractere_Entree := Character'Input(Acces);
-					--attention, il faut faire une copie de l'original
-					--afin de pouvoir liberer la memoire plus tard
+					-- Attention, il faut faire une copie de l'original
+					-- afin de pouvoir libérer la mémoire plus tard
 					Reste := D(Caractere_Entree);
 					Nouveau_Reste := new TabBits(Reste'Range);
 					For I in Reste'Range loop
@@ -86,7 +87,7 @@ procedure Huffman is
 				Caractere_Sortie := Character'Val(Character'Pos(Caractere_Sortie) * 2 + Reste(I));
 				Compte := Compte + 1;
 				if Compte = 8 then
-					--mise a jour du reste
+					-- Mise à jour du reste
 					if (Reste'Last - I) > 0 then
 						Nouveau_Reste := new TabBits(1..(Reste'Last - I));
 						for J in Nouveau_Reste'Range loop
@@ -126,7 +127,8 @@ procedure Huffman is
 		Create(Sortie, Out_File, Fichier_Sortie);
 		SAcces := Stream( Sortie );
 		Natural'Output(Sacces, Taille);
-		Tableau_Ascii'Output(Sacces,Frequences) ;
+		Tableau_Ascii'Output(Sacces,Frequences);
+		-- Stockage_Huffman(Sacces, Arbre_Huffman);
 		Open(Entree, In_File, Fichier_Entree);
 		EAcces := Stream(Entree);
 		Reste := null;
@@ -159,10 +161,11 @@ procedure Huffman is
 		EAcces := Stream( Entree );
 		Taille := Natural'Input(EAcces);
 		Arbre_Huffman := Calcul_Arbre(Tableau_Ascii'Input(EAcces)) ;
+		-- Arbre_Huffman := Lecture_Huffman(Sacces);
 		Create(Sortie, Out_File, Fichier_Sortie);
 		SAcces := Stream (Sortie);
 		Octets_Ecrits := 0;
-		while(Octets_Ecrits < Taille) loop
+		while (Octets_Ecrits < Taille) loop
 			Caractere_Suivant(Reste, Position, Arbre_Huffman, Caractere);
 			Octets_Ecrits := Octets_Ecrits + 1;
 			Character'Output(SAcces, Caractere);
