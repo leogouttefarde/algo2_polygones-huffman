@@ -300,8 +300,6 @@ package body Arbre_Huffman is
 		end loop;
 	end;
 
-	Count : Natural := 0;
-
 	function Lire_Bit(SAccess : in out Stream_Access ; Index : in out Natural ;
 				Reste : in out TabBits) return Integer is
 		Bit : Integer;
@@ -321,7 +319,6 @@ package body Arbre_Huffman is
 
 		Bit := Reste(Index);
 		Index := Index + 1;
-		Count := Count + 1;
 
 		return Bit;
 	end;
