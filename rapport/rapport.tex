@@ -76,7 +76,7 @@
 
 
 \title {{ {\huge Compte rendu du projet}} \\
-``{\em Files de priorités, Arbres de Huffman}'' }
+``{\em Files de priorité, Arbres de Huffman}'' }
 
 \author {Equipe 82 \\
 \\
@@ -177,15 +177,29 @@ Pour évaluer les gains et pertes d'espace après compression, nous avons utilis
 \textit{src/tests/test4.txt} : \textit{Lorem Ipsum} aléatoire de 20 paragraphes
 
 \end{enumerate}
+\vspace{0.5cm}
 
+Ci-dessous les tailles avant / après compression :
+%\hspace{-3.3cm}
+\begin{center}
+ % \centering
+\begin{tabular}{|c|c|c|c|c|c|}
+ \hline
+Fichier & test0.txt & test1.txt & test2.txt & test3.txt & test4.txt\\
+ \hline
+Non compressé & 5 o & 8 o & 2 Ko & 3.4 Ko & 7 Ko\\
+Compressé & 11 o & 11 o & 1.1 Ko & 1.8 Ko & 3.7 Ko\\
+ \hline
+\end{tabular}
+\end{center}
 
-A l'issue de ces tests, on remarque que pour les fichiers relativement petits comme les deux premiers, il y a une légère augmentation de la taille : 5 octets en deviennent 11 pour \textit{``hello''}, tandis que 8 en deviennent également 11 pour \textit{``acbeceea''}.
+\newpage
 
-En revanche, tous les \textit{Lorem Ipsum} bénéficient bien d'un gain intéressant, avec le premier qui passe de 2 Ko à presque 1 Ko, le second de 3.4 Ko à 1.8 Ko, et le dernier de 7 Ko à 3.7 Ko.
+A l'issue de ces tests, on remarque que pour les fichiers relativement petits comme \textit{``hello''} et \textit{``acbeceea''} (deux premiers tests), il y a une légère augmentation de la taille.
 
-Ainsi ces derniers fichiers bénéficient quasimment d'un gain de taille de 50 \%, ce qui est relativement intéressant.
+En revanche, les \textit{Lorem Ipsum} bénéficient bien d'un gain en espace intéressant, avec une réduction de quasimment 50 \%.
 
-Notre programme de compression par encodage direct de l'arbre de Huffman en tête de fichier est donc assez puissant.
+Notre programme de compression par encodage de l'arbre de Huffman en tête de fichier est donc assez puissant.
 
 
 \subsection* {3.2\hspace{3mm} Vitesse d'exécution}
@@ -203,6 +217,7 @@ Décompression & 3 ms & 3 ms & 3 ms & 4 ms & 6 ms\\
  \hline
 \end{tabular}
 \end{center}
+\vspace{0.25cm}
 
 On observe que pour les deux premiers tests, la compression et la décompression prennent autant de temps, soit trois millisecondes. C'est probablement une approximation de la borne inférieure de la durée minimale du programme, et vu que les deux textes sont courts la compression et la décompression durent presque autant de temps.
 
