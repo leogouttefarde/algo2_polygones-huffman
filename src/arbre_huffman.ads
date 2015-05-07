@@ -11,6 +11,7 @@ package Arbre_Huffman is
 
 	function Calcul_Arbre(Frequences : in Tableau_Ascii) return Arbre;
 	procedure Affiche_Arbre(A: Arbre);
+	procedure Export(Dest : String ; Racine : Arbre);
 
 	--un code binaire
 	type TabBits is array(Positive range <>) of ChiffreBinaire ;

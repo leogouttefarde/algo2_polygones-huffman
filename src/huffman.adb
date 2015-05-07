@@ -126,6 +126,9 @@ procedure Huffman is
 		Affiche_Arbre(Arbre_Huffman);
 		D := Calcul_Dictionnaire(Arbre_Huffman);
 
+		-- Export de l'arbre (debug)
+		Export("arbre.dot", Arbre_Huffman);
+
 		Create(Sortie, Out_File, Fichier_Sortie);
 		SAcces := Stream( Sortie );
 		Natural'Output(Sacces, Taille);

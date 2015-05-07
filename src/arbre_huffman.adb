@@ -190,7 +190,7 @@ package body Arbre_Huffman is
 		-- Put_Line("");
 		-- Put_Line("");
 
-		Export("arbre.dot", A);
+		-- Export("arbre.dot", A);
 
 		-- New_Line;
 		Calcul_Codes(D, A, 0, 0);

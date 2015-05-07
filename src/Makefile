@@ -1,8 +1,9 @@
 
 EXEC=huffman
-TEST=tests/test1.txt
-ENC=$(TEST).huff
-DEC=$(TEST)_dec.txt
+NOM=tests/test5
+TEST=$(NOM).txt
+ENC=$(NOM).huff
+DEC=$(NOM)_dec.txt
 
 
 all:
@@ -11,7 +12,7 @@ all:
 clean:
 	gnatclean $(EXEC)
 	gnatclean test_file
-	rm -f $(ENC) $(DEC) arbre.{png,dot}
+	rm -f arbre.{png,dot} #$(ENC) $(DEC)
 
 run: all
 	./$(EXEC) -c $(TEST) $(ENC)
@@ -26,5 +27,7 @@ frun: test
 dot: run
 	dot -Tpng arbre.dot > arbre.png
 	gwenview arbre.png > /dev/null 2>&1
+	mv arbre.dot $(NOM).dot
+	mv arbre.png $(NOM).png
 
 
