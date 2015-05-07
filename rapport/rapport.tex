@@ -98,18 +98,19 @@ GOUTTEFARDE Léo \\ PIERUCCI Dimitri}
 
 Nous avons traité l'ensemble du sujet, ainsi que l'optimisation de \lstinline!Decodage_Code! et des fonctions de \lstinline!Compression! / \lstinline!Decompression! par l'encodage des arbres de Huffman directement dans le fichier, au lieu d'y laisser la table des fréquences intégrale.
 
-L'exécutable 
+L'exécutable compresse et décompresse sans problème les fichiers texte, et les libérations mémoire sont bien implémentées donc il n'y a pas de memory leak.
 
-% L'archive contient ...
+L'archive contient l'ensemble du code source au sein du dossier \textit{src}, ainsi que les différents fichiers texte testés dans le dossiers \textit{src/tests}, contenant pour chaque test le fichier \textit{.txt} d'origine, le \textit{.huff} compressé, le \textit{\_dec.txt} décompressé, ainsi que l'arbre de Huffman correspondant en \textit{.dot} et \textit{.png}.
 
 
 $\newline$
 
 \section* {1\hspace{5mm}Choix d'implémentation }
 
-
+Pour l'implémentation des files de priorité, nous avons introduit quelques nouvelles structures :
 
 \begin{lstlisting}
+
 type Element is record
     P : Priorite;
     D : Donnee;
@@ -121,19 +122,64 @@ type File_Interne (Taille_Max : Positive) is record
     Tas : Tableau(1 .. Taille_Max);
     Taille : Natural := 0;
 end record;
+
 \end{lstlisting}
 
+Nous avons ainsi simplement défini le type \lstinline!File_Interne! comme discriminé par la taille maximale de la liste, permettant d'allouer un tableau de taille correspondante pour le \lstinline!Tas!.
 
-
-\section* {2\hspace{5mm}Tests }
-
-\subsection* {2.1\hspace{3mm} Tests unitaires}
+Nous avons également un champ \lstinline!Taille! qui permet de savoir combien d'éléments sont réellement contenus, et finalement le type \lstinline!Element! correspond au contenu des cases du \lstinline!Tas!, et se compose donc d'un champ priorité et d'un champ donnée.
 
 
 
 
 
-\subsection* {2.2\hspace{3mm} Tests de performance}
+\section* {2\hspace{5mm}Démarche de validation }
+
+Pour la démarche de validation fonctionnelle, nous avons d'abord testé nos files de priorité à l'aide du fichier \textit{test\_file.adb}.
+
+Puis, pour corriger notre code de génération de l'arbre de Huffman et donc des codes optimaux, nous avons principalement réutilisé la fonction de génération d'arbre \textit{dot} pour facilement visualiser les problèmes de l'arbre \textit{png} généré. Pour ces tests, nous avons repris l'exemple de construction du sujet avec le mot \textit{``hello''}, au sein du fichier de test \textit{src/tests/test0.txt}.
+
+Finalement pour résoudre les problèmes restants après optimisation du code de \lstinline!Compression! / \lstinline!Decompression! par encodage de l'arbre de Huffman, nous avons réutilisé le premier exemple du sujet avec la chaîne \textit{``acbeceea''}, à l'aide du fichier de test \textit{src/tests/test1.txt}.
+Nous avons ainsi facilement pu vérifier la bonne fonctionnalité du code, et finalement corrigé l'erreur en remarquant une simple inversion des variables de \lstinline!Stream! lors du décodage, qui était à l'origine du problème.
+
+
+\section* {3\hspace{5mm}Tests de performance }
+
+\subsection* {3.1\hspace{3mm} Vitesse d'exécution}
+
+
+
+\subsection* {3.2\hspace{3mm} Gains / pertes de place après compression}
+
+Pour évaluer les gains et les pertes de place après compression, nous avons utilisé plusieurs fichier de test :
+
+\begin{enumerate}
+
+\item%[$\bullet$]
+\textit{src/tests/test0.txt} : mot \textit{``hello''}
+
+\item%[$\bullet$]
+\textit{src/tests/test1.txt} : chaîne \textit{``acbeceea''}
+
+\item%[$\bullet$]
+\textit{src/tests/test2.txt} : \textit{Lorem Ipsum} classique de 3 paragraphes
+
+\item%[$\bullet$]
+\textit{src/tests/test3.txt} : \textit{Lorem Ipsum} aléatoire de 10 paragraphes
+
+\item%[$\bullet$]
+\textit{src/tests/test4.txt} : \textit{Lorem Ipsum} aléatoire de 20 paragraphes
+
+\end{enumerate}
+
+
+A l'issue de ces tests, on remarque que pour les fichiers relativements petits comme les deux premiers, il y a une légère augmentation de la taille : 5 octets en deviennent 11 pour \textit{``hello''}, tandis que 8 en deviennent également 11 pour \textit{``acbeceea''}.
+
+En revanche, tous les \textit{Lorem Ipsum} bénéficient bien d'un gain intéressant, avec le premier qui passe de 2 Ko à presque 1 Ko, le second de 3.4 Ko à 1.8 Ko, et le dernier de 7 Ko à 3.7 Ko.
+
+Ainsi ces derniers fichiers bénéficient quasimment d'un gain de taille de 50 \%, ce qui est relativement intéressant.
+
+Notre programme de compression par encode direct de l'arbre de Huffman en tête de fichier est donc assez puissant.
 
 
 

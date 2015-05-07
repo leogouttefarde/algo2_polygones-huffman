@@ -1,6 +1,6 @@
 
 EXEC=huffman
-NOM=tests/test5
+NOM=tests/test3
 TEST=$(NOM).txt
 ENC=$(NOM).huff
 DEC=$(NOM)_dec.txt
