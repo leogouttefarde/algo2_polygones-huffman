@@ -1,5 +1,5 @@
-with Ada.Text_IO, Ada.Streams.Stream_IO, Comparaisons, File_Priorite;
-use Ada.Text_IO, Ada.Streams.Stream_IO, Comparaisons;
+with Ada.Text_IO, Comparaisons, File_Priorite;
+use Ada.Text_IO, Comparaisons;
 
 package body Arbre_Huffman is
 
@@ -244,17 +244,17 @@ package body Arbre_Huffman is
 
 	procedure Encodage_Arbre(A : Arbre ; Index : in out Positive ;
 				Encodage : in out TabBits) is
-		Lettre : Character;
+		Octet : Integer;
 	begin
 		if A /= null then
 			if A.EstFeuille then
 				Encodage(Index) := 1;
 				Index := Index + 1;
 
-				Lettre := A.Char;
+				Octet := Character'Pos(A.Char);
 				for i in reverse 0 .. 7 loop
-					Encodage(Index + i) := Character'Pos(Lettre) mod 2;
-					Lettre := Character'Val(Character'Pos(Lettre) / 2);
+					Encodage(Index + i) := Octet mod 2;
+					Octet := Octet / 2;
 				end loop;
 
 				Index := Index + 8;
@@ -273,19 +273,15 @@ package body Arbre_Huffman is
 		Taille : constant Natural := 10 * NbFeuilles - 1;
 		Encodage : TabBits(1 .. Taille);
 		Bit : Integer;
-		Octet : Character;
+		Octet : Integer;
 		Position : Natural := Encodage'First;
 		Index : Natural := Encodage'First;
 	begin
 		Encodage_Arbre(Arbre_Huffman, Index, Encodage);
-		--Natural'Output(SAccess, Integer(Float'Ceiling(Float(Taille)/8.0)));
-
-
-		-- Stockage_bits(Encodage);
 
 		while Position < Encodage'Last loop
 
-			Octet := Character'Val(0);
+			Octet := 0;
 
 			for i in 0 .. 7 loop
 				Index := Position + i;
@@ -293,16 +289,18 @@ package body Arbre_Huffman is
 				if Index > Encodage'Last then
 					Bit := 0;
 				else
-					Bit := Encodage(i);
+					Bit := Encodage(Index);
 				end if;
 
-				Octet := Character'Val(Character'Pos(Octet) * 2 + Bit);
+				Octet := Octet * 2 + Bit;
 			end loop;
 
-			Character'Output(SAccess, Octet);
+			Character'Output(SAccess, Character'Val(Octet));
 			Position := Position + 8;
 		end loop;
 	end;
+
+	Count : Natural := 0;
 
 	function Lire_Bit(SAccess : in out Stream_Access ; Index : in out Natural ;
 				Reste : in out TabBits) return Integer is
@@ -323,6 +321,7 @@ package body Arbre_Huffman is
 
 		Bit := Reste(Index);
 		Index := Index + 1;
+		Count := Count + 1;
 
 		return Bit;
 	end;
@@ -331,7 +330,6 @@ package body Arbre_Huffman is
 				Reste : in out TabBits) return Arbre is
 		A : Arbre;
 		Fils0, Fils1 : Arbre;
-		--Taille : Natural := Natural'Input(SAccess);
 		Bit : Integer;
 		Octet : Integer := 0;
 	begin
@@ -354,7 +352,6 @@ package body Arbre_Huffman is
 	end;
 
 	function Lecture_Huffman(SAccess : in out Stream_Access) return Arbre is
-		--Taille : Natural := Natural'Input(SAccess);
 		Reste : TabBits(1 .. 8);
 		Index : Natural := Reste'Last + 1;
 	begin

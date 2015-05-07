@@ -127,8 +127,8 @@ procedure Huffman is
 		Create(Sortie, Out_File, Fichier_Sortie);
 		SAcces := Stream( Sortie );
 		Natural'Output(Sacces, Taille);
-		Tableau_Ascii'Output(Sacces,Frequences);
-		-- Stockage_Huffman(Sacces, Arbre_Huffman);
+		-- Tableau_Ascii'Output(Sacces,Frequences);
+		Stockage_Huffman(Sacces, Arbre_Huffman);
 		Open(Entree, In_File, Fichier_Entree);
 		EAcces := Stream(Entree);
 		Reste := null;
@@ -160,8 +160,8 @@ procedure Huffman is
 		Open(Entree, In_File, Fichier_Entree);
 		EAcces := Stream( Entree );
 		Taille := Natural'Input(EAcces);
-		Arbre_Huffman := Calcul_Arbre(Tableau_Ascii'Input(EAcces)) ;
-		-- Arbre_Huffman := Lecture_Huffman(Sacces);
+		-- Arbre_Huffman := Calcul_Arbre(Tableau_Ascii'Input(EAcces)) ;
+		Arbre_Huffman := Lecture_Huffman(EAcces);
 		Create(Sortie, Out_File, Fichier_Sortie);
 		SAcces := Stream (Sortie);
 		Octets_Ecrits := 0;

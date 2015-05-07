@@ -1,4 +1,5 @@
-with Ada.Unchecked_Deallocation;
+with Ada.Unchecked_Deallocation, Ada.Streams.Stream_IO;
+use Ada.Streams.Stream_IO;
 
 package Arbre_Huffman is
 	--stockage des frequences
@@ -20,6 +21,9 @@ package Arbre_Huffman is
 	type Dico is array(Character) of Code;
 	--stocke le code de chaque caractere
 	function Calcul_Dictionnaire(A : Arbre) return Dico;
+
+	procedure Stockage_Huffman(SAccess : in out Stream_Access ; Arbre_Huffman : Arbre);
+	function Lecture_Huffman(SAccess : in out Stream_Access) return Arbre;
 
 	generic
 		with function Octet_Suivant return Character;
