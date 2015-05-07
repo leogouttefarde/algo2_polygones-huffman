@@ -121,21 +121,30 @@ procedure Huffman is
 	begin
 		Lecture_Frequences(Fichier_Entree, Frequences, Taille);
 		Affiche_Frequences(Frequences);
+
 		Arbre_Huffman := Calcul_Arbre(Frequences);
 		Affiche_Arbre(Arbre_Huffman);
 		D := Calcul_Dictionnaire(Arbre_Huffman);
+
 		Create(Sortie, Out_File, Fichier_Sortie);
 		SAcces := Stream( Sortie );
 		Natural'Output(Sacces, Taille);
+
 		-- Tableau_Ascii'Output(Sacces,Frequences);
 		Stockage_Huffman(Sacces, Arbre_Huffman);
+		Liberer_Arbre(Arbre_Huffman);
+
 		Open(Entree, In_File, Fichier_Entree);
 		EAcces := Stream(Entree);
+
 		Reste := null;
 		while (not End_Of_File(Entree)) or Reste /= null loop
 			Recuperation_Caractere(Reste, Entree, EAcces, Caractere_Sortie, D);
 			Character'Output(SAcces, Caractere_Sortie);
 		end loop;
+
+		Liberer_Dictionnaire(D);
+
 		Close(Entree);
 		Close(Sortie);
 	end Compression;
@@ -160,18 +169,25 @@ procedure Huffman is
 		Open(Entree, In_File, Fichier_Entree);
 		EAcces := Stream( Entree );
 		Taille := Natural'Input(EAcces);
+
 		-- Arbre_Huffman := Calcul_Arbre(Tableau_Ascii'Input(EAcces)) ;
 		Arbre_Huffman := Lecture_Huffman(EAcces);
+
 		Create(Sortie, Out_File, Fichier_Sortie);
 		SAcces := Stream (Sortie);
+
 		Octets_Ecrits := 0;
 		while (Octets_Ecrits < Taille) loop
 			Caractere_Suivant(Reste, Position, Arbre_Huffman, Caractere);
 			Octets_Ecrits := Octets_Ecrits + 1;
 			Character'Output(SAcces, Caractere);
 		end loop;
+
+		Liberer_Arbre(Arbre_Huffman);
+
 		Close(Entree);
 		Close(Sortie);
+
 		if (Octets_Ecrits /= Taille) then
 			Put(Standard_Error, "Fichier Invalide");
 			raise Fichier_Invalide;

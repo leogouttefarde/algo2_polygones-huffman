@@ -75,7 +75,7 @@
 \end{center}}
 
 
-\title {{ {\huge Rapport du projet}} \\
+\title {{ {\huge Compte rendu du projet}} \\
 ``{\em Files de priorités, Arbres de Huffman}'' }
 
 \author {Equipe 82 \\
@@ -86,7 +86,7 @@ GOUTTEFARDE Léo \\ PIERUCCI Dimitri}
 % Equipe NN}
 
 \lhead{Projet d'Algorithmique 2}
-\rhead{Rapport}
+\rhead{Compte rendu}
 
 \begin{document}
 \pagestyle{fancy}
@@ -96,18 +96,32 @@ GOUTTEFARDE Léo \\ PIERUCCI Dimitri}
 \section* {Introduction }
 \end{center}
 
+Nous avons traité l'ensemble du sujet, ainsi que l'optimisation de \lstinline!Decodage_Code! et des fonctions de \lstinline!Compression! / \lstinline!Decompression! par l'encodage des arbres de Huffman directement dans le fichier, au lieu d'y laisser la table des fréquences intégrale.
+
+L'exécutable 
+
+% L'archive contient ...
 
 
 $\newline$
 
 \section* {1\hspace{5mm}Choix d'implémentation }
 
-\subsection* {1.1\hspace{3mm} Structures de données}
 
 
+\begin{lstlisting}
+type Element is record
+    P : Priorite;
+    D : Donnee;
+end record;
 
+type Tableau is array (integer range <>) of Element;
 
-\subsection* {1.2\hspace{3mm} Organisation du code}
+type File_Interne (Taille_Max : Positive) is record
+    Tas : Tableau(1 .. Taille_Max);
+    Taille : Natural := 0;
+end record;
+\end{lstlisting}
 
 
 
@@ -119,7 +133,7 @@ $\newline$
 
 
 
-\subsection* {2.2\hspace{3mm} Mesures de performance}
+\subsection* {2.2\hspace{3mm} Tests de performance}
 
 
 

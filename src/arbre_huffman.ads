@@ -17,13 +17,17 @@ package Arbre_Huffman is
 	type Code is access TabBits;
 	procedure Liberer is new Ada.Unchecked_Deallocation(TabBits, Code);
 
-	--dictionnaire des codes
+	-- Dictionnaire des codes
 	type Dico is array(Character) of Code;
-	--stocke le code de chaque caractere
+
+	-- Stocke le code de chaque caractère
 	function Calcul_Dictionnaire(A : Arbre) return Dico;
+	procedure Liberer_Dictionnaire(D : in out Dico);
 
 	procedure Stockage_Huffman(SAccess : in out Stream_Access ; Arbre_Huffman : Arbre);
 	function Lecture_Huffman(SAccess : in out Stream_Access) return Arbre;
+
+	procedure Liberer_Arbre(A : in out Arbre);
 
 	generic
 		with function Octet_Suivant return Character;

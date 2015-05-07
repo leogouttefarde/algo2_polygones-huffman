@@ -3,8 +3,8 @@ use Ada.Text_IO, Comparaisons;
 
 package body Arbre_Huffman is
 
-	package Ma_File is new File_Priorite(Natural, Compare, Arbre);
-	use Ma_File;
+	package File_Arbres is new File_Priorite(Natural, Compare, Arbre);
+	use File_Arbres;
 
 	type TabFils is array(ChiffreBinaire) of Arbre ;
 
@@ -16,6 +16,8 @@ package body Arbre_Huffman is
 				-- on a: Fils(0) /= null and Fils(1) /= null
 		end case ;
 	end record;
+
+	procedure Liberer_Noeud is new Ada.Unchecked_Deallocation(Noeud, Arbre);
 
 
 	-- Export .dot d'arbre
@@ -131,6 +133,8 @@ package body Arbre_Huffman is
 			end if;
 		end loop;
 
+		Liberation(F);
+
 		return A;
 	end Calcul_Arbre;
 
@@ -193,6 +197,16 @@ package body Arbre_Huffman is
 
 		return D;
 	end;
+
+	procedure Liberer_Dictionnaire(D : in out Dico) is
+	begin
+		for i in D'Range loop
+			if D(i) /= null then
+				Liberer( D(i) );
+			end if;
+		end loop;
+	end;
+
 
 	procedure Decodage_Code(Reste : in out TabBits;
 		Position : in out Positive;
@@ -353,6 +367,19 @@ package body Arbre_Huffman is
 		Index : Natural := Reste'Last + 1;
 	begin
 		return Creer_Huffman(SAccess, Index, Reste);
+	end;
+
+
+	procedure Liberer_Arbre(A : in out Arbre) is
+	begin
+		if A /= null then
+			if not A.EstFeuille then
+				Liberer_Arbre(A.Fils(0));
+				Liberer_Arbre(A.Fils(1));
+			end if;
+
+			Liberer_Noeud(A);
+		end if;
 	end;
 
 end;

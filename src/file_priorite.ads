@@ -1,6 +1,6 @@
 -- paquetage file de priorite
 
-with Comparaisons;
+with Comparaisons, Ada.Unchecked_Deallocation;
 use Comparaisons;
 
 generic
@@ -14,15 +14,21 @@ package File_Priorite is
 
 	type File is private;
 
-		--cree une file pouvant contenir au plus 'Taille' elements
+	-- Cree une file pouvant contenir au plus 'Taille' elements
 	function Nouvelle_File(Taille: Positive) return File;
-		--insere un element de la priorite donnee
+
+	-- Insere un element de la priorite donnee
 	procedure Insertion(F: in out File; P: Priorite; D: Donnee);
-		--recupere l'element de meilleure priorite ; met le statut a Faux si la file est vide
-		--le laisse dans la file
+
+	-- Recupere l'element de meilleure priorite ; met le statut a Faux si la file est vide
+	-- le laisse dans la file
 	procedure Meilleur(F: in File; P: out Priorite; D: out Donnee; Statut: out Boolean);
-		--supprime l'element de meilleure priorite
+
+	-- Supprime l'élément de meilleure priorité
 	procedure Suppression(F: in out File);
+
+	procedure Liberation(F : in out File);
+
 
 private
 	type File_Interne;
@@ -39,4 +45,6 @@ private
 		Tas : Tableau(1 .. Taille_Max);
 		Taille : Natural := 0;
 	end record;
+
+	procedure Liberer is new Ada.Unchecked_Deallocation(File_Interne, File);
 end;

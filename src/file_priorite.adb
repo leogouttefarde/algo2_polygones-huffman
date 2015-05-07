@@ -48,14 +48,16 @@ package body File_Priorite is
 	procedure Suppression(F: in out File) is
 		Elem : Element;
 		iCur, Fils : Natural;
+		Fin : Boolean := False;
 	begin
 		if F /= null and then F.Taille > 0 then
 			F.Tas(1) := F.Tas(F.Taille);
 			F.Taille := F.Taille - 1;
 
 			iCur := 1;
-			while iCur <= (F.Taille / 2) loop
+			while iCur <= (F.Taille / 2) and not Fin loop
 				Fils := 2 * iCur;
+
 				if (Fils /= F.Taille) and Compare(F.Tas(Fils).P, F.Tas(Fils + 1).P) /= INF then
 					Fils := Fils + 1;
 				end if;
@@ -66,9 +68,16 @@ package body File_Priorite is
 					F.Tas(Fils) := Elem;
 					iCur := Fils;
 				else
-					exit;
+					Fin := True;
 				end if;
 			end loop;
+		end if;
+	end;
+
+	procedure Liberation(F : in out File) is
+	begin
+		if F /= null then
+			Liberer(F);
 		end if;
 	end;
 
