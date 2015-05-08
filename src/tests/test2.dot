@@ -1,5 +1,5 @@
 
-graph { 
+graph {
     0 
     0 [label="ε"]
     0 -- 1 -- 2 -- 3 -- 4    4 [label="'i'"]

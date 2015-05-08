@@ -74,7 +74,7 @@ package body Arbre_Huffman is
 			Create( File => File, Mode => Out_File, Name => Dest );
 
 			New_Line(File);
-			Put_Line(File, "graph { ");
+			Put_Line(File, "graph {");
 
 			if A.EstFeuille then
 				Put_Line( File, "   " & Natural'Image(Cur)
