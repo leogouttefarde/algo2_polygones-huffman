@@ -30,8 +30,8 @@ procedure Huffman is
 		Close(Fichier);
 	end Lecture_Frequences;
 
-	--affichage pour info et verifications
-	--affiche pour chaque caractere du fichier le nombre de fois qu'il apparait
+	-- Affichage pour info et verifications
+	-- Affiche pour chaque caractere du fichier le nombre de fois qu'il apparait
 	procedure Affiche_Frequences(Frequences: Tableau_Ascii) is
 	begin
 		for I in Frequences'range loop
@@ -133,7 +133,10 @@ procedure Huffman is
 		SAcces := Stream( Sortie );
 		Natural'Output(Sacces, Taille);
 
+		-- Ecriture des fréquences commentée
 		-- Tableau_Ascii'Output(Sacces,Frequences);
+
+		-- Ecriture puis libération de l'arbre de Huffman
 		Stockage_Huffman(Sacces, Arbre_Huffman);
 		Liberer_Arbre(Arbre_Huffman);
 
@@ -173,7 +176,10 @@ procedure Huffman is
 		EAcces := Stream( Entree );
 		Taille := Natural'Input(EAcces);
 
+		-- Lecture des fréquences commentée
 		-- Arbre_Huffman := Calcul_Arbre(Tableau_Ascii'Input(EAcces)) ;
+
+		-- Lecture de l'arbre de Huffman
 		Arbre_Huffman := Lecture_Huffman(EAcces);
 
 		Create(Sortie, Out_File, Fichier_Sortie);

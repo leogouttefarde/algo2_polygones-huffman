@@ -21,7 +21,8 @@ package body Algo1Pools is
 			Put_Line("### Pool " & Pool.NomPool(1..Pool.TailleNom) & ": alloc " &
 						To_Integer(Storage_Address)'Img) ;
 		end if ;
-		-- ici pour corriger un bug de GNAT,
+
+		-- Ici pour corriger un bug de GNAT,
 		-- on teste si l'adresse retournee peut etre dereferencee...
 		GNAT.Debug_Pools.Dereference(Pool.DP,Storage_Address,Size_In_Storage_Elements,Alignment) ;
 		Pool.NbAlloc := Pool.NbAlloc + 1 ;

@@ -100,7 +100,11 @@ Nous avons traité l'ensemble du sujet, ainsi que l'optimisation de \lstinline!D
 
 L'exécutable compresse et décompresse sans problème les fichiers texte, et les libérations mémoire sont bien implémentées donc il n'y a pas de memory leak.
 
-L'archive contient l'ensemble du code source au sein du dossier \textit{src}, ainsi que les différents fichiers texte testés dans le dossiers \textit{src/tests}, contenant pour chaque test le fichier \textit{.txt} d'origine, le \textit{.huff} compressé, le \textit{.txt} décompressé, ainsi que l'arbre de Huffman correspondant en \textit{dot} et \textit{png}.
+L'archive contient l'ensemble du code source au sein du dossier \textit{src}, ainsi que les différents fichiers texte testés dans le dossiers \textit{src/tests}, contenant pour chaque test le fichier \textit{.txt} d'origine, le \textit{.huff} compressé, le \textit{.txt} décompressé, et enfin l'arbre de Huffman correspondant en \textit{dot} et \textit{png}.
+
+Le fichier Makefile du dossier \textit{src} permet quant à lui de tester facilement le programme, on peut notamment changer le nom du test à effectuer (variable \lstinline!NOM!).
+
+La commande \lstinline!make! compile le programme, \lstinline!make run! encode puis décode le test indiqué après compilation, et enfin \lstinline!make dot! exécute \lstinline!make run! puis affiche l'arbre \textit{dot} obtenu.
 
 
 $\newline$
@@ -134,13 +138,13 @@ Nous avons également un champ \lstinline!Taille! qui permet de savoir combien d
 
 \section* {2\hspace{5mm}Démarche de validation }
 
-Pour la démarche de validation fonctionnelle, nous avons d'abord testé nos files de priorité à l'aide du fichier \lstinline!test_file.adb!.
+Pour la démarche de validation fonctionnelle, nous avons d'abord testé nos files de priorité à l'aide du fichier \textit{test\_file.adb}.
 
 Puis, pour corriger notre code de génération de l'arbre de Huffman et donc des codes optimaux, nous avons principalement réutilisé la fonction de génération d'arbre \textit{dot} pour facilement visualiser les problèmes de l'arbre \textit{png} généré. Pour ces tests, nous avons repris l'exemple de construction du sujet avec le mot \textit{``hello''}, au sein du fichier de test \textit{src/tests/test0.txt}.
 
 \newpage
 
-Finalement pour résoudre les problèmes restants après optimisation du code de \lstinline!Compression! / \lstinline!Decompression! par encodage de l'arbre de Huffman, nous avons réutilisé le premier exemple du sujet avec la chaîne \textit{``acbeceea''}, à l'aide du fichier de test \textit{src/tests/test1.txt} (Figure 1).
+Finalement pour résoudre les problèmes restants après l'optimisation du code de \lstinline!Compression! / \lstinline!Decompression! par encodage de l'arbre de Huffman, nous avons réutilisé le premier exemple du sujet de la chaîne \textit{``acbeceea''}, à l'aide du fichier de test \textit{src/tests/test1.txt} (Figure 1).
 
 \begin{figure}[ht]
 \begin{center}
@@ -150,7 +154,7 @@ Finalement pour résoudre les problèmes restants après optimisation du code de
 \end{center}
 \end{figure}
 
-Nous avons ainsi facilement pu vérifier la bonne fonctionnalité du code, et finalement corrigé l'erreur en remarquant une simple inversion des variables de \lstinline!Stream! lors du décodage, qui était à l'origine du problème.
+Nous avons ainsi facilement pu vérifier la bonne fonctionnalité du code, et finalement corrigé une erreur restante en remarquant une simple inversion des variables de \lstinline!Stream! lors du décodage, qui était à l'origine de notre problème peu complexe au final.
 
 
 \section* {3\hspace{5mm}Tests de performance }
@@ -204,7 +208,7 @@ Notre programme de compression par encodage de l'arbre de Huffman en tête de fi
 
 \subsection* {3.2\hspace{3mm} Vitesse d'exécution}
 
-Les vitesses d'exécution du programme mesurées en moyenne pour les différents tests sont les suivantes :
+Les vitesses d'exécution du programme mesurées en moyenne (sans écriture de l'arbre \textit{dot}) pour les différents tests sont les suivantes :
 %\hspace{-3.3cm}
 \begin{center}
  % \centering
@@ -212,8 +216,8 @@ Les vitesses d'exécution du programme mesurées en moyenne pour les différents
  \hline
 Fichier & test0.txt & test1.txt & test2.txt & test3.txt & test4.txt\\
  \hline
-Compression & 3 ms & 3 ms & 5 ms & 6 ms & 9 ms\\
-Décompression & 3 ms & 3 ms & 3 ms & 4 ms & 6 ms\\
+Compression & 3 ms & 3 ms & 5 ms & 5 ms & 8 ms\\
+Décompression & 3 ms & 3 ms & 3 ms & 3 ms & 5 ms\\
  \hline
 \end{tabular}
 \end{center}
@@ -221,7 +225,7 @@ Décompression & 3 ms & 3 ms & 3 ms & 4 ms & 6 ms\\
 
 On observe que pour les deux premiers tests, la compression et la décompression prennent autant de temps, soit trois millisecondes. C'est probablement une approximation de la borne inférieure de la durée minimale du programme, et vu que les deux textes sont courts la compression et la décompression durent quasimment autant de temps.
 
-Pour les Lorem Ipsum de taille croîssante en revanche (trois derniers tests), la vitesse de compression devient un peu plus longue que celle de décompression, jusqu'à 9 ms de compression et 6 ms de décompression pour le Lorem Ipsum de 20 paragraphes contre 5 ms de compression et 3 ms de décompression pour celui de 3 paragraphes.
+Pour les Lorem Ipsum de taille croîssante en revanche (trois derniers tests), la vitesse de compression devient un peu plus longue que celle de décompression, jusqu'à 8 ms de compression et 5 ms de décompression pour le Lorem Ipsum de 20 paragraphes contre 5 ms de compression et 3 ms de décompression pour celui de 3 paragraphes.
 
 C'est normal puisque la compression nécessite l'analyse fréquentielle des caractères puis la construction de l'arbre de Huffman, tandis que pour la décompression il suffit d'utiliser l'arbre du fichier compressé.
 

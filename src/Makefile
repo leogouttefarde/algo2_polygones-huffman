@@ -1,6 +1,6 @@
 
 EXEC=huffman
-NOM=tests/test3
+NOM=tests/test0
 TEST=$(NOM).txt
 ENC=$(NOM).huff
 DEC=$(NOM)_dec.txt
@@ -29,5 +29,9 @@ dot: run
 	gwenview arbre.png > /dev/null 2>&1
 	mv arbre.dot $(NOM).dot
 	mv arbre.png $(NOM).png
+
+time:
+	time ./$(EXEC) -c $(NOM).{txt,huff}
+	time ./$(EXEC) -d $(NOM){.huff,_dec.txt}
 
 

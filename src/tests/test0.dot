@@ -1,12 +1,12 @@
 
 graph { 
     0 
-    0 [label=" "]
-    0 --  1 --  2 --  3    3 [label="'o'"]
-    2 [label=" "]
-    2 --  4    4 [label="'e'"]
-    1 [label=" "]
-    1 --  5    5 [label="'h'"]
-    0 --  6    6 [label="'l'"]
+    0 [label="ε"]
+    0 -- 1 -- 2 -- 3    3 [label="'o'"]
+    2 [label=""]
+    2 -- 4    4 [label="'e'"]
+    1 [label=""]
+    1 -- 5    5 [label="'h'"]
+    0 -- 6    6 [label="'l'"]
 }
 
