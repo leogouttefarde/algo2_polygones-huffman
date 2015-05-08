@@ -165,8 +165,9 @@ package body Arbre_Huffman is
 			return nCode;
 		end;
 
-		-- Calcul du code de chaque feuille de l'arbre de Huffman
-		procedure Calcul_Codes(D : in out Dico ; A : Arbre ; pCode : Natural ; pTaille : Natural) is
+		-- Calcul récursif du code de chaque feuille de l'arbre de Huffman
+		procedure Calcul_Codes(D : in out Dico ; A : Arbre ;
+					pCode : Natural ; pTaille : Natural) is
 			cCode : Natural := pCode * 2;
 			Taille : Natural := pTaille + 1;
 		begin

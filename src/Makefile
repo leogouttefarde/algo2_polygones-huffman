@@ -30,7 +30,7 @@ dot: run
 	mv arbre.dot $(NOM).dot
 	mv arbre.png $(NOM).png
 
-time:
+time: all
 	time ./$(EXEC) -c $(NOM).{txt,huff}
 	time ./$(EXEC) -d $(NOM){.huff,_dec.txt}
 
